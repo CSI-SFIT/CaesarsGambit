@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c7pjc4p7c5abn"]
+
+[resource]
+resource_name = "Helmet"
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.76665866, 0.6924672, 0.5019632, 1)
+emission_enabled = true
