@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://xknwtbrpl1ef"]
+
+[ext_resource type="PackedScene" uid="uid://wbyfinr7es1h" path="res://3D_MODELS/Church/Church.glb" id="1_uxvc0"]
+
+[node name="Church" type="Node3D" unique_id=1049898661]
+
+[node name="Model" parent="." unique_id=1417941844 instance=ExtResource("1_uxvc0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.647808, -29.659138, 1.6062663)
