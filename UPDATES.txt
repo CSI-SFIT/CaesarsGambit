@@ -3,3 +3,4 @@ SARVESH:
 	added few environment models
 	Added player Animation Controller
 	Added Input Manager
+	Added Church Model
