@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://b2v2owq7j1x8l" path="res://Scripts/PlayerAnimationScript.gd" id="1_fkybt"]
 [ext_resource type="PackedScene" uid="uid://3ttc37uak6wa" path="res://3D_MODELS/Soldier/anims/Fast Run.fbx" id="1_vgqql"]
 [ext_resource type="AnimationLibrary" uid="uid://xpe84o11f4l8" path="res://3D_MODELS/Soldier/anims/jump_anim.fbx" id="2_fkybt"]
-[ext_resource type="AnimationLibrary" uid="uid://dgfqjrxsr88fe" path="res://3D_MODELS/Soldier/anims/idle_anim.fbx" id="3_3smsa"]
 [ext_resource type="AnimationLibrary" uid="uid://ytk86mkbsdio" path="res://3D_MODELS/Soldier/anims/run_anim.fbx" id="3_x3wgy"]
 [ext_resource type="AnimationLibrary" uid="uid://c3qg4m8tpp8h7" path="res://3D_MODELS/Soldier/anims/walk_anim.fbx" id="4_3smsa"]
 
@@ -15,7 +14,6 @@ playerAnimationPlayer = NodePath("Model/AnimationPlayer2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13998663, 1.1920929e-07, -0.30277753)
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="Model" unique_id=795147463]
-libraries/idle_anim = ExtResource("3_3smsa")
 libraries/jump_anim = ExtResource("2_fkybt")
 libraries/run_anim = ExtResource("3_x3wgy")
 libraries/walk_anim = ExtResource("4_3smsa")

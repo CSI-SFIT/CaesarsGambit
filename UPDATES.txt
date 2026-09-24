@@ -1,3 +1,5 @@
 SARVESH:
 	Added player Model with animations
 	added few environment models
+	Added player Animation Controller
+	Added Input Manager
