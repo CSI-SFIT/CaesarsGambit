@@ -8,9 +8,10 @@ const IDLE_ANIMATION = "idle_anim/mixamo_com"
 @export var playerAnimationPlayer:AnimationPlayer
 
 var isAnyKeyPressed=false
+var isForwardPressed=false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print("Available animations:", playerAnimationPlayer.get_animation_list())
+	#print("Available animations:", playerAnimationPlayer.get_animation_list())
 	#InputManager.leftKeyPressed.connect(_onLeftKeyPressed)
 	#InputManager.leftKeyPressed.connect(_onRightKeyPressed)
 	InputManager.jumpKeyPressed.connect(_onJumpKeyPressed)
@@ -23,10 +24,12 @@ func _ready() -> void:
 	
 
 func _onForwardKeyPressed():
+	isForwardPressed=true
 	playerAnimationPlayer.play(RUN_ANIMATION, 0 ,.8)
 	isAnyKeyPressed=true
 func _onForwardKeyReleased():
 	isAnyKeyPressed=false
+	isForwardPressed=false
 	#playerAnimationPlayer.stop()
 
 func _onBackwardKeyPressed():
@@ -38,9 +41,12 @@ func _onBackwardKeyReleased():
 	
 func _onJumpKeyPressed():
 	isAnyKeyPressed=true
-	playerAnimationPlayer.play(JUMP_ANIMATION)
+	playerAnimationPlayer.play(JUMP_ANIMATION,-1,1.5)
 	await playerAnimationPlayer.animation_finished
-	isAnyKeyPressed=false
+	#isAnyKeyPressed=false
+	if(isForwardPressed):_onForwardKeyPressed()
+
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -20,6 +20,10 @@ jump_velocity = 8.0
 input_forward = "move_backward"
 input_back = "move_forward"
 
+[node name="Camera3D" type="Camera3D" parent="." unique_id=412687035]
+transform = Transform3D(-0.6666667, -1.0013342e-08, -6.177072e-08, -3.4662875e-08, 0.6069843, 0.27570733, 5.2099658e-08, 0.27570733, -0.6069843, 4.9167355e-08, 2.2397027, -2.3183525)
+current = true
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1271453329]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.8668542, 4.626953, -3.3243027)
 
@@ -27,6 +31,9 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.86
 transform = Transform3D(1.175, 0, 0, 0, 1.175, 0, 0, 0, 1.175, 0, 0, 0)
 script = ExtResource("1_fkybt")
 playerAnimationPlayer = NodePath("AnimationPlayer2")
+
+[node name="head" type="Node3D" parent="Model" unique_id=1010179343]
+transform = Transform3D(0.85106385, 0, 0, 0, 0.85106385, 0, 0, 0, 0.85106385, -5.4850826e-09, 1.3737164, 0.06274203)
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="Model" unique_id=997265295]
 libraries/idle_anim = ExtResource("3_3smsa")
@@ -37,9 +44,3 @@ libraries/walk_anim = ExtResource("4_3smsa")
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1043878287]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037438273, 0.8475139, -2.7755576e-17)
 shape = SubResource("CapsuleShape3D_2ruxo")
-
-[node name="head" type="Node3D" parent="." unique_id=1010179343]
-transform = Transform3D(1, 0, -1.4210855e-14, 0, 1, 0, 1.4210855e-14, 0, 1, -6.444973e-09, 1.6008472, 0.073721886)
-
-[node name="Camera3D" type="Camera3D" parent="head" unique_id=885181495]
-transform = Transform3D(-0.6666667, -2.0573276e-08, -6.203378e-08, -4.114657e-08, 0.6237499, 0.23533092, 5.077805e-08, 0.23533092, -0.6237499, 1.703625e-07, 0.4874549, -1.9487205)

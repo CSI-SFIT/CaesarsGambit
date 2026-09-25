@@ -4,3 +4,5 @@ SARVESH:
 	Added player Animation Controller
 	Added Input Manager
 	Added Church Model
+	PlayerController done
+	
