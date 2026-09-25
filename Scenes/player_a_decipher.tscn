@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://b0imsajbud2bb"]
+
+[ext_resource type="Script" uid="uid://dskwtifmpf11a" path="res://scripts/DoorLogic.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://cncglo70geos6" path="res://scripts/Torch_Flicker.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://c0xiua20yw1ko" path="res://scripts/player.gd" id="2_h2yge"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1bvp3"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_lquwl"]
+sky_material = SubResource("ProceduralSkyMaterial_1bvp3")
+
+[sub_resource type="Environment" id="Environment_7mycd"]
+background_mode = 2
+sky = SubResource("Sky_lquwl")
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xwue4"]
+albedo_color = Color(0.23827136, 0.09260438, 0.006697394, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y8wm3"]
+size = Vector3(3, 3, 2)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y8wm3"]
+
+[node name="Main" type="Node3D" unique_id=1190309061]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=382672486]
+environment = SubResource("Environment_7mycd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=142029049]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_energy = 0.0
+shadow_enabled = true
+
+[node name="Floor" type="CSGBox3D" parent="." unique_id=1562701154]
+use_collision = true
+size = Vector3(10, 0.1, 10)
+
+[node name="Door" type="CSGBox3D" parent="." unique_id=771369068]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -4)
+material_override = SubResource("StandardMaterial3D_xwue4")
+use_collision = true
+size = Vector3(2, 3, 0.2)
+script = ExtResource("1_0xm2m")
+
+[node name="InteractZone" type="Area3D" parent="Door" unique_id=1299965668]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door/InteractZone" unique_id=1650990255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+shape = SubResource("BoxShape3D_y8wm3")
+
+[node name="FailSound" type="AudioStreamPlayer3D" parent="Door" unique_id=552015030]
+
+[node name="DoorOpenSound" type="AudioStreamPlayer3D" parent="Door" unique_id=552448340]
+
+[node name="SymbollWall" type="Label3D" parent="." unique_id=44799375]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2, -3.74)
+pixel_size = 0.02
+text = "Loading Cipher..."
+font_size = 24
+
+[node name="TorchLight" type="OmniLight3D" parent="SymbollWall" unique_id=1923793490]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.5)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 2.0
+shadow_enabled = true
+omni_range = 8.0
+script = ExtResource("2_1bvp3")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=1791838167 groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("2_h2yge")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1355463449]
+shape = SubResource("CapsuleShape3D_y8wm3")
+
+[node name="Camera3D" type="Camera3D" parent="Player" unique_id=1631375544]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1135546885]
+visible = false
+
+[node name="Panel" type="Panel" parent="UI" unique_id=1881017303]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 300.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LineEdit" type="LineEdit" parent="UI/Panel" unique_id=481943299]
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 35.0
+placeholder_text = "Enter Code..."
+
+[node name="Button" type="Button" parent="UI/Panel" unique_id=130713193]
+layout_mode = 0
+offset_top = 34.0
+offset_right = 240.0
+offset_bottom = 69.0
+text = "Unlock"
+
+[node name="Pedestal" type="CSGCylinder3D" parent="." unique_id=411120541]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2)
+use_collision = true
+height = 1.0
+
+[node name="Walls" type="CSGCombiner3D" parent="." unique_id=259802256]
+use_collision = true
+
+[node name="BackWall" type="CSGBox3D" parent="Walls" unique_id=161193700]
+transform = Transform3D(10, 0, 0, 0, 4, 0, 0, 0, 0.5, 0, 2, 4)
+use_collision = true
+
+[node name="LeftWall" type="CSGBox3D" parent="Walls" unique_id=1164419869]
+transform = Transform3D(0.5, 0, 0, 0, 4, 0, 0, 0, 10, -4.75, 2, 0)
+use_collision = true
+
+[node name="RightWall" type="CSGBox3D" parent="Walls" unique_id=1081655677]
+transform = Transform3D(0.5, 0, 0, 0, 4, 0, 0, 0, 10, 4.75, 2, 0)
+use_collision = true
+
+[node name="Ceiling" type="CSGBox3D" parent="Walls" unique_id=75688780]
+transform = Transform3D(10, 0, 0, 0, 0.5, 0, 0, 0, 10, 0, 4.25, 0)
+use_collision = true
+
+[node name="FrontWall" type="CSGBox3D" parent="Walls" unique_id=1580417390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -4)
+use_collision = true
+size = Vector3(10, 4, 0.5)
+
+[node name="DoorwayHole" type="CSGBox3D" parent="Walls/FrontWall" unique_id=1341368530]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+operation = 2
+size = Vector3(2, 3, 1)
+
+[connection signal="body_entered" from="Door/InteractZone" to="Door" method="_on_interact_zone_body_entered"]
+[connection signal="body_exited" from="Door/InteractZone" to="Door" method="_on_interact_zone_body_exited"]
+[connection signal="text_submitted" from="UI/Panel/LineEdit" to="Door" method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="UI/Panel/Button" to="Door" method="_on_button_pressed"]

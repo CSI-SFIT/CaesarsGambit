@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c0uxabdid3ix4"
-path.s3tc="res://.godot/imported/Running_19.png-5c20dc1c028657bf67d855cf5cf55bba.s3tc.ctex"
+uid="uid://bp7buvx5867k4"
+path.s3tc="res://.godot/imported/low_poly_pillar_2.png-e6c0c12c0886a9047a2a71bb0abe6bab.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "a31c8ab017e4c13efd958160b51ff660"
+}
 
 [deps]
 
-source_file="res://3D_MODELS/Soldier/anims/Running_19.png"
-dest_files=["res://.godot/imported/Running_19.png-5c20dc1c028657bf67d855cf5cf55bba.s3tc.ctex"]
+source_file="res://3D_MODELS/Environment/low_poly_pillar_2.png"
+dest_files=["res://.godot/imported/low_poly_pillar_2.png-e6c0c12c0886a9047a2a71bb0abe6bab.s3tc.ctex"]
 
 [params]
 
@@ -27,7 +30,7 @@ compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=1
-roughness/src_normal="res://3D_MODELS/Soldier/anims/Running_19.png"
+roughness/src_normal="res://3D_MODELS/Environment/low_poly_pillar_2.png"
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2

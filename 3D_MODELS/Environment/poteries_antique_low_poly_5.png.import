@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c0uxabdid3ix4"
-path.s3tc="res://.godot/imported/Running_19.png-5c20dc1c028657bf67d855cf5cf55bba.s3tc.ctex"
+uid="uid://csqu4s2b2t6lq"
+path.s3tc="res://.godot/imported/poteries_antique_low_poly_5.png-32235e12ecfba8bfe4c2ce98f764b9de.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "e3571b777dccd059482c53ee4c51e98c"
+}
 
 [deps]
 
-source_file="res://3D_MODELS/Soldier/anims/Running_19.png"
-dest_files=["res://.godot/imported/Running_19.png-5c20dc1c028657bf67d855cf5cf55bba.s3tc.ctex"]
+source_file="res://3D_MODELS/Environment/poteries_antique_low_poly_5.png"
+dest_files=["res://.godot/imported/poteries_antique_low_poly_5.png-32235e12ecfba8bfe4c2ce98f764b9de.s3tc.ctex"]
 
 [params]
 
@@ -27,7 +30,7 @@ compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=1
-roughness/src_normal="res://3D_MODELS/Soldier/anims/Running_19.png"
+roughness/src_normal="res://3D_MODELS/Environment/poteries_antique_low_poly_5.png"
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2
