@@ -1,0 +1,218 @@
+[gd_scene load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_gm"]
+[ext_resource type="PackedScene" path="res://scenes/caesar_pillar.tscn" id="2_pillar"]
+[ext_resource type="PackedScene" path="res://scenes/finish_arch.tscn" id="3_arch"]
+[ext_resource type="PackedScene" path="res://scenes/ui.tscn" id="4_ui"]
+[ext_resource type="PackedScene" path="res://scenes/roman_banner.tscn" id="5_banner"]
+[ext_resource type="PackedScene" path="res://scenes/roman_brazier.tscn" id="6_brazier"]
+[ext_resource type="PackedScene" path="res://scenes/roman_milestone.tscn" id="7_milestone"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rome"]
+sky_top_color = Color(0.35, 0.42, 0.65, 1)
+sky_horizon_color = Color(0.9, 0.62, 0.4, 1)
+ground_bottom_color = Color(0.12, 0.08, 0.06, 1)
+ground_horizon_color = Color(0.75, 0.45, 0.3, 1)
+sun_angle_max = 28.0
+
+[sub_resource type="Sky" id="Sky_rome"]
+sky_material = SubResource("ProceduralSkyMaterial_rome")
+
+[sub_resource type="Environment" id="Environment_rome"]
+background_mode = 2
+sky = SubResource("Sky_rome")
+ambient_light_source = 3
+ambient_light_color = Color(0.95, 0.82, 0.72, 1)
+ambient_light_energy = 0.7
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 0.8
+glow_bloom = 0.25
+fog_enabled = true
+fog_light_color = Color(0.7, 0.48, 0.35, 1)
+fog_density = 0.012
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_start_plat"]
+size = Vector3(18.0, 1.2, 14.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_start_plat"]
+size = Vector3(18.0, 1.2, 14.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_travertine"]
+albedo_color = Color(0.86, 0.82, 0.75, 1)
+roughness = 0.65
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fluted_col"]
+top_radius = 0.5
+bottom_radius = 0.55
+height = 7.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_capital"]
+size = Vector3(1.3, 0.5, 1.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold"]
+albedo_color = Color(0.95, 0.8, 0.22, 1)
+metallic = 0.9
+roughness = 0.25
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_finish_plat"]
+size = Vector3(20.0, 1.2, 14.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_finish_plat"]
+size = Vector3(20.0, 1.2, 14.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kill"]
+size = Vector3(120.0, 2.0, 120.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_colosseum_arch"]
+size = Vector3(5.0, 8.0, 1.5)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_gm")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rome")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 22, 0)
+light_color = Color(1, 0.9, 0.75, 1)
+light_energy = 1.5
+shadow_enabled = true
+
+[node name="StartPlatform" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -1.0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StartPlatform"]
+shape = SubResource("BoxShape3D_start_plat")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StartPlatform"]
+mesh = SubResource("BoxMesh_start_plat")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="ColFrontLeft" type="MeshInstance3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 4.1, 5.5)
+mesh = SubResource("CylinderMesh_fluted_col")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="Cap1" type="MeshInstance3D" parent="StartPlatform/ColFrontLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+mesh = SubResource("BoxMesh_capital")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="ColFrontRight" type="MeshInstance3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 4.1, 5.5)
+mesh = SubResource("CylinderMesh_fluted_col")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="Cap2" type="MeshInstance3D" parent="StartPlatform/ColFrontRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+mesh = SubResource("BoxMesh_capital")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="ColBackLeft" type="MeshInstance3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 4.1, -5.5)
+mesh = SubResource("CylinderMesh_fluted_col")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="Cap3" type="MeshInstance3D" parent="StartPlatform/ColBackLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+mesh = SubResource("BoxMesh_capital")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="ColBackRight" type="MeshInstance3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 4.1, -5.5)
+mesh = SubResource("CylinderMesh_fluted_col")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="Cap4" type="MeshInstance3D" parent="StartPlatform/ColBackRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, 0)
+mesh = SubResource("BoxMesh_capital")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="BannerStartLeft" parent="." instance=ExtResource("5_banner")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 4.5)
+
+[node name="BannerStartRight" parent="." instance=ExtResource("5_banner")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 4.5)
+
+[node name="BrazierCorner1" parent="." instance=ExtResource("6_brazier")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 4.5)
+
+[node name="BrazierCorner2" parent="." instance=ExtResource("6_brazier")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 4.5)
+
+[node name="CaesarPillar" parent="." instance=ExtResource("2_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5)
+
+[node name="TilesContainer" type="Node3D" parent="."]
+
+[node name="Milestones" type="Node3D" parent="."]
+
+[node name="M1_L" parent="Milestones" instance=ExtResource("7_milestone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -1.0, 6.0)
+
+[node name="M2_L" parent="Milestones" instance=ExtResource("7_milestone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -1.0, 8.6)
+
+[node name="M3_L" parent="Milestones" instance=ExtResource("7_milestone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -1.0, 11.2)
+
+[node name="M4_L" parent="Milestones" instance=ExtResource("7_milestone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -1.0, 13.8)
+
+[node name="M5_L" parent="Milestones" instance=ExtResource("7_milestone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -1.0, 16.4)
+
+[node name="M6_L" parent="Milestones" instance=ExtResource("7_milestone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -1.0, 19.0)
+
+[node name="M7_L" parent="Milestones" instance=ExtResource("7_milestone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -1.0, 21.6)
+
+[node name="M8_L" parent="Milestones" instance=ExtResource("7_milestone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, -1.0, 24.2)
+
+[node name="FinishPlatform" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 33.0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FinishPlatform"]
+shape = SubResource("BoxShape3D_finish_plat")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FinishPlatform"]
+mesh = SubResource("BoxMesh_finish_plat")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="FinishArch" parent="." instance=ExtResource("3_arch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 33.5)
+
+[node name="BackgroundRuins" type="Node3D" parent="."]
+
+[node name="RuinArch1" type="MeshInstance3D" parent="BackgroundRuins"]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -18.0, 2.0, 15.0)
+mesh = SubResource("BoxMesh_colosseum_arch")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="RuinArch2" type="MeshInstance3D" parent="BackgroundRuins"]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 18.0, 2.0, 15.0)
+mesh = SubResource("BoxMesh_colosseum_arch")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="RuinArch3" type="MeshInstance3D" parent="BackgroundRuins"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.0, 5.0, 0.0)
+mesh = SubResource("BoxMesh_colosseum_arch")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="RuinArch4" type="MeshInstance3D" parent="BackgroundRuins"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.0, 5.0, 0.0)
+mesh = SubResource("BoxMesh_colosseum_arch")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="PlayersContainer" type="Node3D" parent="."]
+
+[node name="KillZone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20.0, 15.0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KillZone"]
+shape = SubResource("BoxShape3D_kill")
+
+[node name="UI" parent="." instance=ExtResource("4_ui")]
