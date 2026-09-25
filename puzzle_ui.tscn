@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://dtjyhms5m4jta"]
+
+[ext_resource type="Script" uid="uid://cpjp3ip5yomxo" path="res://puzzle_ui.gd" id="1_scvx3"]
+
+[node name="PuzzleUI" type="Control" unique_id=1776670755]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_scvx3")
+
+[node name="Panel" type="Panel" parent="." unique_id=949024046]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 352.0
+offset_bottom = 204.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=805528923]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="QuestionLabel" type="Label" parent="Panel/VBoxContainer" unique_id=1226309361]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Problem 1: ( 1 AND 0 ) = ?"
+
+[node name="AnswerInput" type="LineEdit" parent="Panel/VBoxContainer" unique_id=678217303]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Type 0 or 1"
+
+[node name="SubmitButton" type="Button" parent="Panel/VBoxContainer" unique_id=1472339243]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Submit Answer"
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer" unique_id=1877619]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FeedbackLabel" type="Label" parent="Panel/VBoxContainer" unique_id=501388949]
+unique_name_in_owner = true
+layout_mode = 2

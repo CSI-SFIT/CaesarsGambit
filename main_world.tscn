@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://cq8cas8vw0g2c"]
+
+[ext_resource type="Script" uid="uid://chf82bvacldju" path="res://main_world.gd" id="1_uoqbt"]
+[ext_resource type="PackedScene" uid="uid://dtjyhms5m4jta" path="res://puzzle_ui.tscn" id="2_43o5b"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mq8aq"]
+size = Vector3(10, 1, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mq8aq"]
+size = Vector3(10, 1, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_51fql"]
+size = Vector3(8, 6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_51fql"]
+size = Vector3(8, 6, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_mq8aq"]
+radius = 1.5
+height = 3.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_mq8aq"]
+radius = 1.5
+
+[node name="MainWorld" type="Node3D" unique_id=114286129]
+script = ExtResource("1_uoqbt")
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1004912625]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=462582165]
+mesh = SubResource("BoxMesh_mq8aq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1125306510]
+shape = SubResource("BoxShape3D_mq8aq")
+
+[node name="Door" type="StaticBody3D" parent="." unique_id=1840365433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.21496582, 14.002695)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Door" unique_id=573997810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15548706, 0)
+mesh = SubResource("BoxMesh_51fql")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door" unique_id=442636717]
+shape = SubResource("BoxShape3D_51fql")
+
+[node name="Boulder" type="CharacterBody3D" parent="." unique_id=503994124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.799139, -12)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Boulder" unique_id=1927999856]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41458893, 0)
+mesh = SubResource("SphereMesh_mq8aq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boulder" unique_id=593947014]
+shape = SubResource("SphereShape3D_mq8aq")
+
+[node name="PuzzleUI" parent="." unique_id=1776670755 instance=ExtResource("2_43o5b")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1825155295]
+transform = Transform3D(1, 0, 0, 0, 0.9396926, 0.34202012, 0, -0.34202012, 0.9396926, 0, 8, 18)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=550083757]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)

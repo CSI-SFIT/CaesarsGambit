@@ -1,0 +1,11 @@
+DirectionalLight3D
+Camera3D
+Label
+Button
+LineEdit
+VBoxContainer
+Panel
+CollisionShape3D
+MeshInstance3D
+CharacterBody3D
+StaticBody3D
