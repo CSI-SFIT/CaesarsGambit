@@ -12,7 +12,10 @@
 script = ExtResource("1_ig7tw")
 
 [node name="Church" parent="." unique_id=1049898661 instance=ExtResource("2_h2yge")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.701664, 2.3178928, 0.7109897)
 
 [node name="Player" parent="." unique_id=973415603 instance=ExtResource("3_1bvp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73.31762, -43.888462, 2.3554072)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.97571, -61.287098, -4.5957284)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1193764458]
+transform = Transform3D(0.7982278, 0, 0.60235566, 0, 1, 0, -0.60235566, 0, 0.7982278, -69.82778, -61.289623, 0)
+visible = false
