@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Caesars Gambit"
-run/main_scene="uid://tiwr8xiyw4bb"
+run/main_scene="uid://dgxwjfvameiu7"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
