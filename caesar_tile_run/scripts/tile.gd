@@ -10,6 +10,10 @@ signal tile_stepped(row: int, col: int, is_safe: bool)
 
 var is_revealed: bool = false
 var is_active: bool = true
+var is_standing_on: bool = false
+var stand_timer: float = 0.0
+const STAND_TIME_LIMIT: float = 2.4 # Time before safe tile collapses under weight!
+
 var initial_pos: Vector3
 var initial_rot: Vector3
 
@@ -32,11 +36,12 @@ func _ready() -> void:
 	
 	if area_trigger:
 		area_trigger.body_entered.connect(_on_body_entered)
+		area_trigger.body_exited.connect(_on_body_exited)
 
 func setup_materials() -> void:
 	# Roman Travertine / Marble stone material
 	stone_mat = StandardMaterial3D.new()
-	stone_mat.albedo_color = Color(0.82, 0.78, 0.72) # Travertine cream/sand
+	stone_mat.albedo_color = Color(0.84, 0.80, 0.74)
 	stone_mat.roughness = 0.8
 	
 	# Golden laurel revealed material
@@ -50,10 +55,10 @@ func setup_materials() -> void:
 	
 	# Cracking danger material
 	crumble_warn_mat = StandardMaterial3D.new()
-	crumble_warn_mat.albedo_color = Color(0.85, 0.25, 0.2)
+	crumble_warn_mat.albedo_color = Color(0.9, 0.2, 0.15)
 	crumble_warn_mat.emission_enabled = true
-	crumble_warn_mat.emission = Color(0.9, 0.2, 0.1)
-	crumble_warn_mat.emission_energy_multiplier = 1.5
+	crumble_warn_mat.emission = Color(1.0, 0.25, 0.1)
+	crumble_warn_mat.emission_energy_multiplier = 2.5
 
 func configure(r: int, c: int, char_val: String, safe_val: bool) -> void:
 	row = r
@@ -62,6 +67,8 @@ func configure(r: int, c: int, char_val: String, safe_val: bool) -> void:
 	is_safe = safe_val
 	is_revealed = false
 	is_active = true
+	is_standing_on = false
+	stand_timer = 0.0
 	update_visuals()
 
 func update_visuals() -> void:
@@ -83,11 +90,39 @@ func update_visuals() -> void:
 			if omni_light:
 				omni_light.visible = false
 
+func _process(delta: float) -> void:
+	# Timed Tile Crumble: Safe tiles collapse if a player lingers/camps too long!
+	if is_active and is_revealed and is_safe and is_standing_on:
+		stand_timer += delta
+		
+		# Warning phase (after 1.3s of standing)
+		if stand_timer > 1.3:
+			var pulse = sin(stand_timer * 22.0) * 0.5 + 0.5
+			if mesh_instance and mesh_instance.material_override:
+				mesh_instance.material_override.emission = Color(1.0, 0.84, 0.2).lerp(Color(1.0, 0.15, 0.1), pulse)
+				mesh_instance.material_override.emission_energy_multiplier = 2.0 + pulse * 2.0
+			# Structural jitter
+			position = initial_pos + Vector3(randf_range(-0.035, 0.035), 0, randf_range(-0.035, 0.035))
+			
+		# Collapse threshold
+		if stand_timer >= STAND_TIME_LIMIT:
+			is_standing_on = false
+			stand_timer = 0.0
+			trigger_crumble()
+
 func _on_body_entered(body: Node3D) -> void:
 	if not is_active:
 		return
 	if body is CharacterBody3D:
+		is_standing_on = true
 		step_on()
+
+func _on_body_exited(body: Node3D) -> void:
+	if body is CharacterBody3D:
+		is_standing_on = false
+		stand_timer = 0.0
+		position = initial_pos
+		update_visuals()
 
 func step_on() -> void:
 	if not is_active:
@@ -113,6 +148,8 @@ func trigger_crumble() -> void:
 	if not is_active:
 		return
 	is_active = false
+	is_standing_on = false
+	stand_timer = 0.0
 	
 	# Flash red warning
 	if mesh_instance:
@@ -124,21 +161,23 @@ func trigger_crumble() -> void:
 		var shake_offset = Vector3(randf_range(-0.1, 0.1), 0, randf_range(-0.1, 0.1))
 		tween.tween_property(self, "position", initial_pos + shake_offset, 0.05)
 	
-	# Tilt and drop down
-	tween.tween_property(self, "position:y", initial_pos.y - 12.0, 0.6).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tween.parallel().tween_property(self, "rotation_degrees:x", randf_range(-45, 45), 0.6)
-	tween.parallel().tween_property(self, "rotation_degrees:z", randf_range(-45, 45), 0.6)
+	# Tilt and drop down into the hypogeum pit
+	tween.tween_property(self, "position:y", initial_pos.y - 14.0, 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(self, "rotation_degrees:x", randf_range(-45, 45), 0.55)
+	tween.parallel().tween_property(self, "rotation_degrees:z", randf_range(-45, 45), 0.55)
 	
 	# Disable collision when dropping
 	tween.tween_callback(func():
 		collision_shape.disabled = true
 	)
 	
-	# Reset tile after 3 seconds so players can re-test or play again
-	get_tree().create_timer(3.0).timeout.connect(reset_tile)
+	# Reset tile after 3.5 seconds
+	get_tree().create_timer(3.5).timeout.connect(reset_tile)
 
 func reset_tile() -> void:
 	is_active = true
+	is_standing_on = false
+	stand_timer = 0.0
 	collision_shape.disabled = false
 	rotation = initial_rot
 	position = initial_pos

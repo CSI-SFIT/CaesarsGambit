@@ -8,6 +8,7 @@ const FinishArchScript = preload("res://scripts/finish_arch.gd")
 const GameUIScript = preload("res://scripts/ui.gd")
 const PendulumBladeScene = preload("res://scenes/pendulum_blade.tscn")
 const RotatingSweeperScene = preload("res://scenes/rotating_sweeper.tscn")
+const CatapultStrikeScene = preload("res://scripts/catapult_strike.gd")
 const AssetLoaderScript = preload("res://scripts/asset_loader.gd")
 
 const PORT: int = 7777
@@ -30,8 +31,10 @@ var tiles_grid: Array = [] # 2D array [row][col]
 var players_at_finish: Array[int] = []
 var sound_fx = preload("res://scripts/sound_effects.gd").new()
 var hazards_container: Node3D
-var round_timer: float = 90.0
+var round_timer: float = 60.0
 var game_active: bool = false
+var catapult_timer: float = 0.0
+const CATAPULT_INTERVAL: float = 7.5
 
 func _ready() -> void:
 	add_child(sound_fx)
@@ -126,14 +129,24 @@ func sync_puzzle_to_client(data: Dictionary) -> void:
 		ui.update_cipher_display(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word)
 func _process(delta: float) -> void:
 	if game_active and round_timer > 0.0:
+		var prev_sec = int(round_timer)
 		round_timer -= delta
+		var curr_sec = int(round_timer)
+		if curr_sec < prev_sec and curr_sec <= 20 and curr_sec > 0:
+			sound_fx.play_tick()
 		if ui and ui.has_method("update_timer"):
 			ui.update_timer(int(round_timer))
 		if round_timer <= 0.0:
 			trigger_timeout_reset()
+			
+		# Periodic Roman Catapult Fireball strikes
+		catapult_timer += delta
+		if catapult_timer >= CATAPULT_INTERVAL:
+			catapult_timer = 0.0
+			trigger_catapult_strike()
 
 func trigger_timeout_reset() -> void:
-	round_timer = 90.0
+	round_timer = 60.0
 	sound_fx.play_crumble()
 	if multiplayer.is_server() or multiplayer.multiplayer_peer == null:
 		puzzle_data = CaesarCipherScript.generate_puzzle(GRID_ROWS, GRID_COLS)
@@ -204,7 +217,7 @@ func setup_grid_from_puzzle(data: Dictionary) -> void:
 		p2.swing_speed = 2.8
 		hazards_container.add_child(p2)
 
-	round_timer = 90.0
+	round_timer = 60.0
 	game_active = true
 
 func _on_tile_stepped(row: int, col: int, is_safe: bool) -> void:
@@ -276,3 +289,16 @@ func setup_milestone_labels() -> void:
 			var label = children[i].get_node_or_null("NumeralLabel")
 			if label:
 				label.text = numerals[i]
+
+func trigger_catapult_strike() -> void:
+	if not game_active:
+		return
+	var target_row = randi_range(1, GRID_ROWS - 1)
+	var target_col = randi() % GRID_COLS
+	var offset_x = -((GRID_COLS - 1) * TILE_SPACING_X) / 2.0
+	var start_z = 6.0
+	var target_pos = Vector3(offset_x + (target_col * TILE_SPACING_X), 0.0, start_z + (target_row * TILE_SPACING_Z))
+	
+	var strike = CatapultStrikeScene.new()
+	add_child(strike)
+	strike.launch(target_pos)

@@ -3,8 +3,9 @@ class_name CaesarCipher
 
 # Latin word bank suitable for Ancient Rome theme
 const ROMAN_WORDS: Array[String] = [
-	"ROMA", "VENI", "VICI", "AUREUS", "GLADIO", "LEGIO", "SENATUS", 
-	"CAESAR", "FORUM", "MAXIMUS", "TEMPLUM", "VICTORIA"
+	"CENTURIO", "IMPERIUM", "COLOSSEUM", "GLADIATOR", "AQUILA", 
+	"TIBERIUS", "AUGUSTUS", "TRIUMPHUS", "PRAETOR", "LEGIONIS", 
+	"PATRICIAN", "DOMINUS", "VALENTIA", "VITTORIA", "CAESAR", "SENATUS"
 ]
 
 const ALPHABET: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -28,7 +29,7 @@ static func decrypt(text: String, shift: int) -> String:
 	return encrypt(text, -shift)
 
 # Generates a puzzle: returns a dictionary with:
-# { "plain_word": String, "cipher_word": String, "shift": int, "path_columns": Array[int], "grid_letters": Array[Array] }
+# { "plain_word": String, "cipher_word": String, "shift": int, "path_cols": Array[int], "grid_letters": Array[Array] }
 static func generate_puzzle(rows: int, cols: int) -> Dictionary:
 	var word: String = ROMAN_WORDS[randi() % ROMAN_WORDS.size()]
 	
@@ -37,8 +38,11 @@ static func generate_puzzle(rows: int, cols: int) -> Dictionary:
 	for r in range(rows):
 		target_letters.append(word[r % word.length()])
 	
-	# Shift between 1 and 5 (classic Caesar range)
-	var shift: int = (randi() % 5) + 1
+	# High-stakes Caesar shift: 1 to 7 (with positive/negative variation)
+	var shift_magnitude: int = (randi() % 6) + 2 # 2 to 7
+	var is_negative: bool = (randf() > 0.5)
+	var shift: int = -shift_magnitude if is_negative else shift_magnitude
+	
 	var cipher_letters: Array[String] = []
 	for letter in target_letters:
 		cipher_letters.append(encrypt(letter, shift))
@@ -57,20 +61,38 @@ static func generate_puzzle(rows: int, cols: int) -> Dictionary:
 		curr_col += delta
 		path_cols.append(curr_col)
 	
-	# Generate letter grid
+	# Generate letter grid with authentic deceptive distractors
 	var grid_letters: Array = []
 	for r in range(rows):
 		var row_chars: Array[String] = []
 		var safe_char: String = target_letters[r]
+		var cipher_char: String = cipher_letters[r]
+		
+		# Generate near-miss decoy (off by 1)
+		var decoy_off_by_one: String = encrypt(safe_char, 1 if randf() > 0.5 else -1)
+		# Generate cipher decoy (the unshifted encrypted letter as a trap)
+		var decoy_cipher_trap: String = cipher_char
+		
+		var used_chars: Dictionary = { safe_char: true }
+		
 		for c in range(cols):
 			if c == path_cols[r]:
 				row_chars.append(safe_char)
 			else:
-				# Generate random distractor different from safe_char
-				var rand_char: String = ALPHABET[randi() % ALPHABET.length()]
-				while rand_char == safe_char:
-					rand_char = ALPHABET[randi() % ALPHABET.length()]
-				row_chars.append(rand_char)
+				var candidate: String = ""
+				# Attempt clever decoy injection
+				if c == (path_cols[r] + 1) % cols and not used_chars.has(decoy_off_by_one):
+					candidate = decoy_off_by_one
+				elif c == (path_cols[r] + 2) % cols and not used_chars.has(decoy_cipher_trap):
+					candidate = decoy_cipher_trap
+				else:
+					candidate = ALPHABET[randi() % ALPHABET.length()]
+					while used_chars.has(candidate):
+						candidate = ALPHABET[randi() % ALPHABET.length()]
+						
+				used_chars[candidate] = true
+				row_chars.append(candidate)
+				
 		grid_letters.append(row_chars)
 		
 	var cipher_word: String = "".join(cipher_letters)

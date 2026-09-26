@@ -15,6 +15,7 @@ func set_puzzle_info(cipher_word: String, shift: int, plain_word: String) -> voi
 	if cipher_label:
 		cipher_label.text = "ENCRYPTED: %s" % cipher_word
 	if shift_label:
-		shift_label.text = "CAESAR SHIFT: -%d" % shift
+		var prefix = "+" if shift > 0 else ""
+		shift_label.text = "CAESAR SHIFT: " + prefix + str(shift)
 	if hint_label:
 		hint_label.text = "SECRET WORD: %s" % plain_word

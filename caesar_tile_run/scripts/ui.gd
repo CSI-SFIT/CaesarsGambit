@@ -68,7 +68,8 @@ func update_cipher_display(cipher_word: String, shift: int, plain_word: String) 
 	if cipher_text_label:
 		cipher_text_label.text = "CIPHER: %s" % cipher_word
 	if shift_text_label:
-		shift_text_label.text = "SHIFT: -%d" % shift
+		var prefix = "+" if shift > 0 else ""
+		shift_text_label.text = "SHIFT: " + prefix + str(shift)
 	if hint_solution_label:
 		hint_solution_label.text = "DECODED WORD: %s\n(Follow these letters across rows!)" % plain_word
 

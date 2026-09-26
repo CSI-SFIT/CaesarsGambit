@@ -9,16 +9,28 @@ signal reached_finish_line(player_id: int)
 		if is_node_ready():
 			update_player_appearance()
 
-const SPEED: float = 7.5
-const JUMP_VELOCITY: float = 9.0
-const DIVE_FORWARD_BOOST: float = 8.0
-const DIVE_UP_BOOST: float = 4.0
-const MOUSE_SENSITIVITY: float = 0.003
+# Snappy, responsive Fall Guys platformer constants
+const RUN_SPEED: float = 8.5
+const ACCELERATION: float = 38.0
+const FRICTION: float = 30.0
 
-var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity", 22.0)
+const JUMP_VELOCITY: float = 11.5
+const JUMP_GRAVITY: float = 28.0      # Upward gravity (fast launch)
+const FALL_GRAVITY: float = 42.0      # Downward gravity (heavy, snappy drop - no floatiness!)
+const TERMINAL_VELOCITY: float = -35.0
+
+const DIVE_FORWARD_BOOST: float = 13.0
+const DIVE_UP_BOOST: float = 3.2
+const MOUSE_SENSITIVITY: float = 0.004
+
 var spawn_position: Vector3 = Vector3(0, 2, 0)
 var is_diving: bool = false
 var dive_cooldown: float = 0.0
+var dive_slide_timer: float = 0.0
+
+# Coyote time & Jump buffer for crisp responsive controls
+var coyote_timer: float = 0.0
+var jump_buffer_timer: float = 0.0
 
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var spring_arm: SpringArm3D = $CameraPivot/SpringArm3D
@@ -150,28 +162,67 @@ func _physics_process(delta: float) -> void:
 			visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, sync_rot_y, 20.0 * delta)
 		return
 
-	# Decrement dive cooldown
+	# Decrement dive cooldown and slide timer
 	if dive_cooldown > 0.0:
 		dive_cooldown -= delta
-	if is_diving and is_on_floor():
-		is_diving = false
+	if dive_slide_timer > 0.0:
+		dive_slide_timer -= delta
+		if dive_slide_timer <= 0.0 and is_diving:
+			is_diving = false
+			if visual_mesh:
+				visual_mesh.rotation.x = 0.0
 
-	# Apply gravity
+	# Coyote Time (0.15s forgiveness after walking off a tile)
+	if is_on_floor():
+		coyote_timer = 0.15
+	else:
+		coyote_timer -= delta
+
+	# Jump Buffer (0.12s buffer before landing)
+	if Input.is_action_just_pressed("jump"):
+		jump_buffer_timer = 0.12
+	else:
+		jump_buffer_timer -= delta
+
+	# Dual-stage snappy Gravity: Normal on the way up, HEAVY on the way down!
 	if not is_on_floor():
-		velocity.y -= gravity * delta
+		var current_gravity = JUMP_GRAVITY if velocity.y > 0.0 else FALL_GRAVITY
+		velocity.y -= current_gravity * delta
+		velocity.y = max(velocity.y, TERMINAL_VELOCITY)
+	else:
+		if not is_diving:
+			velocity.y = -0.1 # Keep character grounded firmly on moving/crumbling tiles
 
-	# Jump
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	# Execute Jump (via jump buffer or coyote time)
+	if jump_buffer_timer > 0.0 and coyote_timer > 0.0:
 		velocity.y = JUMP_VELOCITY
-		
-	# Fall Guys Style Dive (gives forward boost and can tackle opponents!)
+		jump_buffer_timer = 0.0
+		coyote_timer = 0.0
+		if is_diving:
+			is_diving = false
+			if visual_mesh:
+				visual_mesh.rotation.x = 0.0
+
+	# Fall Guys Style Belly-Flop Dive
 	if Input.is_action_just_pressed("dive") and not is_diving and dive_cooldown <= 0.0:
 		is_diving = true
 		dive_cooldown = 0.8
+		dive_slide_timer = 0.45
 		velocity.y = DIVE_UP_BOOST
 		var forward = -camera_pivot.global_transform.basis.z
+		forward.y = 0.0
+		forward = forward.normalized()
 		velocity.x = forward.x * DIVE_FORWARD_BOOST
 		velocity.z = forward.z * DIVE_FORWARD_BOOST
+		# Tilt character forward horizontally for belly-flop
+		if visual_mesh:
+			visual_mesh.rotation.x = -PI / 2.6
+
+	# Reset dive orientation when touching floor after slide completes
+	if is_on_floor() and is_diving and dive_slide_timer <= 0.0:
+		is_diving = false
+		if visual_mesh:
+			visual_mesh.rotation.x = 0.0
 
 	# Movement direction relative to camera
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -187,15 +238,21 @@ func _physics_process(delta: float) -> void:
 
 	if not is_diving:
 		if direction:
-			velocity.x = direction.x * SPEED
-			velocity.z = direction.z * SPEED
+			# Smooth crisp acceleration
+			velocity.x = move_toward(velocity.x, direction.x * RUN_SPEED, ACCELERATION * delta)
+			velocity.z = move_toward(velocity.z, direction.z * RUN_SPEED, ACCELERATION * delta)
 			# Rotate character towards movement
 			if visual_mesh:
 				var target_angle = atan2(-direction.x, -direction.z)
-				visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, 15.0 * delta)
+				visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, 18.0 * delta)
 		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED * 8.0 * delta)
-			velocity.z = move_toward(velocity.z, 0, SPEED * 8.0 * delta)
+			# Crisp braking friction
+			velocity.x = move_toward(velocity.x, 0.0, FRICTION * delta)
+			velocity.z = move_toward(velocity.z, 0.0, FRICTION * delta)
+	else:
+		# During dive: preserve momentum with slight slide friction
+		velocity.x = move_toward(velocity.x, 0.0, 8.0 * delta)
+		velocity.z = move_toward(velocity.z, 0.0, 8.0 * delta)
 
 	move_and_slide()
 
@@ -206,12 +263,12 @@ func _physics_process(delta: float) -> void:
 		if collider is CharacterBody3D and collider != self:
 			var push_dir = (collider.global_position - global_position).normalized()
 			push_dir.y = 0.4
-			var push_power = 15.0 if is_diving else 6.0
+			var push_power = 16.0 if is_diving else 7.0
 			collider.velocity += push_dir * push_power
 
 	# Fall check / Respawn with screen shake
-	if global_position.y < -12.0:
-		add_screen_shake(0.3)
+	if global_position.y < -6.0:
+		add_screen_shake(0.35)
 		respawn()
 
 	# Update network sync variables
@@ -223,3 +280,5 @@ func respawn() -> void:
 	global_position = spawn_position + Vector3(randf_range(-1, 1), 1.0, randf_range(-1, 1))
 	velocity = Vector3.ZERO
 	is_diving = false
+	if visual_mesh:
+		visual_mesh.rotation.x = 0.0

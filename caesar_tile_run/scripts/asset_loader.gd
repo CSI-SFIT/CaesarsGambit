@@ -8,71 +8,40 @@ func _ready() -> void:
 	load_all_sketchfab_assets()
 
 func load_all_sketchfab_assets() -> void:
-	print("--- ASSET LOADER: Building Colosseum Arena Base ---")
+	print("--- ASSET LOADER: Grounding Colosseum Arena Base (Optimized 60 FPS) ---")
 	
 	var main_node = get_tree().root.get_node_or_null("Main")
 	if not main_node:
 		return
 
-	# Hide old basic placeholder background boxes
-	var old_ruins = main_node.get_node_or_null("BackgroundRuins")
-	if old_ruins:
-		old_ruins.visible = false
-
-	# 1. BUILD THE COLOSSEUM ARENA BASE (Surrounds the whole game!)
+	# 1. GROUNDED COLOSSEUM AMPHITHEATER AS THE MAIN PLAYABLE BASE
+	# Scaled 6.5x and rotated 90 degrees so the entire tile run (Start -> Tiles -> Finish)
+	# is played directly inside the Colosseum's inner arena oval!
 	var colosseum_path = "res://assets/models/colosseum.glb"
 	if ResourceLoader.exists(colosseum_path):
 		var res = load(colosseum_path)
 		if res is PackedScene:
-			var arena_parent = Node3D.new()
-			arena_parent.name = "ColosseumArenaBase"
-			main_node.add_child(arena_parent)
+			var col = res.instantiate()
+			col.name = "SketchfabColosseum"
+			# Positioned so the arena oval floor is right at the game base (Y = -1.2)
+			# and the towering tiered Colosseum walls encircle the entire game 360 degrees
+			col.position = Vector3(0, -1.8, 16.0)
+			col.rotation_degrees = Vector3(0, 90, 0)
+			col.scale = Vector3(6.5, 6.5, 6.5)
+			main_node.add_child(col)
+			print("-> Colosseum Amphitheater successfully grounded as the playable arena!")
 
-			# NORTH WALL (Behind Finish Arch - Visible directly in front of the player!)
-			var col_north = res.instantiate()
-			col_north.name = "Colosseum_North"
-			col_north.position = Vector3(0, -1.5, 48.0)
-			col_north.rotation_degrees = Vector3(0, 180, 0)
-			col_north.scale = Vector3(2.2, 2.2, 2.2)
-			arena_parent.add_child(col_north)
-
-			# SOUTH WALL (Behind Start Platform & Temple)
-			var col_south = res.instantiate()
-			col_south.name = "Colosseum_South"
-			col_south.position = Vector3(0, -1.5, -22.0)
-			col_south.rotation_degrees = Vector3(0, 0, 0)
-			col_south.scale = Vector3(2.2, 2.2, 2.2)
-			arena_parent.add_child(col_south)
-
-			# WEST WALL (Left side of the tile track)
-			var col_west = res.instantiate()
-			col_west.name = "Colosseum_West"
-			col_west.position = Vector3(-24.0, -1.5, 14.0)
-			col_west.rotation_degrees = Vector3(0, -90, 0)
-			col_west.scale = Vector3(2.0, 2.2, 2.0)
-			arena_parent.add_child(col_west)
-
-			# EAST WALL (Right side of the tile track)
-			var col_east = res.instantiate()
-			col_east.name = "Colosseum_East"
-			col_east.position = Vector3(24.0, -1.5, 14.0)
-			col_east.rotation_degrees = Vector3(0, 90, 0)
-			col_east.scale = Vector3(2.0, 2.2, 2.0)
-			arena_parent.add_child(col_east)
-
-			print("-> Colosseum 360-degree Arena successfully created as the base!")
-
-	# 2. ROMAN TEMPLE (Positioned in the Colosseum Forum behind start platform)
+	# 2. ROMAN TEMPLE (Positioned on the starting forum)
 	var temple_path = "res://assets/models/temple.glb"
 	if ResourceLoader.exists(temple_path):
 		var res_temple = load(temple_path)
 		if res_temple is PackedScene:
 			var temple = res_temple.instantiate()
 			temple.name = "SketchfabTemple"
-			temple.position = Vector3(0, 0.0, -14.0)
+			temple.position = Vector3(0, -0.6, -14.0)
 			temple.scale = Vector3(0.55, 0.55, 0.55)
 			main_node.add_child(temple)
-			print("-> Roman Temple positioned on the arena forum!")
+			print("-> Roman Temple positioned on the starting forum!")
 
 	# 3. HEROIC GUARDIAN GLADIATORS (Flanking the Start Gateway)
 	var gladiator_path = "res://assets/models/gladiator.glb"

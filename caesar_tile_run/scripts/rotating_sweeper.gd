@@ -1,8 +1,8 @@
 extends Node3D
 class_name RotatingSweeper
 
-@export var rotation_speed: float = 1.8
-@export var sweep_force: float = 15.0
+@export var rotation_speed: float = 2.2
+@export var sweep_force: float = 18.0
 
 @onready var spinner: Node3D = $Spinner
 @onready var hit_area_1: Area3D = $Spinner/Arm1/Area3D
@@ -21,4 +21,9 @@ func _physics_process(delta: float) -> void:
 func _on_body_hit(body: Node3D) -> void:
 	if body is CharacterBody3D and "velocity" in body:
 		var push_dir = spinner.global_transform.basis.x.normalized()
-		body.velocity = push_dir * sweep_force + Vector3(0, 6.0, 0)
+		body.velocity = push_dir * sweep_force + Vector3(0, 7.5, 0)
+		if body.has_method("add_screen_shake"):
+			body.add_screen_shake(0.4)
+		var main = get_tree().root.get_node_or_null("Main")
+		if main and "sound_fx" in main and main.sound_fx:
+			main.sound_fx.play_whack()
