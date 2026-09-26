@@ -3,15 +3,22 @@
 [ext_resource type="Script" uid="uid://bfr2n5nmf8g2m" path="res://input_manager.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://xknwtbrpl1ef" path="res://Scenes/church.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="3_1bvp3"]
+[ext_resource type="Script" uid="uid://cpjthyy7e8nyg" path="res://Scripts/game_manager.gd" id="4_1bvp3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 
 [node name="Main" type="Node3D" unique_id=748300147]
-
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1107549383]
 
 [node name="InputManager" type="Node3D" parent="." unique_id=505010133]
 script = ExtResource("1_ig7tw")
 
 [node name="Church" parent="." unique_id=1049898661 instance=ExtResource("2_h2yge")]
+
+[node name="PlayerSpawnPoint_Church" type="Area3D" parent="Church" unique_id=373719730 groups=["spawn_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.39734, -55.28463, 1.6151648)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Church/PlayerSpawnPoint_Church" unique_id=1862638098]
+shape = SubResource("BoxShape3D_h2yge")
 
 [node name="Player" parent="." unique_id=973415603 instance=ExtResource("3_1bvp3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.97571, -61.287098, -4.5957284)
@@ -19,3 +26,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.97571, -61.287098, -4.595
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1193764458]
 transform = Transform3D(0.7982278, 0, 0.60235566, 0, 1, 0, -0.60235566, 0, 0.7982278, -69.82778, -61.289623, 0)
 visible = false
+
+[node name="GameManager" type="Node3D" parent="." unique_id=992790746]
+script = ExtResource("4_1bvp3")

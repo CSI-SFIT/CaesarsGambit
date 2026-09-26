@@ -18,11 +18,17 @@ config/icon="res://icon.svg"
 [autoload]
 
 InputManager="*uid://bfr2n5nmf8g2m"
+GameManager="*uid://cpjthyy7e8nyg"
 
 [display]
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[global_group]
+
+PlayerGroup=""
+spawn_points=""
 
 [input]
 
