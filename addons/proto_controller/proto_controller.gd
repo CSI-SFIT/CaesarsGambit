@@ -1,9 +1,9 @@
 # ProtoController v1.0 by Brackeys
 # CC0 License
-# Intended for rapid prototyping of first-person games.
-# Modified: mouse-only look (left/right turn + up/down pitch),
-#           forward/back movement only (no strafe buttons).
-# Happy prototyping!
+# Modified for third-person play:
+#   - Mouse orbits the camera (yaw + pitch) independently of the body.
+#   - WASD moves relative to the camera's facing, not the body's.
+#   - The body smoothly rotates to face the direction you're moving.
 
 extends CharacterBody3D
 
@@ -21,6 +21,8 @@ extends CharacterBody3D
 @export_group("Speeds")
 ## Look around rotation speed.
 @export var look_speed : float = 0.002
+## How fast the body turns to face the movement direction.
+@export var rotation_speed : float = 12.0
 ## Normal speed.
 var base_speed : float
 ## Normal speed.
@@ -34,7 +36,22 @@ var base_speed : float
 ## How fast do we freefly?
 @export var freefly_speed : float = 25.0
 
+@export_group("Camera")
+## Lowest the camera can pitch (looking down), in degrees.
+@export var min_pitch_deg : float = -40.0
+## Highest the camera can pitch (looking up), in degrees.
+@export var max_pitch_deg : float = 75.0
+
+@export_group("Model")
+## Turn on if your character mesh was modeled facing +Z instead of Godot's
+## default -Z forward, and appears to walk backwards.
+@export var model_faces_backwards : bool = false
+
 @export_group("Input Actions")
+## Name of Input Action to move Left.
+@export var input_left : String = "move_left"
+## Name of Input Action to move Right.
+@export var input_right : String = "move_right"
 ## Name of Input Action to move Forward.
 @export var input_forward : String = "move_forward"
 ## Name of Input Action to move Backward.
@@ -47,9 +64,10 @@ var base_speed : float
 @export var input_freefly : String = "freefly"
 
 var mouse_captured : bool = false
-var look_rotation : Vector2
+var look_rotation : Vector2  # x = pitch, y = yaw (camera only, world-space)
 var move_speed : float = 0.0
 var freeflying : bool = false
+var head_local_offset : Vector3  # head's original position relative to the body (e.g. eye/chest height)
 
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $head
@@ -57,9 +75,13 @@ var freeflying : bool = false
 
 func _ready() -> void:
 	check_input_mappings()
+	# Start the camera's yaw matching the body's current facing.
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
-	base_speed=on_ground_speed
+	head_local_offset = head.position  # remember its height BEFORE going top_level
+	head.top_level = true  # camera pivot ignores the body's rotation entirely
+	head.global_transform.origin = global_transform.origin + head_local_offset
+	base_speed = on_ground_speed
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
@@ -68,7 +90,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
 	
-	# Look around (mouse controls both left/right turn and up/down pitch)
+	# Look around (mouse orbits the camera, independent of body facing)
 	if mouse_captured and event is InputEventMouseMotion:
 		rotate_look(event.relative)
 	
@@ -80,10 +102,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			disable_freefly()
 
 func _physics_process(delta: float) -> void:
+	# Keep the (top_level) camera pivot following the body's position each frame,
+	# since top_level means it no longer inherits position automatically.
+	head.global_transform.origin = global_transform.origin + head_local_offset
+
 	# If freeflying, handle freefly and nothing else
 	if can_freefly and freeflying:
-		var forward_input := Input.get_axis(input_back, input_forward)
-		var motion := (head.global_basis * Vector3(0, 0, -forward_input)).normalized()
+		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
+		var motion := (head.global_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		motion *= freefly_speed * delta
 		move_and_collide(motion)
 		return
@@ -91,32 +117,39 @@ func _physics_process(delta: float) -> void:
 	# Apply gravity to velocity
 	if has_gravity:
 		if not is_on_floor():
-			velocity += get_gravity()* 2 * delta
+			velocity += get_gravity() * 2 * delta
 
 	# Apply jumping
 	if can_jump:
 		if Input.is_action_just_pressed(input_jump) and is_on_floor():
 			velocity.y = jump_velocity
 			
-	#Modifiing Base Speed
+	# Modifying Base Speed
 	if !is_on_floor():
 		base_speed = in_air_speed
 	else:
-		base_speed=on_ground_speed
+		base_speed = on_ground_speed
 
 	# Modify speed based on sprinting
 	if can_sprint and Input.is_action_pressed(input_sprint):
-			move_speed = sprint_speed
+		move_speed = sprint_speed
 	else:
 		move_speed = base_speed
 
-	# Apply desired movement to velocity (forward/back only, no strafe)
+	# Apply desired movement, relative to camera yaw (not body facing)
 	if can_move:
-		var forward_input := Input.get_axis(input_back, input_forward)
-		var move_dir := (transform.basis * Vector3(0, 0, -forward_input)).normalized()
-		if move_dir:
-			velocity.x = move_dir.x * move_speed
-			velocity.z = move_dir.z * move_speed
+		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
+		var yaw_basis := Basis(Vector3.UP, look_rotation.y)
+		var direction := (yaw_basis * Vector3(input_dir.x, 0, input_dir.y))
+		if direction.length() > 0.01:
+			direction = direction.normalized()
+			velocity.x = direction.x * move_speed
+			velocity.z = direction.z * move_speed
+			# Smoothly turn the body to face the direction we're moving
+			var face_dir := direction if model_faces_backwards else -direction
+			var target_basis := Basis.looking_at(face_dir, Vector3.UP)
+			transform.basis = Basis(transform.basis.get_rotation_quaternion().slerp(
+				target_basis.get_rotation_quaternion(), clamp(rotation_speed * delta, 0, 1)))
 		else:
 			velocity.x = move_toward(velocity.x, 0, move_speed)
 			velocity.z = move_toward(velocity.z, 0, move_speed)
@@ -128,18 +161,13 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-## Rotate us to look around.
-## Base of controller rotates around y (left/right, via mouse X movement).
-## Head rotates around x (up/down, via mouse Y movement).
-## Modifies look_rotation based on rot_input, then resets basis and rotates by look_rotation.
+## Orbit the camera pivot (head) around the player, in world space.
+## This is fully independent of the body's own rotation.
 func rotate_look(rot_input : Vector2):
 	look_rotation.x -= rot_input.y * look_speed
-	look_rotation.x = clamp(look_rotation.x, deg_to_rad(-85), deg_to_rad(85))
+	look_rotation.x = clamp(look_rotation.x, deg_to_rad(min_pitch_deg), deg_to_rad(max_pitch_deg))
 	look_rotation.y -= rot_input.x * look_speed
-	transform.basis = Basis()
-	rotate_y(look_rotation.y)
-	head.transform.basis = Basis()
-	head.rotate_x(look_rotation.x)
+	head.global_rotation = Vector3(look_rotation.x, look_rotation.y, 0)
 
 
 func enable_freefly():
@@ -165,6 +193,12 @@ func release_mouse():
 ## Checks if some Input Actions haven't been created.
 ## Disables functionality accordingly.
 func check_input_mappings():
+	if can_move and not InputMap.has_action(input_left):
+		push_error("Movement disabled. No InputAction found for input_left: " + input_left)
+		can_move = false
+	if can_move and not InputMap.has_action(input_right):
+		push_error("Movement disabled. No InputAction found for input_right: " + input_right)
+		can_move = false
 	if can_move and not InputMap.has_action(input_forward):
 		push_error("Movement disabled. No InputAction found for input_forward: " + input_forward)
 		can_move = false
