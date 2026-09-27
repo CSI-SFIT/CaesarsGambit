@@ -1,4 +1,6 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/roman_brazier.gd" id="1_brazier"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
 top_radius = 0.4
@@ -30,6 +32,7 @@ emission = Color(1, 0.55, 0.1, 1)
 emission_energy_multiplier = 4.0
 
 [node name="RomanBrazier" type="Node3D"]
+script = ExtResource("1_brazier")
 
 [node name="Pedestal" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)

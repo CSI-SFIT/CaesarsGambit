@@ -9,14 +9,14 @@ signal reached_finish_line(player_id: int)
 		if is_node_ready():
 			update_player_appearance()
 
-# Snappy, responsive Fall Guys platformer constants
+# Snappy Fall Guys platformer constants
 const RUN_SPEED: float = 8.5
 const ACCELERATION: float = 38.0
 const FRICTION: float = 30.0
 
 const JUMP_VELOCITY: float = 11.5
-const JUMP_GRAVITY: float = 28.0      # Upward gravity (fast launch)
-const FALL_GRAVITY: float = 42.0      # Downward gravity (heavy, snappy drop - no floatiness!)
+const JUMP_GRAVITY: float = 28.0
+const FALL_GRAVITY: float = 42.0
 const TERMINAL_VELOCITY: float = -35.0
 
 const DIVE_FORWARD_BOOST: float = 13.0
@@ -28,9 +28,18 @@ var is_diving: bool = false
 var dive_cooldown: float = 0.0
 var dive_slide_timer: float = 0.0
 
-# Coyote time & Jump buffer for crisp responsive controls
+# Coyote time & Jump buffer
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
+
+# Spectator camera mode
+var is_spectating: bool = false
+var spectator_target: Node3D = null
+
+# Procedural limb animation variables
+var foot_anim_time: float = 0.0
+var footstep_cooldown: float = 0.0
+var was_on_floor: bool = true
 
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var spring_arm: SpringArm3D = $CameraPivot/SpringArm3D
@@ -40,54 +49,70 @@ var jump_buffer_timer: float = 0.0
 @onready var cape_mesh: MeshInstance3D = $Visuals/Cape
 @onready var shield_mesh: MeshInstance3D = $Visuals/Shield
 @onready var helmet_crest: MeshInstance3D = $Visuals/Helmet/Crest
+@onready var foot_left: MeshInstance3D = $Visuals/FootLeft
+@onready var foot_right: MeshInstance3D = $Visuals/FootRight
+@onready var arm_right: MeshInstance3D = $Visuals/ArmRight
 @onready var name_label: Label3D = $NameLabel
+
+var sound_fx: Node
 
 # Synchronized properties for multiplayer
 @export var sync_pos: Vector3 = Vector3.ZERO
 @export var sync_rot_y: float = 0.0
 
-func _enter_tree() -> void:
-	pass
-
 func _ready() -> void:
-	spawn_position = global_position
 	update_player_appearance()
 	
-	# Only enable camera for local player
+	sound_fx = get_node_or_null("/root/Main/SoundEffects")
+	if not sound_fx:
+		var m = get_tree().root.get_node_or_null("Main")
+		if m and "sound_fx" in m:
+			sound_fx = m.sound_fx
+	
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
 	if camera:
 		camera.current = is_local
-	
-	if is_local:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func update_player_appearance() -> void:
-	if not tunic_mesh:
+	if not tunic_mesh or not visual_mesh:
 		return
 		
 	var mat_tunic = StandardMaterial3D.new()
 	var mat_fabric = StandardMaterial3D.new()
 	var mat_crest = StandardMaterial3D.new()
+	var mat_armor = StandardMaterial3D.new()
 	
 	if player_id == 1 or player_id <= 1:
-		# Player 1: Royal Roman Crimson & Gold
+		# Player 1: Royal Crimson & Gold Imperial Caesar
 		mat_tunic.albedo_color = Color(0.78, 0.12, 0.12)
-		mat_fabric.albedo_color = Color(0.72, 0.12, 0.12)
-		mat_crest.albedo_color = Color(0.95, 0.75, 0.1)
+		mat_fabric.albedo_color = Color(0.72, 0.10, 0.10)
+		mat_crest.albedo_color = Color(0.98, 0.82, 0.15)
 		mat_crest.emission_enabled = true
-		mat_crest.emission = Color(0.9, 0.7, 0.1)
+		mat_crest.emission = Color(0.95, 0.75, 0.1)
+		mat_crest.emission_energy_multiplier = 2.5
+		
+		mat_armor.albedo_color = Color(0.92, 0.75, 0.22)
+		mat_armor.metallic = 0.88
+		mat_armor.roughness = 0.25
+		
 		if name_label:
-			name_label.text = "Player 1 (Caesar)"
+			name_label.text = "Caesar (Player 1)"
 			name_label.modulate = Color(1.0, 0.85, 0.2)
 	else:
-		# Player 2: Roman Praetorian Azure & Silver
-		mat_tunic.albedo_color = Color(0.15, 0.35, 0.8)
-		mat_fabric.albedo_color = Color(0.12, 0.3, 0.75)
-		mat_crest.albedo_color = Color(0.3, 0.6, 0.95)
+		# Player 2: Cobalt Blue & Silver Steel Centurion
+		mat_tunic.albedo_color = Color(0.12, 0.35, 0.82)
+		mat_fabric.albedo_color = Color(0.10, 0.30, 0.78)
+		mat_crest.albedo_color = Color(0.35, 0.70, 1.0)
 		mat_crest.emission_enabled = true
-		mat_crest.emission = Color(0.2, 0.5, 0.9)
+		mat_crest.emission = Color(0.25, 0.60, 0.95)
+		mat_crest.emission_energy_multiplier = 2.5
+		
+		mat_armor.albedo_color = Color(0.85, 0.88, 0.92)
+		mat_armor.metallic = 0.95
+		mat_armor.roughness = 0.20
+		
 		if name_label:
-			name_label.text = "Player 2 (Centurion)"
+			name_label.text = "Centurion (Player 2)"
 			name_label.modulate = Color(0.4, 0.8, 1.0)
 			
 	tunic_mesh.material_override = mat_tunic
@@ -97,72 +122,69 @@ func update_player_appearance() -> void:
 		shield_mesh.material_override = mat_fabric
 	if helmet_crest:
 		helmet_crest.material_override = mat_crest
+		
+	var cuirass = visual_mesh.get_node_or_null("Cuirass")
+	if cuirass is MeshInstance3D:
+		cuirass.material_override = mat_armor
+	var dome = visual_mesh.get_node_or_null("Helmet/Dome")
+	if dome is MeshInstance3D:
+		dome.material_override = mat_armor
+	var s_left = visual_mesh.get_node_or_null("ShoulderLeft")
+	if s_left is MeshInstance3D:
+		s_left.material_override = mat_armor
+	var s_right = visual_mesh.get_node_or_null("ShoulderRight")
+	if s_right is MeshInstance3D:
+		s_right.material_override = mat_armor
+
+func start_spectating(target: Node3D) -> void:
+	is_spectating = true
+	spectator_target = target
+	velocity = Vector3.ZERO
+
+func stop_spectating() -> void:
+	is_spectating = false
+	spectator_target = null
+	if camera_pivot:
+		camera_pivot.position = Vector3(0, 1.45, 0)
+
+func _unhandled_input(event: InputEvent) -> void:
+	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
+	if not is_local:
+		return
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED and not is_spectating:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _input(event: InputEvent) -> void:
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
 	if not is_local:
 		return
-		
-	# Click anywhere in the game to capture mouse
-	if event is InputEventMouseButton and event.pressed:
-		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-	# Mouse look (when captured OR when holding right-click)
-	if event is InputEventMouseMotion:
-		var can_rotate = (Input.mouse_mode == Input.MOUSE_MODE_CAPTURED) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
-		if can_rotate and camera_pivot and spring_arm:
-			camera_pivot.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-			spring_arm.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
-			spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI / 3.0, PI / 6.0)
-		
-	# Escape to toggle mouse capture
-	if event.is_action_pressed("ui_cancel"):
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-var screen_shake_intensity: float = 0.0
-
-func add_screen_shake(amount: float) -> void:
-	screen_shake_intensity = amount
-
-func _process(delta: float) -> void:
-	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
-	if not is_local:
-		return
-		
-	# Screen shake decay
-	if camera:
-		if screen_shake_intensity > 0.0:
-			camera.h_offset = randf_range(-screen_shake_intensity, screen_shake_intensity)
-			camera.v_offset = randf_range(-screen_shake_intensity, screen_shake_intensity)
-			screen_shake_intensity = move_toward(screen_shake_intensity, 0.0, 4.0 * delta)
-		else:
-			camera.h_offset = 0.0
-			camera.v_offset = 0.0
-
-	# Keyboard camera rotation (Q/E or Arrow Left/Right)
-	var cam_turn: float = 0.0
-	if Input.is_key_pressed(KEY_LEFT) or Input.is_key_pressed(KEY_Q):
-		cam_turn += 2.2 * delta
-	if Input.is_key_pressed(KEY_RIGHT) or Input.is_key_pressed(KEY_E):
-		cam_turn -= 2.2 * delta
-	if cam_turn != 0.0 and camera_pivot:
-		camera_pivot.rotate_y(cam_turn)
+	var can_rotate = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED or is_spectating
+	if event is InputEventMouseMotion and can_rotate and camera_pivot and spring_arm:
+		camera_pivot.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
+		spring_arm.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
+		spring_arm.rotation.x = clampf(spring_arm.rotation.x, deg_to_rad(-60.0), deg_to_rad(30.0))
 
 func _physics_process(delta: float) -> void:
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
 	
 	if not is_local:
-		# Smooth remote client interpolation
 		global_position = global_position.lerp(sync_pos, 25.0 * delta)
 		if visual_mesh:
 			visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, sync_rot_y, 20.0 * delta)
 		return
 
-	# Decrement dive cooldown and slide timer
+	# Spectator Mode Camera Tracking
+	if is_spectating:
+		if is_instance_valid(spectator_target):
+			var target_cam_pos = spectator_target.global_position + Vector3(0, 1.45, 0)
+			camera_pivot.global_position = camera_pivot.global_position.lerp(target_cam_pos, delta * 8.0)
+		velocity = Vector3.ZERO
+		move_and_slide()
+		return
+
+	# Decrement cooldowns
 	if dive_cooldown > 0.0:
 		dive_cooldown -= delta
 	if dive_slide_timer > 0.0:
@@ -171,113 +193,148 @@ func _physics_process(delta: float) -> void:
 			is_diving = false
 			if visual_mesh:
 				visual_mesh.rotation.x = 0.0
+	if footstep_cooldown > 0.0:
+		footstep_cooldown -= delta
 
-	# Coyote Time (0.15s forgiveness after walking off a tile)
+	# Coyote Time & Jump Buffer
 	if is_on_floor():
 		coyote_timer = 0.15
 	else:
 		coyote_timer -= delta
 
-	# Jump Buffer (0.12s buffer before landing)
 	if Input.is_action_just_pressed("jump"):
 		jump_buffer_timer = 0.12
 	else:
 		jump_buffer_timer -= delta
 
-	# Dual-stage snappy Gravity: Normal on the way up, HEAVY on the way down!
+	# Landing thud sound
+	if is_on_floor() and not was_on_floor:
+		if sound_fx and sound_fx.has_method("play_landing"):
+			sound_fx.play_landing()
+	was_on_floor = is_on_floor()
+
+	# Dual-stage gravity
 	if not is_on_floor():
 		var current_gravity = JUMP_GRAVITY if velocity.y > 0.0 else FALL_GRAVITY
 		velocity.y -= current_gravity * delta
-		velocity.y = max(velocity.y, TERMINAL_VELOCITY)
+		velocity.y = maxf(velocity.y, TERMINAL_VELOCITY)
 	else:
-		if not is_diving:
-			velocity.y = -0.1 # Keep character grounded firmly on moving/crumbling tiles
+		velocity.y = 0.0
 
-	# Execute Jump (via jump buffer or coyote time)
-	if jump_buffer_timer > 0.0 and coyote_timer > 0.0:
+	# Jump execution
+	if jump_buffer_timer > 0.0 and coyote_timer > 0.0 and not is_diving:
 		velocity.y = JUMP_VELOCITY
 		jump_buffer_timer = 0.0
 		coyote_timer = 0.0
-		if is_diving:
-			is_diving = false
-			if visual_mesh:
-				visual_mesh.rotation.x = 0.0
 
-	# Fall Guys Style Belly-Flop Dive
+	# Fall Guys Belly-Flop Dive
 	if Input.is_action_just_pressed("dive") and not is_diving and dive_cooldown <= 0.0:
 		is_diving = true
 		dive_cooldown = 0.8
 		dive_slide_timer = 0.45
+		var forward_dir = -camera_pivot.global_transform.basis.z
+		forward_dir.y = 0.0
+		forward_dir = forward_dir.normalized()
+		velocity.x = forward_dir.x * DIVE_FORWARD_BOOST
+		velocity.z = forward_dir.z * DIVE_FORWARD_BOOST
 		velocity.y = DIVE_UP_BOOST
-		var forward = -camera_pivot.global_transform.basis.z
-		forward.y = 0.0
-		forward = forward.normalized()
-		velocity.x = forward.x * DIVE_FORWARD_BOOST
-		velocity.z = forward.z * DIVE_FORWARD_BOOST
-		# Tilt character forward horizontally for belly-flop
 		if visual_mesh:
-			visual_mesh.rotation.x = -PI / 2.6
+			visual_mesh.rotation.x = deg_to_rad(-60.0)
 
-	# Reset dive orientation when touching floor after slide completes
-	if is_on_floor() and is_diving and dive_slide_timer <= 0.0:
-		is_diving = false
-		if visual_mesh:
-			visual_mesh.rotation.x = 0.0
-
-	# Movement direction relative to camera
-	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	# Movement direction
+	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var cam_basis: Basis = camera_pivot.global_transform.basis
-	var forward: Vector3 = -cam_basis.z
-	var right: Vector3 = cam_basis.x
-	forward.y = 0.0
-	right.y = 0.0
-	forward = forward.normalized()
-	right = right.normalized()
+	var move_direction = (cam_basis.x * input_dir.x + cam_basis.z * input_dir.y)
+	move_direction.y = 0.0
+	move_direction = move_direction.normalized()
 
-	var direction: Vector3 = (right * input_dir.x + forward * -input_dir.y).normalized()
+	# Keyboard camera turn
+	if InputMap.has_action("camera_right") and InputMap.has_action("camera_left"):
+		var cam_turn = Input.get_axis("camera_right", "camera_left") * 2.8 * delta
+		if cam_turn != 0.0 and camera_pivot:
+			camera_pivot.rotate_y(cam_turn)
 
-	if not is_diving:
-		if direction:
-			# Smooth crisp acceleration
-			velocity.x = move_toward(velocity.x, direction.x * RUN_SPEED, ACCELERATION * delta)
-			velocity.z = move_toward(velocity.z, direction.z * RUN_SPEED, ACCELERATION * delta)
-			# Rotate character towards movement
-			if visual_mesh:
-				var target_angle = atan2(-direction.x, -direction.z)
-				visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, 18.0 * delta)
-		else:
-			# Crisp braking friction
-			velocity.x = move_toward(velocity.x, 0.0, FRICTION * delta)
-			velocity.z = move_toward(velocity.z, 0.0, FRICTION * delta)
+	# Movement physics & acceleration
+	var current_accel = ACCELERATION if is_on_floor() else (ACCELERATION * 0.45)
+	var current_friction = FRICTION if is_on_floor() else (FRICTION * 0.15)
+	
+	if is_diving:
+		velocity.x = move_toward(velocity.x, 0.0, current_friction * 0.4 * delta)
+		velocity.z = move_toward(velocity.z, 0.0, current_friction * 0.4 * delta)
+	elif move_direction != Vector3.ZERO:
+		velocity.x = move_toward(velocity.x, move_direction.x * RUN_SPEED, current_accel * delta)
+		velocity.z = move_toward(velocity.z, move_direction.z * RUN_SPEED, current_accel * delta)
+		if visual_mesh and not is_diving:
+			var target_angle = atan2(move_direction.x, move_direction.z)
+			visual_mesh.rotation.y = lerp_angle(visual_mesh.rotation.y, target_angle, 18.0 * delta)
 	else:
-		# During dive: preserve momentum with slight slide friction
-		velocity.x = move_toward(velocity.x, 0.0, 8.0 * delta)
-		velocity.z = move_toward(velocity.z, 0.0, 8.0 * delta)
+		velocity.x = move_toward(velocity.x, 0.0, current_friction * delta)
+		velocity.z = move_toward(velocity.z, 0.0, current_friction * delta)
+
+	# -------------------------------------------------------------
+	# Procedural Limb & Character Animation
+	# -------------------------------------------------------------
+	var horiz_speed = Vector2(velocity.x, velocity.z).length()
+	if is_diving:
+		# Superhero belly flop dive pose
+		if foot_left:
+			foot_left.position = Vector3(-0.22, 0.28, -0.32)
+		if foot_right:
+			foot_right.position = Vector3(0.22, 0.28, -0.32)
+		if arm_right:
+			arm_right.rotation.x = deg_to_rad(-75.0)
+		if cape_mesh:
+			cape_mesh.rotation.x = deg_to_rad(45.0)
+	elif horiz_speed > 0.5 and is_on_floor():
+		# Snappy running foot pitter-patter & arm pump
+		foot_anim_time += delta * horiz_speed * 1.7
+		var step_l = sin(foot_anim_time)
+		var step_r = -step_l
+		
+		if foot_left:
+			foot_left.position.z = step_l * 0.24
+			foot_left.position.y = 0.12 + maxf(0.0, step_l * 0.14)
+		if foot_right:
+			foot_right.position.z = step_r * 0.24
+			foot_right.position.y = 0.12 + maxf(0.0, step_r * 0.14)
+		if arm_right:
+			arm_right.rotation.x = -step_l * 0.48
+		if cape_mesh:
+			cape_mesh.rotation.x = deg_to_rad(12.0 + (horiz_speed / RUN_SPEED) * 26.0 + sin(foot_anim_time * 2.0) * 4.0)
+			
+		# Step audio rhythm
+		if step_l > 0.85 and footstep_cooldown <= 0.0:
+			if sound_fx and sound_fx.has_method("play_footstep"):
+				sound_fx.play_footstep()
+			footstep_cooldown = 0.24
+	else:
+		# Idle gentle breathing bob
+		var idle_t = Time.get_ticks_msec() * 0.003
+		if visual_mesh:
+			visual_mesh.position.y = sin(idle_t) * 0.025
+		if foot_left:
+			foot_left.position = Vector3(-0.22, 0.12, 0.05)
+		if foot_right:
+			foot_right.position = Vector3(0.22, 0.12, 0.05)
+		if arm_right:
+			arm_right.rotation.x = lerp_angle(arm_right.rotation.x, 0.0, 10.0 * delta)
+		if cape_mesh:
+			cape_mesh.rotation.x = deg_to_rad(10.0 + sin(idle_t * 1.5) * 2.5)
 
 	move_and_slide()
 
-	# Fall Guys Player-to-Player Bumping & Tackling
-	for i in range(get_slide_collision_count()):
-		var col = get_slide_collision(i)
-		var collider = col.get_collider()
-		if collider is CharacterBody3D and collider != self:
-			var push_dir = (collider.global_position - global_position).normalized()
-			push_dir.y = 0.4
-			var push_power = 16.0 if is_diving else 7.0
-			collider.velocity += push_dir * push_power
-
-	# Fall check / Respawn with screen shake
-	if global_position.y < -6.0:
-		add_screen_shake(0.35)
+	# Void fall respawn
+	if global_position.y < -8.0:
 		respawn()
 
-	# Update network sync variables
-	sync_pos = global_position
-	if visual_mesh:
-		sync_rot_y = visual_mesh.rotation.y
+	# Multiplayer sync
+	if multiplayer.multiplayer_peer != null:
+		sync_pos = global_position
+		if visual_mesh:
+			sync_rot_y = visual_mesh.rotation.y
 
 func respawn() -> void:
-	global_position = spawn_position + Vector3(randf_range(-1, 1), 1.0, randf_range(-1, 1))
+	global_position = spawn_position
 	velocity = Vector3.ZERO
 	is_diving = false
 	if visual_mesh:

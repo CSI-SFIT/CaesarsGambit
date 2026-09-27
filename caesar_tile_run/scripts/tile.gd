@@ -3,182 +3,125 @@ class_name RomanTile
 
 signal tile_stepped(row: int, col: int, is_safe: bool)
 
-@export var is_safe: bool = false
-@export var row: int = 0
-@export var col: int = 0
+@export var row_index: int = 0
+@export var col_index: int = 0
 @export var letter: String = "A"
-
-var is_revealed: bool = false
-var is_active: bool = true
-var is_standing_on: bool = false
-var stand_timer: float = 0.0
-const STAND_TIME_LIMIT: float = 2.4 # Time before safe tile collapses under weight!
-
-var initial_pos: Vector3
-var initial_rot: Vector3
+@export var is_safe_tile: bool = false
+@export var is_active: bool = true
 
 @onready var mesh_instance: MeshInstance3D = $MeshInstance3D
-@onready var label_3d: Label3D = $Label3D
+@onready var letter_label: Label3D = $Label3D
 @onready var collision_shape: CollisionShape3D = $CollisionShape3D
-@onready var area_trigger: Area3D = $Area3D
+@onready var step_detector: Area3D = $Area3D
 @onready var omni_light: OmniLight3D = $OmniLight3D
 
-# Materials for visual states
-var stone_mat: StandardMaterial3D
-var gold_safe_mat: StandardMaterial3D
-var crumble_warn_mat: StandardMaterial3D
+var original_pos: Vector3
+var is_crumbling: bool = false
+var crumble_timer: float = 2.4
 
 func _ready() -> void:
-	initial_pos = position
-	initial_rot = rotation
-	setup_materials()
-	update_visuals()
-	
-	if area_trigger:
-		area_trigger.body_entered.connect(_on_body_entered)
-		area_trigger.body_exited.connect(_on_body_exited)
+	original_pos = position
+	if step_detector:
+		step_detector.body_entered.connect(_on_body_entered)
 
-func setup_materials() -> void:
-	# Roman Travertine / Marble stone material
-	stone_mat = StandardMaterial3D.new()
-	stone_mat.albedo_color = Color(0.84, 0.80, 0.74)
-	stone_mat.roughness = 0.8
-	
-	# Golden laurel revealed material
-	gold_safe_mat = StandardMaterial3D.new()
-	gold_safe_mat.albedo_color = Color(0.95, 0.78, 0.25)
-	gold_safe_mat.emission_enabled = true
-	gold_safe_mat.emission = Color(1.0, 0.84, 0.2)
-	gold_safe_mat.emission_energy_multiplier = 2.0
-	gold_safe_mat.roughness = 0.3
-	gold_safe_mat.metallic = 0.4
-	
-	# Cracking danger material
-	crumble_warn_mat = StandardMaterial3D.new()
-	crumble_warn_mat.albedo_color = Color(0.9, 0.2, 0.15)
-	crumble_warn_mat.emission_enabled = true
-	crumble_warn_mat.emission = Color(1.0, 0.25, 0.1)
-	crumble_warn_mat.emission_energy_multiplier = 2.5
-
-func configure(r: int, c: int, char_val: String, safe_val: bool) -> void:
-	row = r
-	col = c
-	letter = char_val
-	is_safe = safe_val
-	is_revealed = false
+func configure(r: int, c: int, l: String, safe: bool) -> void:
+	row_index = r
+	col_index = c
+	letter = l
+	is_safe_tile = safe
 	is_active = true
-	is_standing_on = false
-	stand_timer = 0.0
-	update_visuals()
-
-func update_visuals() -> void:
-	if label_3d:
-		label_3d.text = letter
-		if is_revealed and is_safe:
-			label_3d.modulate = Color(1.0, 0.95, 0.6)
-		else:
-			label_3d.modulate = Color(0.2, 0.15, 0.1)
-			
+	is_crumbling = false
+	crumble_timer = 2.4
+	
+	if letter_label:
+		letter_label.text = letter
+	
+	var mat = StandardMaterial3D.new()
+	mat.albedo_color = Color(0.85, 0.82, 0.75)
+	mat.roughness = 0.7
 	if mesh_instance:
-		if is_revealed and is_safe:
-			mesh_instance.material_override = gold_safe_mat
-			if omni_light:
-				omni_light.visible = true
-				omni_light.light_color = Color(1.0, 0.85, 0.3)
-		else:
-			mesh_instance.material_override = stone_mat
-			if omni_light:
-				omni_light.visible = false
+		mesh_instance.material_override = mat
+	if omni_light:
+		omni_light.visible = false
 
 func _process(delta: float) -> void:
-	# Timed Tile Crumble: Safe tiles collapse if a player lingers/camps too long!
-	if is_active and is_revealed and is_safe and is_standing_on:
-		stand_timer += delta
-		
-		# Warning phase (after 1.3s of standing)
-		if stand_timer > 1.3:
-			var pulse = sin(stand_timer * 22.0) * 0.5 + 0.5
-			if mesh_instance and mesh_instance.material_override:
-				mesh_instance.material_override.emission = Color(1.0, 0.84, 0.2).lerp(Color(1.0, 0.15, 0.1), pulse)
-				mesh_instance.material_override.emission_energy_multiplier = 2.0 + pulse * 2.0
-			# Structural jitter
-			position = initial_pos + Vector3(randf_range(-0.035, 0.035), 0, randf_range(-0.035, 0.035))
-			
-		# Collapse threshold
-		if stand_timer >= STAND_TIME_LIMIT:
-			is_standing_on = false
-			stand_timer = 0.0
+	if is_crumbling and is_active:
+		position.x = original_pos.x + randf_range(-0.06, 0.06)
+		position.z = original_pos.z + randf_range(-0.06, 0.06)
+		crumble_timer -= delta
+		if crumble_timer <= 0.0:
 			trigger_crumble()
 
 func _on_body_entered(body: Node3D) -> void:
 	if not is_active:
 		return
-	if body is CharacterBody3D:
-		is_standing_on = true
-		step_on()
-
-func _on_body_exited(body: Node3D) -> void:
-	if body is CharacterBody3D:
-		is_standing_on = false
-		stand_timer = 0.0
-		position = initial_pos
-		update_visuals()
-
-func step_on() -> void:
-	if not is_active:
-		return
-		
-	tile_stepped.emit(row, col, is_safe)
-	
-	if is_safe:
-		reveal_safe()
-	else:
-		trigger_crumble()
+	if body is RomanPlayer:
+		tile_stepped.emit(row_index, col_index, is_safe_tile)
+		if is_safe_tile:
+			reveal_safe()
+			is_crumbling = true
+		else:
+			trigger_crumble()
 
 func reveal_safe() -> void:
-	is_revealed = true
-	update_visuals()
-	
-	# Gentle celebratory bounce
-	var tween = create_tween()
-	tween.tween_property(self, "position:y", initial_pos.y - 0.1, 0.08)
-	tween.tween_property(self, "position:y", initial_pos.y, 0.12)
+	var mat = StandardMaterial3D.new()
+	mat.albedo_color = Color(0.2, 0.75, 0.35)
+	mat.emission_enabled = true
+	mat.emission = Color(0.2, 0.8, 0.3)
+	mat.emission_energy_multiplier = 2.0
+	if mesh_instance:
+		mesh_instance.material_override = mat
+	if omni_light:
+		omni_light.visible = true
 
 func trigger_crumble() -> void:
 	if not is_active:
 		return
 	is_active = false
-	is_standing_on = false
-	stand_timer = 0.0
+	is_crumbling = false
 	
-	# Flash red warning
+	if omni_light:
+		omni_light.visible = false
+		
+	spawn_dust_particles()
+	
+	if collision_shape:
+		collision_shape.set_deferred("disabled", true)
+		
+	var mat = StandardMaterial3D.new()
+	mat.albedo_color = Color(0.4, 0.15, 0.15)
 	if mesh_instance:
-		mesh_instance.material_override = crumble_warn_mat
-	
-	# Shake effect
+		mesh_instance.material_override = mat
+		
 	var tween = create_tween()
-	for i in range(4):
-		var shake_offset = Vector3(randf_range(-0.1, 0.1), 0, randf_range(-0.1, 0.1))
-		tween.tween_property(self, "position", initial_pos + shake_offset, 0.05)
-	
-	# Tilt and drop down into the hypogeum pit
-	tween.tween_property(self, "position:y", initial_pos.y - 14.0, 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tween.parallel().tween_property(self, "rotation_degrees:x", randf_range(-45, 45), 0.55)
-	tween.parallel().tween_property(self, "rotation_degrees:z", randf_range(-45, 45), 0.55)
-	
-	# Disable collision when dropping
-	tween.tween_callback(func():
-		collision_shape.disabled = true
-	)
-	
-	# Reset tile after 3.5 seconds
-	get_tree().create_timer(3.5).timeout.connect(reset_tile)
+	tween.tween_property(self, "position:y", -14.0, 0.7).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.parallel().tween_property(self, "rotation_degrees:x", randf_range(-40.0, 40.0), 0.7)
+	tween.parallel().tween_property(self, "rotation_degrees:z", randf_range(-40.0, 40.0), 0.7)
 
-func reset_tile() -> void:
-	is_active = true
-	is_standing_on = false
-	stand_timer = 0.0
-	collision_shape.disabled = false
-	rotation = initial_rot
-	position = initial_pos
-	update_visuals()
+func spawn_dust_particles() -> void:
+	var p = CPUParticles3D.new()
+	p.name = "CrumbleDust"
+	p.amount = 14
+	p.lifetime = 0.55
+	p.one_shot = true
+	p.explosiveness = 0.85
+	p.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX
+	p.emission_box_extents = Vector3(1.0, 0.1, 1.0)
+	p.direction = Vector3(0, 1, 0)
+	p.spread = 45.0
+	p.gravity = Vector3(0, -3.0, 0)
+	p.initial_velocity_min = 1.0
+	p.initial_velocity_max = 2.5
+	
+	var m = SphereMesh.new()
+	m.radius = 0.08
+	m.height = 0.16
+	p.mesh = m
+	
+	var mat = StandardMaterial3D.new()
+	mat.albedo_color = Color(0.82, 0.76, 0.65, 0.8)
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	p.material_override = mat
+	
+	p.position = Vector3(0, 0.2, 0)
+	add_child(p)
