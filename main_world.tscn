@@ -1,21 +1,27 @@
 [gd_scene format=3 uid="uid://cq8cas8vw0g2c"]
 
 [ext_resource type="Script" uid="uid://chf82bvacldju" path="res://main_world.gd" id="1_uoqbt"]
+[ext_resource type="PackedScene" uid="uid://bqajqraheyasj" path="res://assets/ancient_gate.glb" id="2_3etub"]
 [ext_resource type="PackedScene" uid="uid://dtjyhms5m4jta" path="res://puzzle_ui.tscn" id="2_43o5b"]
+[ext_resource type="Texture2D" uid="uid://dkeuqxmdbelty" path="res://assets/ancient_gate_0.png" id="3_whfra"]
+[ext_resource type="PackedScene" uid="uid://bt68qklq0048b" path="res://assets/basic_roman_pillar.glb" id="4_3etub"]
+[ext_resource type="PackedScene" uid="uid://b6wwmjs4cy6nm" path="res://assets/colloseum_01.glb" id="6_uue8y"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_mq8aq"]
-size = Vector3(10, 1, 30)
+size = Vector3(10, 1, 35.03235)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mq8aq"]
 size = Vector3(10, 1, 30)
 
-[sub_resource type="BoxMesh" id="BoxMesh_51fql"]
-size = Vector3(8, 6, 1)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_51fql"]
-size = Vector3(8, 6, 1)
+size = Vector3(8, 19.021423, 9.797363)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_58t8u"]
+albedo_color = Color(1, 1, 1, 0)
+albedo_texture = ExtResource("3_whfra")
 
 [sub_resource type="SphereMesh" id="SphereMesh_mq8aq"]
+material = SubResource("StandardMaterial3D_58t8u")
 radius = 1.5
 height = 3.0
 
@@ -29,6 +35,7 @@ script = ExtResource("1_uoqbt")
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=462582165]
+transform = Transform3D(1, 0, 0, 0, 1.0000012, 0, 0, 0, 1.0000012, 0, 0, 2.5161748)
 mesh = SubResource("BoxMesh_mq8aq")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1125306510]
@@ -37,12 +44,12 @@ shape = SubResource("BoxShape3D_mq8aq")
 [node name="Door" type="StaticBody3D" parent="." unique_id=1840365433]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.21496582, 14.002695)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Door" unique_id=573997810]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15548706, 0)
-mesh = SubResource("BoxMesh_51fql")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Door" unique_id=442636717]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63565063, 0.5300293)
 shape = SubResource("BoxShape3D_51fql")
+
+[node name="AncientDoor" parent="Door" unique_id=1494183466 instance=ExtResource("2_3etub")]
+transform = Transform3D(-1.7484556e-08, 0, -0.4, 0, 0.4, 0, 0.4, 0, -1.7484556e-08, -1.8411117, 0, 0)
 
 [node name="Boulder" type="CharacterBody3D" parent="." unique_id=503994124]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.799139, -12)
@@ -57,7 +64,31 @@ shape = SubResource("SphereShape3D_mq8aq")
 [node name="PuzzleUI" parent="." unique_id=1776670755 instance=ExtResource("2_43o5b")]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1825155295]
-transform = Transform3D(1, 0, 0, 0, 0.9396926, 0.34202012, 0, -0.34202012, 0.9396926, 0, 8, 18)
+transform = Transform3D(1, 0, 0, 0, 0.9396927, 0.34202015, 0, -0.34202015, 0.9396927, 0, 8, 22.898487)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=550083757]
 transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+
+[node name="Pillar" parent="." unique_id=894527535 instance=ExtResource("4_3etub")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4.9749403, -5.804715, -13.611005)
+
+[node name="Pillar" parent="Pillar" unique_id=462792113 instance=ExtResource("4_3etub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0732193, 0.009059131, 0.0053817034)
+
+[node name="Pillar2" parent="." unique_id=1058578016 instance=ExtResource("4_3etub")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4.9749403, -5.804715, -2.1000814)
+
+[node name="Pillar" parent="Pillar2" unique_id=1105013153 instance=ExtResource("4_3etub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0732193, 0.009059131, 0.0053817034)
+
+[node name="Pillar3" parent="." unique_id=2023757453 instance=ExtResource("4_3etub")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4.9749403, -5.804715, 8.19808)
+
+[node name="Pillar" parent="Pillar3" unique_id=76049488 instance=ExtResource("4_3etub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0732193, 0.009059131, 0.0053817034)
+
+[node name="Pillar4" parent="." unique_id=1733931837 instance=ExtResource("4_3etub")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 4.9749403, -5.804715, 16.94657)
+
+[node name="Sketchfab_Scene" parent="." unique_id=1483550792 instance=ExtResource("6_uue8y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.532774, 4.313385)
