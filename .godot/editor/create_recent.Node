@@ -1,6 +1,7 @@
+WorldEnvironment
+Label
 DirectionalLight3D
 Camera3D
-Label
 Button
 LineEdit
 VBoxContainer

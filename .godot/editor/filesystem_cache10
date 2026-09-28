@@ -1,8 +1,8 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1790533515
+::res://::1790614456
 icon.svg::CompressedTexture2D::6417002579354269996::1790354698::1790354720::1::::<><><>0<>0<>e9d4deb2af36300e4755ed388f7cb1d2<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 main_world.gd::GDScript::5276537123786804874::1790357669::0::1::::<>Node3D<><>0<>0<><>::
-main_world.tscn::PackedScene::5964109762847607864::1790533487::0::1::::<><><>0<>0<><>::uid://chf82bvacldju::::res://main_world.gd<>uid://bqajqraheyasj::::res://assets/ancient_gate.glb<>uid://dtjyhms5m4jta::::res://puzzle_ui.tscn<>uid://c03j01f551iav::::res://assets/boulder.glb<>uid://bt68qklq0048b::::res://assets/basic_roman_pillar.glb
+main_world.tscn::PackedScene::5964109762847607864::1790535855::0::1::::<><><>0<>0<><>::uid://chf82bvacldju::::res://main_world.gd<>uid://bqajqraheyasj::::res://assets/ancient_gate.glb<>uid://dtjyhms5m4jta::::res://puzzle_ui.tscn<>uid://dkeuqxmdbelty::::res://assets/ancient_gate_0.png<>uid://bt68qklq0048b::::res://assets/basic_roman_pillar.glb<>uid://b6wwmjs4cy6nm::::res://assets/colloseum_01.glb
 puzzle_ui.gd::GDScript::5845214623618627004::1790359460::0::1::::<>Control<><>0<>0<><>::
 puzzle_ui.tscn::PackedScene::8512899847839116690::1790359108::0::1::::<><><>0<>0<><>::uid://cpjp3ip5yomxo::::res://puzzle_ui.gd
 ::res://assets/::1790448981
