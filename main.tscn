@@ -7,7 +7,7 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 
-[node name="Main" type="Node3D" unique_id=748300147]
+[node name="Main2" type="Node3D" unique_id=748300147]
 
 [node name="InputManager" type="Node3D" parent="." unique_id=505010133]
 script = ExtResource("1_ig7tw")
@@ -21,7 +21,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.39734, -55.28463, 1.61516
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="Player" parent="." unique_id=973415603 instance=ExtResource("3_1bvp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.97571, -61.287098, -4.5957284)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.00979, -63.695984, -4.9540753)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1193764458]
 transform = Transform3D(0.7982278, 0, 0.60235566, 0, 1, 0, -0.60235566, 0, 0.7982278, -69.82778, -61.289623, 0)

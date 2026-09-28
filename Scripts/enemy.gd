@@ -1,7 +1,6 @@
 extends CharacterBody3D
 
 @export var moveSpeed: float = 4.0
-@export var chaseSpeed: float = 5.0
 @export var maxWaitTime: float = 1.5
 @export var maxChaseTime: float = 1.0
 
@@ -14,6 +13,7 @@ var Player:CharacterBody3D
 
 var is_waiting: bool = false
 var is_playerDetected: bool = false
+var is_enemyWaiting: bool = false
 
 func _ready() -> void:
 	timer = 0.0
@@ -37,10 +37,11 @@ func _process(delta: float) -> void:
 	if(startTimer):
 		timer+=delta
 	
-	if(timer >= maxChaseTime):
+	if(timer >= maxChaseTime or !is_playerDetected):
 		timer=0
 		#print(str(GameManager.SpawnPointNames.Church))
-		Player.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.Church)
+		if(Player!=null):
+			Player.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.Church)
 
 func _physics_process(delta: float) -> void:
 	# If paused between patrol points, just apply gravity
@@ -49,6 +50,7 @@ func _physics_process(delta: float) -> void:
 		set_target_position(Player.global_position)
 	else:
 		if is_waiting:
+			
 			if not is_on_floor():
 				velocity.y -= 9.8 * delta
 				move_and_slide()
@@ -104,3 +106,10 @@ func _on_eyesight_body_exited(body: CharacterBody3D) -> void:
 		startTimer=false
 		Player=null
 		print("bye")
+
+
+func isPlayerDetected()->bool:
+	return is_playerDetected
+
+func isEnemyWaiting()->bool:
+	return is_waiting
