@@ -2,13 +2,23 @@
 
 [ext_resource type="Script" uid="uid://c3xqqugvawwco" path="res://Scripts/enemy.gd" id="1_hghv2"]
 [ext_resource type="Script" uid="uid://bigq0rjnf6ng6" path="res://Scripts/PlayerDetectionScript.gd" id="2_1f0kj"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_2ruxo"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_27q8s"]
-height = 4.993042
+[ext_resource type="PackedScene" uid="uid://cd3ihiw65icdc" path="res://3D_MODELS/Enemy/Walking (2).fbx" id="3_afpow"]
+[ext_resource type="Script" uid="uid://p8qsycpe5cqn" path="res://Scripts/EnemyAnimationController.gd" id="4_287tu"]
+[ext_resource type="AnimationLibrary" uid="uid://btsrlujxb7ap" path="res://3D_MODELS/Enemy/idle_anim.fbx" id="5_1dp5w"]
+[ext_resource type="AnimationLibrary" uid="uid://gkfbxx4dhgmm" path="res://3D_MODELS/Enemy/run_anim.fbx" id="5_ghaa6"]
+[ext_resource type="AnimationLibrary" uid="uid://ctk4d4jncon3b" path="res://3D_MODELS/Enemy/walk_anim.fbx" id="6_1dp5w"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2ruxo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s8bcc"]
+transparency = 1
+cull_mode = 2
+disable_fog = true
+disable_specular_occlusion = true
+albedo_color = Color(0.9142539, 0.2887124, 0, 0.5176471)
+
+[sub_resource type="PrismMesh" id="PrismMesh_a0rh1"]
+size = Vector3(6.955, 5.005, 1)
 
 [node name="Enemy" type="CharacterBody3D" unique_id=1056083897]
 editor_description = "what enemy does:
@@ -16,21 +26,11 @@ Roams Randomly,
 if player detected it follow him,
 if player stays detected for a 4 seconds, then player is telepostert to start point"
 script = ExtResource("1_hghv2")
-moveSpeed = 5.5
-
-[node name="CSGCylinder3D" type="MeshInstance3D" parent="." unique_id=1883353995]
-mesh = SubResource("CapsuleMesh_2ruxo")
-
-[node name="CSGCylinder3D2" type="MeshInstance3D" parent="." unique_id=1328806718]
-transform = Transform3D(-0.0039110556, -0.5626006, 0.35886672, 0.50138396, -0.014062744, 1.8047691e-10, 0.005806828, 0.8353052, 0.24170645, 1.5903102, 0.02503725, -2.7410989)
-mesh = SubResource("CylinderMesh_27q8s")
-
-[node name="CSGCylinder3D3" type="MeshInstance3D" parent="." unique_id=671793611]
-transform = Transform3D(-0.0039095874, -0.5623897, -0.35892782, 0.50138396, -0.014062748, 1.8046786e-10, -0.0058078156, -0.83544755, 0.2416158, -1.5270308, 0.04020466, -2.7055252)
-mesh = SubResource("CylinderMesh_27q8s")
+moveSpeed = 4.5
+maxChaseTime = 4.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1813387056]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.016710281)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0335023, 0.016710281)
 shape = SubResource("CapsuleShape3D_2ruxo")
 
 [node name="Head" type="Node3D" parent="." unique_id=1332053581]
@@ -44,7 +44,21 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0
 polygon = PackedVector2Array(5, 3.5, 5, -3.5, 0, 0)
 debug_color = Color(0, 0.6, 0.69803923, 1)
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Head/eyesight/CollisionPolygon3D" unique_id=1716336866]
+transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, -8.351872e-23, 0, 0, 1, 2.4672217, 1.07845686e-07, 0)
+material_override = SubResource("StandardMaterial3D_s8bcc")
+mesh = SubResource("PrismMesh_a0rh1")
+
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1663610949]
+
+[node name="Model" parent="." unique_id=887564268 instance=ExtResource("3_afpow")]
+transform = Transform3D(-200, 0, -3.019916e-05, 0, 200, 0, 3.019916e-05, 0, -200, 0, 0, 0)
+script = ExtResource("4_287tu")
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="Model" unique_id=1429362727]
+libraries/idle_anim = ExtResource("5_1dp5w")
+libraries/run_anim = ExtResource("5_ghaa6")
+libraries/walk_anim = ExtResource("6_1dp5w")
 
 [connection signal="body_entered" from="Head/eyesight" to="." method="_on_eyesight_body_entered"]
 [connection signal="body_exited" from="Head/eyesight" to="." method="_on_eyesight_body_exited"]
