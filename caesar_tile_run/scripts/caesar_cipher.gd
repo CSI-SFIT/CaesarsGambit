@@ -28,20 +28,17 @@ static func encrypt(text: String, shift: int) -> String:
 static func decrypt(text: String, shift: int) -> String:
 	return encrypt(text, -shift)
 
-# Generates a puzzle: returns a dictionary with:
+# Generates a puzzle: returns dictionary with:
 # { "plain_word": String, "cipher_word": String, "shift": int, "path_cols": Array[int], "grid_letters": Array[Array] }
 static func generate_puzzle(rows: int, cols: int) -> Dictionary:
 	var word: String = ROMAN_WORDS[randi() % ROMAN_WORDS.size()]
 	
-	# Pad or repeat word letters to match row count
 	var target_letters: Array[String] = []
 	for r in range(rows):
 		target_letters.append(word[r % word.length()])
 	
-	# High-stakes Caesar shift: 1 to 7 (with positive/negative variation)
-	var shift_magnitude: int = (randi() % 6) + 2 # 2 to 7
-	var is_negative: bool = (randf() > 0.5)
-	var shift: int = -shift_magnitude if is_negative else shift_magnitude
+	# Strictly positive Caesar shift (+2 to +5) - no confusing negative numbers!
+	var shift: int = (randi() % 4) + 2
 	
 	var cipher_letters: Array[String] = []
 	for letter in target_letters:
@@ -68,9 +65,7 @@ static func generate_puzzle(rows: int, cols: int) -> Dictionary:
 		var safe_char: String = target_letters[r]
 		var cipher_char: String = cipher_letters[r]
 		
-		# Generate near-miss decoy (off by 1)
-		var decoy_off_by_one: String = encrypt(safe_char, 1 if randf() > 0.5 else -1)
-		# Generate cipher decoy (the unshifted encrypted letter as a trap)
+		var decoy_off_by_one: String = encrypt(safe_char, 1)
 		var decoy_cipher_trap: String = cipher_char
 		
 		var used_chars: Dictionary = { safe_char: true }
@@ -80,7 +75,6 @@ static func generate_puzzle(rows: int, cols: int) -> Dictionary:
 				row_chars.append(safe_char)
 			else:
 				var candidate: String = ""
-				# Attempt clever decoy injection
 				if c == (path_cols[r] + 1) % cols and not used_chars.has(decoy_off_by_one):
 					candidate = decoy_off_by_one
 				elif c == (path_cols[r] + 2) % cols and not used_chars.has(decoy_cipher_trap):

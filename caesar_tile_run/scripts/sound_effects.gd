@@ -9,6 +9,7 @@ var crack_stream: AudioStream
 var whack_stream: AudioStream
 var footstep_stream: AudioStream
 var landing_stream: AudioStream
+var heartbeat_stream: AudioStream
 
 func _ready() -> void:
 	load_or_synthesize_sounds()
@@ -16,13 +17,14 @@ func _ready() -> void:
 func load_or_synthesize_sounds() -> void:
 	safe_stream = create_tone(880.0, 0.25, 0.8)
 	crumble_stream = create_noise_crunch(0.4)
-	victory_stream = create_fanfare(0.6)
+	victory_stream = create_fanfare(0.65)
 	explosion_stream = create_explosion(0.65)
 	tick_stream = create_click(1200.0, 0.04)
 	crack_stream = create_click(650.0, 0.08)
 	whack_stream = create_whack(0.28)
 	footstep_stream = create_footstep(0.05)
 	landing_stream = create_thud(0.16)
+	heartbeat_stream = create_heartbeat(0.28)
 
 func play_safe() -> void:
 	play_stream(safe_stream, -4.0)
@@ -38,6 +40,9 @@ func play_explosion() -> void:
 
 func play_tick() -> void:
 	play_stream(tick_stream, -5.0)
+
+func play_heartbeat() -> void:
+	play_stream(heartbeat_stream, -1.0)
 
 func play_crack() -> void:
 	play_stream(crack_stream, -3.0)
@@ -127,6 +132,28 @@ func create_click(freq: float, duration: float) -> AudioStreamWAV:
 		var envelope = exp(-t * 80.0)
 		var val = sin(2.0 * PI * freq * t) * envelope
 		var int_val = clampi(int(val * 32767.0 * 0.7), -32768, 32767)
+		data.encode_s16(i * 2, int_val)
+	wav.data = data
+	return wav
+
+func create_heartbeat(duration: float) -> AudioStreamWAV:
+	var wav = AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = 22050
+	wav.stereo = false
+	var sample_count = int(wav.mix_rate * duration)
+	var data = PackedByteArray()
+	data.resize(sample_count * 2)
+	for i in range(sample_count):
+		var t = float(i) / wav.mix_rate
+		var envelope = exp(-t * 14.0)
+		# Low frequency resonant double-beat
+		var b1 = sin(2.0 * PI * 58.0 * t) * envelope
+		var b2 = 0.0
+		if t > 0.12:
+			b2 = sin(2.0 * PI * 50.0 * (t - 0.12)) * exp(-(t - 0.12) * 16.0) * 0.75
+		var val = (b1 + b2) * 0.9
+		var int_val = clampi(int(val * 32767.0), -32768, 32767)
 		data.encode_s16(i * 2, int_val)
 	wav.data = data
 	return wav

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_ui"]
 
@@ -68,6 +68,26 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alphabet_strip"]
+bg_color = Color(0.1, 0.07, 0.06, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.82, 0.25, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vignette"]
+bg_color = Color(0.85, 0.05, 0.05, 0)
+border_width_left = 24
+border_width_top = 24
+border_width_right = 24
+border_width_bottom = 24
+border_color = Color(0.85, 0.1, 0.1, 0.85)
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -206,6 +226,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="AdrenalineVignette" type="Panel" parent="HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vignette")
+
 [node name="TopBar" type="PanelContainer" parent="HUD"]
 layout_mode = 1
 anchors_preset = 10
@@ -221,44 +252,44 @@ theme_override_constants/margin_right = 20
 
 [node name="HBox" type="HBoxContainer" parent="HUD/TopBar/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 25
+theme_override_constants/separation = 22
 
 [node name="SPQR" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 17
 text = "SPQR | CAESAR'S GAMBIT"
 
 [node name="CipherLabel" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.3, 0.25, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.95, 0.35, 0.3, 1)
+theme_override_font_sizes/font_size = 15
 text = "CIPHER: VENI"
 
 [node name="ShiftLabel" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
-theme_override_font_sizes/font_size = 16
-text = "SHIFT: -3"
+theme_override_font_sizes/font_size = 15
+text = "SHIFT: +3"
 
 [node name="WordTracker" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.3, 0.9, 0.45, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 text = "DECODED: [ _ _ _ _ ]"
 
 [node name="TimerLabel" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_font_sizes/font_size = 16
-text = "HOURGLASS: 60s"
+text = "HOURGLASS: 45s"
 
-[node name="HintNotice" type="Label" parent="HUD/TopBar/Margin/HBox"]
+[node name="TabGuideLabel" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-theme_override_font_sizes/font_size = 14
-text = "Press [H] for Caesar's Decoder Hint"
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_font_sizes/font_size = 13
+text = "[TAB] Alphabet Strip   |   [H] Hint"
 
 [node name="PlayersBox" type="VBoxContainer" parent="HUD"]
 layout_mode = 1
@@ -283,6 +314,63 @@ theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
 theme_override_font_sizes/font_size = 15
 text = "Player 2 (Centurion): WAITING..."
 
+[node name="BroadcastBadge" type="Label" parent="HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 64.0
+offset_right = -20.0
+offset_bottom = 92.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 13
+text = "🎥 BROADCAST VIEW (Press C to switch)"
+horizontal_alignment = 2
+
+[node name="AlphabetStrip" type="PanelContainer" parent="HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -380.0
+offset_top = -115.0
+offset_right = 380.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_alphabet_strip")
+
+[node name="Margin" type="MarginContainer" parent="HUD/AlphabetStrip"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="HUD/AlphabetStrip/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="AlphabetChars" type="Label" parent="HUD/AlphabetStrip/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.45, 1)
+theme_override_font_sizes/font_size = 14
+text = "A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z"
+horizontal_alignment = 1
+
+[node name="ShiftHelperLabel" type="Label" parent="HUD/AlphabetStrip/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.85, 0.95, 1)
+theme_override_font_sizes/font_size = 12
+text = "CAESAR DECODER: Count backward by Shift to find the Safe Tile! (Press TAB to hide)"
+horizontal_alignment = 1
+
 [node name="HintCard" type="PanelContainer" parent="HUD"]
 visible = false
 layout_mode = 1
@@ -291,7 +379,7 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -340.0
+offset_left = -360.0
 offset_top = -120.0
 offset_right = -30.0
 offset_bottom = 80.0

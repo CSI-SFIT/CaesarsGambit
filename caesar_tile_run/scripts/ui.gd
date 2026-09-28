@@ -26,12 +26,16 @@ signal play_again_pressed()
 @onready var shift_text_label: Label = $HUD/TopBar/Margin/HBox/ShiftLabel
 @onready var word_tracker_label: Label = $HUD/TopBar/Margin/HBox/WordTracker
 @onready var timer_label: Label = $HUD/TopBar/Margin/HBox/TimerLabel
+@onready var adrenaline_vignette: Panel = $HUD/AdrenalineVignette
+@onready var broadcast_badge: Label = $HUD/BroadcastBadge
 @onready var p1_badge: Label = $HUD/PlayersBox/P1Badge
 @onready var p2_badge: Label = $HUD/PlayersBox/P2Badge
 @onready var hint_card: PanelContainer = $HUD/HintCard
 @onready var hint_solution_label: Label = $HUD/HintCard/Margin/VBox/SolutionLabel
 @onready var spectator_banner: PanelContainer = $HUD/SpectatorBanner
 @onready var spectator_label: Label = $HUD/SpectatorBanner/Margin/Label
+@onready var alphabet_strip: PanelContainer = $HUD/AlphabetStrip
+@onready var shift_helper_label: Label = $HUD/AlphabetStrip/Margin/VBox/ShiftHelperLabel
 
 # Victory Elements
 @onready var victory_title: Label = $VictoryPanel/Margin/VBox/VictoryTitle
@@ -46,6 +50,15 @@ signal play_again_pressed()
 @onready var close_leaderboard_btn: Button = $LeaderboardModal/Margin/VBox/CloseLeaderboardBtn
 
 var is_hint_open: bool = false
+var round_elapsed_timer: float = 0.0
+var hint_penalty_used: bool = false
+const HINT_LOCKOUT_TIME: float = 20.0
+
+var current_shift: int = 3
+var current_cipher_word: String = ""
+var current_plain_word: String = ""
+var current_role: int = 1
+var is_solo_session: bool = false
 
 func _ready() -> void:
 	lobby_panel.visible = true
@@ -55,6 +68,10 @@ func _ready() -> void:
 	leaderboard_modal.visible = false
 	if spectator_banner:
 		spectator_banner.visible = false
+	if alphabet_strip:
+		alphabet_strip.visible = false
+	if adrenaline_vignette:
+		adrenaline_vignette.visible = false
 	
 	host_btn.pressed.connect(_on_host_pressed)
 	join_btn.pressed.connect(_on_join_pressed)
@@ -80,48 +97,110 @@ func get_local_ip() -> String:
 	return "127.0.0.1"
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("toggle_hint"):
+	if event.is_action_pressed("toggle_hint") or (event is InputEventKey and event.pressed and event.keycode == KEY_H):
 		toggle_hint_card()
+	elif event is InputEventKey and event.pressed and event.keycode == KEY_TAB:
+		toggle_alphabet_strip()
+	elif event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE):
+		handle_escape_key()
+
+func handle_escape_key() -> void:
+	get_viewport().set_input_as_handled()
+	
+	if leaderboard_modal and leaderboard_modal.visible:
+		close_leaderboard()
+		return
+	if is_hint_open:
+		is_hint_open = false
+		if hint_card:
+			hint_card.visible = false
+	if alphabet_strip and alphabet_strip.visible:
+		alphabet_strip.visible = false
+		
+	if (lobby_panel and lobby_panel.visible) or (victory_panel and victory_panel.visible):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		return
+		
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	else:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+func toggle_alphabet_strip() -> void:
+	if not alphabet_strip:
+		return
+	alphabet_strip.visible = not alphabet_strip.visible
 
 func toggle_hint_card() -> void:
+	if not hint_card:
+		return
+		
+	# 20-second timer lockout anti-cheat
+	if round_elapsed_timer < HINT_LOCKOUT_TIME and not is_solo_session:
+		is_hint_open = true
+		hint_card.visible = true
+		var rem = int(HINT_LOCKOUT_TIME - round_elapsed_timer)
+		if hint_solution_label:
+			hint_solution_label.text = "🔒 HINT LOCKED: %ds remaining!\nGladiators must talk and communicate first!" % rem
+		return
+		
 	is_hint_open = not is_hint_open
 	hint_card.visible = is_hint_open
+	if is_hint_open and round_elapsed_timer >= HINT_LOCKOUT_TIME:
+		hint_penalty_used = true
 
 func start_game_ui() -> void:
 	lobby_panel.visible = false
 	hud_panel.visible = true
 	victory_panel.visible = false
 	leaderboard_modal.visible = false
+	round_elapsed_timer = 0.0
+	hint_penalty_used = false
 	if spectator_banner:
 		spectator_banner.visible = false
+	if alphabet_strip:
+		alphabet_strip.visible = false
+	if adrenaline_vignette:
+		adrenaline_vignette.visible = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _process(delta: float) -> void:
+	if hud_panel and hud_panel.visible and not victory_panel.visible:
+		round_elapsed_timer += delta
 
 func update_cipher_display(cipher_word: String, shift: int, plain_word: String) -> void:
 	update_cipher_display_split(cipher_word, shift, plain_word, 1, true)
 
 func update_cipher_display_split(cipher_word: String, shift: int, plain_word: String, player_role: int, is_solo: bool) -> void:
-	var prefix = "+" if shift > 0 else ""
+	current_shift = shift
+	current_cipher_word = cipher_word
+	current_plain_word = plain_word
+	current_role = player_role
+	is_solo_session = is_solo
+	
+	if shift_helper_label:
+		shift_helper_label.text = "SHIFT +%d: Count %d letters backward from Cipher letter to decode! [TAB to toggle]" % [shift, shift]
+
 	if is_solo:
 		if cipher_text_label:
 			cipher_text_label.text = "CIPHER: %s" % cipher_word
 		if shift_text_label:
-			shift_text_label.text = "SHIFT: %s%d" % [prefix, shift]
+			shift_text_label.text = "SHIFT: +%d" % shift
 		if hint_solution_label:
 			hint_solution_label.text = "SOLO PRACTICE DECODER:\nDecrypted Word: %s\n(Follow these letters across rows!)" % plain_word
 	elif player_role == 1 or player_role <= 1:
 		if cipher_text_label:
 			cipher_text_label.text = "[CAESAR] CLUE: " + cipher_word
 		if shift_text_label:
-			shift_text_label.text = "SHIFT: ??? [ASK CENTURION (P2)]"
+			shift_text_label.text = "SHIFT: ??? [ASK CENTURION]"
 		if hint_solution_label:
 			hint_solution_label.text = "TEAMWORK REQUIRED:\nYou have the Cipher: " + cipher_word + "\nAsk Centurion (P2) for the secret shift number to decode your path!"
 	else:
 		if cipher_text_label:
-			cipher_text_label.text = "CIPHER: ??? [ASK CAESAR (P1)]"
+			cipher_text_label.text = "CIPHER: ??? [ASK CAESAR]"
 		if shift_text_label:
-			shift_text_label.text = "[CENTURION] CLUE: SHIFT " + prefix + str(shift)
+			shift_text_label.text = "[CENTURION] CLUE: SHIFT +" + str(shift)
 		if hint_solution_label:
-			hint_solution_label.text = "TEAMWORK REQUIRED:\nYou have the Shift: " + prefix + str(shift) + "\nAsk Caesar (P1) for the encrypted word to calculate the path together!"
+			hint_solution_label.text = "TEAMWORK REQUIRED:\nYou have the Shift: +" + str(shift) + "\nAsk Caesar (P1) for the encrypted word to calculate the path together!"
 
 func update_word_tracker(revealed_letters: String, target_word_length: int) -> void:
 	if not word_tracker_label:
@@ -145,6 +224,10 @@ func hide_spectator_banner() -> void:
 	if spectator_banner:
 		spectator_banner.visible = false
 
+func set_broadcast_badge(visible_status: bool) -> void:
+	if broadcast_badge:
+		broadcast_badge.visible = visible_status
+
 func update_player_badges(p1_active: bool, p2_active: bool) -> void:
 	if p1_badge:
 		p1_badge.text = "Caesar (P1): " + ("READY" if p1_active else "WAITING...")
@@ -154,16 +237,31 @@ func update_player_badges(p1_active: bool, p2_active: bool) -> void:
 func update_timer(seconds: int) -> void:
 	if timer_label:
 		timer_label.text = "HOURGLASS: %ds" % seconds
-		if seconds <= 20:
-			timer_label.modulate = Color(1.0, 0.25, 0.2)
+		if seconds <= 15:
+			timer_label.modulate = Color(1.0, 0.2, 0.15)
+			# 15s Adrenaline Vignette pulsation
+			if adrenaline_vignette:
+				adrenaline_vignette.visible = true
+				var pulse = (sin(Time.get_ticks_msec() * 0.012) + 1.0) * 0.5
+				adrenaline_vignette.modulate.a = 0.25 + pulse * 0.55
+		elif seconds <= 25:
+			timer_label.modulate = Color(1.0, 0.45, 0.2)
+			if adrenaline_vignette:
+				adrenaline_vignette.visible = false
 		else:
 			timer_label.modulate = Color(1.0, 0.85, 0.2)
+			if adrenaline_vignette:
+				adrenaline_vignette.visible = false
 
 func show_tournament_victory(time_sec: float, acc: float, rank: String, word: String) -> void:
 	lobby_panel.visible = false
 	victory_panel.visible = true
 	if spectator_banner:
 		spectator_banner.visible = false
+	if alphabet_strip:
+		alphabet_strip.visible = false
+	if adrenaline_vignette:
+		adrenaline_vignette.visible = false
 	if victory_title:
 		victory_title.text = "AVE CAESAR! TRIAL CONQUERED!"
 	if victory_desc:
@@ -212,13 +310,11 @@ func populate_leaderboard() -> void:
 		runs_list.add_child(empty_lbl)
 		return
 		
-	# Sort runs by clear time ascending
 	parsed.sort_custom(func(a, b): return a.get("clear_time_sec", 999.0) < b.get("clear_time_sec", 999.0))
 	
 	var count = min(6, parsed.size())
 	for i in range(count):
 		var item = parsed[i]
-		var panel = PanelContainer.new()
 		var lbl = Label.new()
 		var rank_str = item.get("rank", "B")
 		var time_str = str(item.get("clear_time_sec", 0.0)) + "s"

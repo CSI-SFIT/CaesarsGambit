@@ -36,6 +36,9 @@ var jump_buffer_timer: float = 0.0
 var is_spectating: bool = false
 var spectator_target: Node3D = null
 
+# Victory celebration state
+var is_triumph: bool = false
+
 # Procedural limb animation variables
 var foot_anim_time: float = 0.0
 var footstep_cooldown: float = 0.0
@@ -147,6 +150,11 @@ func stop_spectating() -> void:
 	if camera_pivot:
 		camera_pivot.position = Vector3(0, 1.45, 0)
 
+func set_triumph(active: bool) -> void:
+	is_triumph = active
+	if is_triumph and arm_right:
+		arm_right.rotation.x = deg_to_rad(-145.0)
+
 func _unhandled_input(event: InputEvent) -> void:
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
 	if not is_local:
@@ -154,7 +162,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED and not is_spectating:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
 func _input(event: InputEvent) -> void:
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
 	if not is_local:
@@ -181,6 +188,15 @@ func _physics_process(delta: float) -> void:
 			var target_cam_pos = spectator_target.global_position + Vector3(0, 1.45, 0)
 			camera_pivot.global_position = camera_pivot.global_position.lerp(target_cam_pos, delta * 8.0)
 		velocity = Vector3.ZERO
+		move_and_slide()
+		return
+
+	# Triumph Celebration Spin
+	if is_triumph:
+		velocity = Vector3.ZERO
+		if visual_mesh:
+			visual_mesh.rotation.y += delta * 2.5
+			visual_mesh.position.y = abs(sin(Time.get_ticks_msec() * 0.008)) * 0.18
 		move_and_slide()
 		return
 
@@ -271,12 +287,9 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, current_friction * delta)
 		velocity.z = move_toward(velocity.z, 0.0, current_friction * delta)
 
-	# -------------------------------------------------------------
 	# Procedural Limb & Character Animation
-	# -------------------------------------------------------------
 	var horiz_speed = Vector2(velocity.x, velocity.z).length()
 	if is_diving:
-		# Superhero belly flop dive pose
 		if foot_left:
 			foot_left.position = Vector3(-0.22, 0.28, -0.32)
 		if foot_right:
@@ -286,7 +299,6 @@ func _physics_process(delta: float) -> void:
 		if cape_mesh:
 			cape_mesh.rotation.x = deg_to_rad(45.0)
 	elif horiz_speed > 0.5 and is_on_floor():
-		# Snappy running foot pitter-patter & arm pump
 		foot_anim_time += delta * horiz_speed * 1.7
 		var step_l = sin(foot_anim_time)
 		var step_r = -step_l
@@ -302,13 +314,11 @@ func _physics_process(delta: float) -> void:
 		if cape_mesh:
 			cape_mesh.rotation.x = deg_to_rad(12.0 + (horiz_speed / RUN_SPEED) * 26.0 + sin(foot_anim_time * 2.0) * 4.0)
 			
-		# Step audio rhythm
 		if step_l > 0.85 and footstep_cooldown <= 0.0:
 			if sound_fx and sound_fx.has_method("play_footstep"):
 				sound_fx.play_footstep()
 			footstep_cooldown = 0.24
 	else:
-		# Idle gentle breathing bob
 		var idle_t = Time.get_ticks_msec() * 0.003
 		if visual_mesh:
 			visual_mesh.position.y = sin(idle_t) * 0.025
@@ -337,5 +347,6 @@ func respawn() -> void:
 	global_position = spawn_position
 	velocity = Vector3.ZERO
 	is_diving = false
+	is_triumph = false
 	if visual_mesh:
 		visual_mesh.rotation.x = 0.0

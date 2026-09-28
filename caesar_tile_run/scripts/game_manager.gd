@@ -31,7 +31,8 @@ var tiles_grid: Array = []
 var players_at_finish: Array[int] = []
 var sound_fx = preload("res://scripts/sound_effects.gd").new()
 var hazards_container: Node3D
-var round_timer: float = 60.0
+const ROUND_TIME: float = 45.0
+var round_timer: float = ROUND_TIME
 var game_active: bool = false
 var catapult_timer: float = 0.0
 const CATAPULT_INTERVAL: float = 7.5
@@ -44,6 +45,10 @@ var my_player_role: int = 1
 var is_solo_mode: bool = false
 var current_highest_row: int = 0
 
+# Broadcast camera mode
+var broadcast_camera: Camera3D
+var is_broadcast_cam_active: bool = false
+
 func _ready() -> void:
 	sound_fx.name = "SoundEffects"
 	add_child(sound_fx)
@@ -53,6 +58,7 @@ func _ready() -> void:
 	add_child(hazards_container)
 	add_child(AssetLoaderScript.new())
 	setup_milestone_labels()
+	setup_broadcast_camera()
 	
 	# Connect UI signals
 	if ui:
@@ -70,6 +76,35 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
+
+func setup_broadcast_camera() -> void:
+	broadcast_camera = Camera3D.new()
+	broadcast_camera.name = "BroadcastCamera"
+	# Positioned high in the Colosseum stands overlooking the full arena track
+	broadcast_camera.position = Vector3(0, 16.5, 23.5)
+	broadcast_camera.rotation_degrees = Vector3(-38.0, 0, 0)
+	broadcast_camera.current = false
+	add_child(broadcast_camera)
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and (event.keycode == KEY_C or event.keycode == KEY_F1):
+		toggle_broadcast_camera()
+
+func toggle_broadcast_camera() -> void:
+	if not broadcast_camera:
+		return
+	is_broadcast_cam_active = not is_broadcast_cam_active
+	broadcast_camera.current = is_broadcast_cam_active
+	
+	if not is_broadcast_cam_active:
+		# Return camera to local player
+		var local_id = multiplayer.get_unique_id() if multiplayer.multiplayer_peer != null else 1
+		var p = players_container.get_node_or_null(str(local_id))
+		if p and p.has_node("CameraPivot/SpringArm3D/Camera3D"):
+			p.get_node("CameraPivot/SpringArm3D/Camera3D").current = true
+			
+	if ui and ui.has_method("set_broadcast_badge"):
+		ui.set_broadcast_badge(is_broadcast_cam_active)
 
 func _on_host_pressed() -> void:
 	var peer = ENetMultiplayerPeer.new()
@@ -158,8 +193,14 @@ func _process(delta: float) -> void:
 		var prev_sec = int(round_timer)
 		round_timer -= delta
 		var curr_sec = int(round_timer)
-		if curr_sec < prev_sec and curr_sec <= 20 and curr_sec > 0:
-			sound_fx.play_tick()
+		
+		# Heartbeat audio under 15 seconds
+		if curr_sec < prev_sec:
+			if curr_sec <= 15 and curr_sec > 0:
+				sound_fx.play_heartbeat()
+			elif curr_sec <= 25 and curr_sec > 0:
+				sound_fx.play_tick()
+				
 		if ui and ui.has_method("update_timer"):
 			ui.update_timer(int(round_timer))
 		if round_timer <= 0.0:
@@ -172,7 +213,7 @@ func _process(delta: float) -> void:
 			trigger_catapult_strike()
 
 func trigger_timeout_reset() -> void:
-	round_timer = 60.0
+	round_timer = ROUND_TIME
 	sound_fx.play_crumble()
 	if multiplayer.is_server() or multiplayer.multiplayer_peer == null:
 		puzzle_data = CaesarCipherScript.generate_puzzle(GRID_ROWS, GRID_COLS)
@@ -238,7 +279,7 @@ func setup_grid_from_puzzle(data: Dictionary) -> void:
 		p2.swing_speed = 2.8
 		hazards_container.add_child(p2)
 
-	round_timer = 60.0
+	round_timer = ROUND_TIME
 	round_start_time = Time.get_ticks_msec() / 1000.0
 	total_steps = 0
 	safe_steps = 0
@@ -340,16 +381,29 @@ func trigger_victory_ui() -> void:
 	game_active = false
 	sound_fx.play_victory()
 	
+	# Trigger Golden Laurel Confetti Shower from Arch of Constantine
+	if finish_arch and finish_arch.has_method("trigger_grand_victory_shower"):
+		finish_arch.trigger_grand_victory_shower()
+		
+	# Trigger player celebratory triumph pose
+	for p in players_container.get_children():
+		if p is RomanPlayer and p.has_method("set_triumph"):
+			p.set_triumph(true)
+	
 	var clear_time = maxf(1.0, (Time.get_ticks_msec() / 1000.0) - round_start_time)
 	var accuracy = 100.0 if total_steps == 0 else (float(safe_steps) / float(total_steps) * 100.0)
 	
 	var rank = "S - IMPERATOR"
-	if clear_time > 45.0 or accuracy < 75.0:
+	if clear_time > 36.0 or accuracy < 75.0:
 		rank = "B - LEGIONNAIRE"
-	elif clear_time > 35.0 or accuracy < 90.0:
+	elif clear_time > 26.0 or accuracy < 88.0:
 		rank = "A - CENTURION"
 	if accuracy < 60.0:
 		rank = "C - GLADIATOR"
+		
+	# Penalty check: if hint was opened, disqualify S rank
+	if ui and "hint_penalty_used" in ui and ui.hint_penalty_used and rank == "S - IMPERATOR":
+		rank = "A - CENTURION (Hint Used)"
 		
 	var word = puzzle_data.get("plain_word", "ROMA")
 	save_tournament_run(clear_time, accuracy, rank, word)

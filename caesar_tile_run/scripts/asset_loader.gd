@@ -18,7 +18,7 @@ func load_all_sketchfab_assets() -> void:
 	# Scaled 6.5x and rotated 90 degrees so the entire tile run (Start -> Tiles -> Finish)
 	# is played directly inside the Colosseum's inner arena oval!
 	var colosseum_path = "res://assets/models/colosseum.glb"
-	if ResourceLoader.exists(colosseum_path):
+	if ResourceLoader.exists(colosseum_path) and not main_node.has_node("SketchfabColosseum"):
 		var res = load(colosseum_path)
 		if res is PackedScene:
 			var col = res.instantiate()
