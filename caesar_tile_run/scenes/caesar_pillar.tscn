@@ -38,6 +38,12 @@ size = Vector3(0.4, 0.7, 0.3)
 [sub_resource type="BoxMesh" id="BoxMesh_eagle_wing"]
 size = Vector3(0.8, 0.35, 0.08)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_pedestal_col"]
+size = Vector3(4.4, 0.8, 2.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tablet_col"]
+size = Vector3(3.6, 4.4, 0.8)
+
 [node name="CaesarPillar" type="Node3D" unique_id=1202654535]
 script = ExtResource("1_pillar")
 
@@ -134,3 +140,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0, 0.5)
 
 [node name="BrazierRight" parent="." unique_id=1792608391 instance=ExtResource("2_brazier")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0, 0.5)
+
+[node name="MonumentCollider" type="StaticBody3D" parent="."]
+
+[node name="PedestalShape" type="CollisionShape3D" parent="MonumentCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("BoxShape3D_pedestal_col")
+
+[node name="TabletShape" type="CollisionShape3D" parent="MonumentCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+shape = SubResource("BoxShape3D_tablet_col")

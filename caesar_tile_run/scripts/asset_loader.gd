@@ -43,22 +43,42 @@ func load_all_sketchfab_assets() -> void:
 			main_node.add_child(temple)
 			print("-> Roman Temple positioned on the starting forum!")
 
-	# 3. HEROIC GUARDIAN GLADIATORS (Flanking the Start Gateway)
+	# 3. HEROIC GUARDIAN GLADIATORS (Flanking the Finish Arch Gateway)
 	var gladiator_path = "res://assets/models/gladiator.glb"
-	if ResourceLoader.exists(gladiator_path):
+	if ResourceLoader.exists(gladiator_path) and not main_node.has_node("GuardianGladiatorLeft"):
 		var res_glad = load(gladiator_path)
 		if res_glad is PackedScene:
 			var g1 = res_glad.instantiate()
 			g1.name = "GuardianGladiatorLeft"
-			g1.position = Vector3(-5.5, 0.0, 4.5)
-			g1.rotation_degrees = Vector3(0, 45, 0)
+			g1.position = Vector3(-4.8, 0.0, 29.0)
+			g1.rotation_degrees = Vector3(0, -150, 0)
 			g1.scale = Vector3(0.28, 0.28, 0.28)
+			
+			var col_body1 = StaticBody3D.new()
+			var col_shape1 = CollisionShape3D.new()
+			var cyl1 = CylinderShape3D.new()
+			cyl1.radius = 0.6
+			cyl1.height = 1.8
+			col_shape1.shape = cyl1
+			col_shape1.position = Vector3(0, 0.9, 0)
+			col_body1.add_child(col_shape1)
+			g1.add_child(col_body1)
 			main_node.add_child(g1)
 			
 			var g2 = res_glad.instantiate()
 			g2.name = "GuardianGladiatorRight"
-			g2.position = Vector3(5.5, 0.0, 4.5)
-			g2.rotation_degrees = Vector3(0, -45, 0)
+			g2.position = Vector3(4.8, 0.0, 29.0)
+			g2.rotation_degrees = Vector3(0, 150, 0)
 			g2.scale = Vector3(0.28, 0.28, 0.28)
+			
+			var col_body2 = StaticBody3D.new()
+			var col_shape2 = CollisionShape3D.new()
+			var cyl2 = CylinderShape3D.new()
+			cyl2.radius = 0.6
+			cyl2.height = 1.8
+			col_shape2.shape = cyl2
+			col_shape2.position = Vector3(0, 0.9, 0)
+			col_body2.add_child(col_shape2)
+			g2.add_child(col_body2)
 			main_node.add_child(g2)
-			print("-> Guardian Gladiators placed at arena gates!")
+			print("-> Guardian Gladiators placed at finish arena gates!")

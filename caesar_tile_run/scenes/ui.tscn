@@ -208,6 +208,14 @@ theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
 theme_override_font_sizes/font_size = 14
 text = "SOLO PRACTICE / TEST MODE"
 
+[node name="RulesBtnLobby" type="Button" parent="LobbyPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone")
+text = "📜 FESTIVAL RULES & CONTROLS [F2]"
+
 [node name="LeaderboardBtnLobby" type="Button" parent="LobbyPanel/Margin/VBox"]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
@@ -289,7 +297,7 @@ layout_mode = 2
 size_flags_horizontal = 10
 theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
 theme_override_font_sizes/font_size = 13
-text = "[TAB] Alphabet Strip   |   [H] Hint"
+text = "[TAB] Alphabet Ruler  |  [H] Hint  |  [F2] Rules"
 
 [node name="PlayersBox" type="VBoxContainer" parent="HUD"]
 layout_mode = 1
@@ -581,4 +589,172 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
-text = "CLOSE LEADERBOARD"
+text = "CLOSE LEADERBOARD"[node name="DecryptedWordBanner" type="Label" parent="VictoryPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0.45, 0.2, 0.05, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 26
+text = "DECRYPTED WORD: [ ROMA ]"
+horizontal_alignment = 1
+
+
+
+[node name="RulesModal" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -250.0
+offset_right = 340.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_roman_panel")
+
+[node name="Margin" type="MarginContainer" parent="RulesModal"]
+layout_mode = 2
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 22
+
+[node name="VBox" type="VBoxContainer" parent="RulesModal/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RulesModal/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
+theme_override_font_sizes/font_size = 22
+text = "🏛️ CAESAR'S GAMBIT — FESTIVAL RULES"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="RulesModal/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.8, 0.75, 1)
+theme_override_font_sizes/font_size = 13
+text = "2-Player Co-op Latin Cipher Rush (45-Second Round)"
+horizontal_alignment = 1
+
+[node name="HSep1" type="HSeparator" parent="RulesModal/Margin/VBox"]
+layout_mode = 2
+
+[node name="ContentHBox" type="HBoxContainer" parent="RulesModal/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="CoopRulesBox" type="VBoxContainer" parent="RulesModal/Margin/VBox/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="CoopHeader" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "👑 TEAMWORK ESSENTIALS"
+
+[node name="Rule1" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "• Caesar (P1): Sees the Encrypted Word clue."
+autowrap_mode = 2
+
+[node name="Rule2" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "• Centurion (P2): Sees the Caesar Shift (+2 to +5)."
+autowrap_mode = 2
+
+[node name="Rule3" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 12
+text = "• COMMUNICATE! Talk to decode the secret word & find the safe tiles."
+autowrap_mode = 2
+
+[node name="Rule4" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.35, 1)
+theme_override_font_sizes/font_size = 12
+text = "• 15s Adrenaline: Heartbeat & panic vignette begin under 15 seconds!"
+autowrap_mode = 2
+
+[node name="Rule5" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "• Both must cross the Arch of Constantine to win!"
+autowrap_mode = 2
+
+[node name="ControlsBox" type="VBoxContainer" parent="RulesModal/Margin/VBox/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="ControlsHeader" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/ControlsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "🎮 KEYBOARD CONTROLS"
+
+[node name="Ctrl1" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/ControlsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "[W][A][S][D] : Run / Navigate arena"
+
+[node name="Ctrl2" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/ControlsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "[SPACE] : Jump over hazards"
+
+[node name="Ctrl3" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/ControlsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "[SHIFT] / [R-CLICK] : Belly-Flop Dive"
+
+[node name="Ctrl4" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/ControlsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "[TAB] : Roman Alphabet Ruler"
+
+[node name="Ctrl5" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/ControlsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "[H] : Caesar's Hint (Unlocks at 20s)"
+
+[node name="Ctrl6" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/ControlsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "[F1] / [C] : TV Stadium Broadcast View"
+
+[node name="Ctrl7" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/ControlsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "[ESC] : Release / Recapture Mouse"
+
+[node name="HSep2" type="HSeparator" parent="RulesModal/Margin/VBox"]
+layout_mode = 2
+
+[node name="CloseRulesBtn" type="Button" parent="RulesModal/Margin/VBox"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
+text = "CLOSE RULES (ESC / F2)"

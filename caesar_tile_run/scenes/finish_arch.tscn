@@ -8,6 +8,9 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_finish"]
 size = Vector3(5.5, 6.0, 3.5)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_arch_pillar"]
+size = Vector3(2.0, 7.0, 2.6)
+
 [node name="FinishArch" type="Node3D"]
 script = ExtResource("1_arch")
 
@@ -45,3 +48,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FinishArea"]
 shape = SubResource("BoxShape3D_finish")
+
+[node name="PillarsCollider" type="StaticBody3D" parent="."]
+
+[node name="LeftPillarShape" type="CollisionShape3D" parent="PillarsCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 3.5, 0.3)
+shape = SubResource("BoxShape3D_arch_pillar")
+
+[node name="RightPillarShape" type="CollisionShape3D" parent="PillarsCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 3.5, 0.3)
+shape = SubResource("BoxShape3D_arch_pillar")

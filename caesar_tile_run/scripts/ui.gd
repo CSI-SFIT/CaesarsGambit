@@ -46,6 +46,10 @@ signal play_again_pressed()
 @onready var leaderboard_btn_vic: Button = $VictoryPanel/Margin/VBox/LeaderboardBtnVic
 
 # Leaderboard Modal Elements
+@onready var rules_modal: PanelContainer = $RulesModal
+@onready var rules_btn_lobby: Button = $LobbyPanel/Margin/VBox/RulesBtnLobby
+@onready var close_rules_btn: Button = $RulesModal/Margin/VBox/CloseRulesBtn
+@onready var decrypted_word_banner: Label = $VictoryPanel/Margin/VBox/DecryptedWordBanner
 @onready var runs_list: VBoxContainer = $LeaderboardModal/Margin/VBox/Scroll/RunsList
 @onready var close_leaderboard_btn: Button = $LeaderboardModal/Margin/VBox/CloseLeaderboardBtn
 
@@ -84,6 +88,12 @@ func _ready() -> void:
 		leaderboard_btn_vic.pressed.connect(open_leaderboard)
 	if close_leaderboard_btn:
 		close_leaderboard_btn.pressed.connect(close_leaderboard)
+	if rules_modal:
+		rules_modal.visible = false
+	if rules_btn_lobby:
+		rules_btn_lobby.pressed.connect(open_rules)
+	if close_rules_btn:
+		close_rules_btn.pressed.connect(close_rules)
 	if play_again_btn:
 		play_again_btn.pressed.connect(_on_play_again_pressed)
 	
@@ -99,6 +109,8 @@ func get_local_ip() -> String:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_hint") or (event is InputEventKey and event.pressed and event.keycode == KEY_H):
 		toggle_hint_card()
+	elif event is InputEventKey and event.pressed and event.keycode == KEY_F2:
+		toggle_rules()
 	elif event is InputEventKey and event.pressed and event.keycode == KEY_TAB:
 		toggle_alphabet_strip()
 	elif event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE):
@@ -107,6 +119,9 @@ func _input(event: InputEvent) -> void:
 func handle_escape_key() -> void:
 	get_viewport().set_input_as_handled()
 	
+	if rules_modal and rules_modal.visible:
+		close_rules()
+		return
 	if leaderboard_modal and leaderboard_modal.visible:
 		close_leaderboard()
 		return
@@ -264,6 +279,8 @@ func show_tournament_victory(time_sec: float, acc: float, rank: String, word: St
 		adrenaline_vignette.visible = false
 	if victory_title:
 		victory_title.text = "AVE CAESAR! TRIAL CONQUERED!"
+	if decrypted_word_banner:
+		decrypted_word_banner.text = "DECRYPTED WORD: [ %s ]" % word.to_upper()
 	if victory_desc:
 		victory_desc.text = "Both Gladiators deciphered '%s' and crossed the abyss!\nThe 4-player gate to the Grand Arena is unlocked!" % word
 	if stats_label:
@@ -274,6 +291,25 @@ func show_tournament_victory(time_sec: float, acc: float, rank: String, word: St
 
 func show_victory(message: String = "") -> void:
 	show_tournament_victory(35.0, 100.0, "S - IMPERATOR", "ROMA")
+
+func open_rules() -> void:
+	if rules_modal:
+		rules_modal.visible = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func close_rules() -> void:
+	if rules_modal:
+		rules_modal.visible = false
+	if hud_panel and hud_panel.visible and not victory_panel.visible and not lobby_panel.visible:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func toggle_rules() -> void:
+	if not rules_modal:
+		return
+	if rules_modal.visible:
+		close_rules()
+	else:
+		open_rules()
 
 func open_leaderboard() -> void:
 	leaderboard_modal.visible = true

@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/roman_banner.tscn" id="5_banner"]
 [ext_resource type="PackedScene" path="res://scenes/roman_brazier.tscn" id="6_brazier"]
 [ext_resource type="PackedScene" uid="uid://b57tergeybwsq" path="res://assets/models/colosseum.glb" id="7_colosseum"]
+[ext_resource type="PackedScene" path="res://assets/models/gladiator.glb" id="8_gladiator"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rome"]
 sky_top_color = Color(0.24, 0.35, 0.62, 1)
@@ -63,6 +64,17 @@ size = Vector3(20, 1.2, 14)
 [sub_resource type="BoxShape3D" id="BoxShape3D_kill"]
 size = Vector3(150, 2, 150)
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_fluted_col"]
+height = 7.0
+radius = 0.65
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_back_barrier"]
+size = Vector3(18.0, 3.0, 0.8)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gladiator"]
+height = 1.65
+radius = 0.55
+
 [node name="Main" type="Node3D" unique_id=1281352569]
 script = ExtResource("1_gm")
 
@@ -88,6 +100,26 @@ shape = SubResource("BoxShape3D_start_plat")
 mesh = SubResource("BoxMesh_start_plat")
 surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
 
+
+[node name="ColFrontLeftShape" type="CollisionShape3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 3.5, -5.5)
+shape = SubResource("CylinderShape3D_fluted_col")
+
+[node name="ColFrontRightShape" type="CollisionShape3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 3.5, -5.5)
+shape = SubResource("CylinderShape3D_fluted_col")
+
+[node name="ColBackLeftShape" type="CollisionShape3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 3.5, 3.5)
+shape = SubResource("CylinderShape3D_fluted_col")
+
+[node name="ColBackRightShape" type="CollisionShape3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 3.5, 3.5)
+shape = SubResource("CylinderShape3D_fluted_col")
+
+[node name="BackBarrierShape" type="CollisionShape3D" parent="StartPlatform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -7.0)
+shape = SubResource("BoxShape3D_back_barrier")
 [node name="ColFrontLeft" type="MeshInstance3D" parent="StartPlatform" unique_id=1191287558]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 4.1, 5.5)
 mesh = SubResource("CylinderMesh_fluted_col")
@@ -156,6 +188,26 @@ shape = SubResource("BoxShape3D_finish_plat")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="FinishPlatform" unique_id=788243823]
 mesh = SubResource("BoxMesh_finish_plat")
 surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="GuardianGladiatorLeft" parent="." instance=ExtResource("8_gladiator")]
+transform = Transform3D(0.216506, 0, -0.125, 0, 0.25, 0, 0.125, 0, 0.216506, -4.8, 0, 29)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="GuardianGladiatorLeft"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GuardianGladiatorLeft/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.825, 0)
+shape = SubResource("CylinderShape3D_gladiator")
+
+[node name="GuardianGladiatorRight" parent="." instance=ExtResource("8_gladiator")]
+transform = Transform3D(0.216506, 0, 0.125, 0, 0.25, 0, -0.125, 0, 0.216506, 4.8, 0, 29)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="GuardianGladiatorRight"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GuardianGladiatorRight/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.825, 0)
+shape = SubResource("CylinderShape3D_gladiator")
 
 [node name="FinishArch" parent="." unique_id=1269890929 instance=ExtResource("3_arch")]
 transform = Transform3D(-0.9220106, 0, -0.38716447, 0, 1, 0, 0.38716447, 0, -0.9220106, 0, 0, 33)
