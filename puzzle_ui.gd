@@ -16,7 +16,7 @@ var questions = [
 @onready var submit_button = %SubmitButton
 
 func _ready():
-	display_current_question()
+	visible = false  # Explicitly hidden at start during camera fly-in
 	submit_button.pressed.connect(_on_submit_pressed)
 
 func display_current_question():
@@ -24,6 +24,7 @@ func display_current_question():
 		question_label.text = questions[current_problem - 1]
 		answer_input.text = ""
 		feedback_label.text = ""
+		visible = true
 
 func _on_submit_pressed():
 	var user_ans = answer_input.text.strip_edges()
@@ -33,17 +34,13 @@ func _on_submit_pressed():
 		
 	if int(user_ans) == answers[current_problem - 1]:
 		feedback_label.text = "Correct!"
+		visible = false  # Hide UI while boulder rolls
 		problem_solved.emit()
 		current_problem += 1
 		
-		if current_problem <= 3:
-			await get_tree().create_timer(1.0).timeout
-			display_current_question()
-		else:
+		if current_problem > 3:
 			question_label.text = "All logic puzzles solved!"
 			answer_input.visible = false
 			submit_button.visible = false
-			await get_tree().create_timer(1.5).timeout
-			visible = false
 	else:
 		feedback_label.text = "Incorrect, try again!"

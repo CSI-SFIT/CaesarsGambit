@@ -1,3 +1,4 @@
 res://main_world.tscn
+res://puzzle_ui.gd
 res://main_world.gd
 res://puzzle_ui.tscn
