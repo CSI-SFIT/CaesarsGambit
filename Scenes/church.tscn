@@ -207,5 +207,53 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.763504, 5.808853, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.303444, -5.8379517, 0.9294586)
 shape = SubResource("BoxShape3D_0eud2")
 
-[node name="Enemy" parent="." unique_id=1056083897 instance=ExtResource("2_38qbd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.802315, -63.695236, 4.2971826)
+[node name="Enemies" type="Node3D" parent="." unique_id=1000804422]
+
+[node name="Enemy" parent="Enemies" unique_id=1056083897 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.8498535)
+moveSpeed = 8.0
+
+[node name="Enemy2" parent="Enemies" unique_id=2103721632 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -92.67757, -63.695236, 10.8498535)
+
+[node name="Enemy8" parent="Enemies" unique_id=865218177 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -92.67757, -63.695236, 0.8040972)
+
+[node name="Enemy9" parent="Enemies" unique_id=52977820 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -85.748764, -63.695236, 7.847584)
+
+[node name="Enemy7" parent="Enemies" unique_id=664989484 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.88265, -63.695236, 22.331972)
+moveSpeed = 7.0
+
+[node name="Enemy3" parent="Enemies" unique_id=2078639813 instance=ExtResource("2_38qbd")]
+transform = Transform3D(-1.0000001, 0, 8.7422784e-08, 0, 1, 0, -8.7422784e-08, 0, -1.0000001, -77.698906, -63.695236, -8.056041)
+
+[node name="Enemy5" parent="Enemies" unique_id=72827958 instance=ExtResource("2_38qbd")]
+transform = Transform3D(-1.0000001, 0, 8.7422784e-08, 0, 1, 0, -8.7422784e-08, 0, -1.0000001, -64.33112, -63.695236, -8.056041)
+moveSpeed = 8.0
+
+[node name="Enemy4" parent="Enemies" unique_id=1263485538 instance=ExtResource("2_38qbd")]
+transform = Transform3D(-1.0000001, 0, 8.7422784e-08, 0, 1, 0, -8.7422784e-08, 0, -1.0000001, -107.6173, -63.695236, -8.056041)
+moveSpeed = 6.5
+
+[node name="Enemy6" parent="Enemies" unique_id=1224073567 instance=ExtResource("2_38qbd")]
+transform = Transform3D(-1.0000001, 0, 1.5099582e-07, 0, 1, 0, -1.5099582e-07, 0, -1.0000001, -93.699036, -63.695236, -15.770679)
+
+[node name="Lights" type="Node3D" parent="." unique_id=1865743964]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.8498535)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lights" unique_id=1521823479]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -9.648964, 33.26226, -9.711899)
+light_color = Color(0.7383593, 0.79550403, 0.8379819, 1)
+sky_mode = 1
+
+[node name="DirectionalLight3D3" type="DirectionalLight3D" parent="Lights" unique_id=2053988849]
+transform = Transform3D(1, 0, 0, 0, -0.5445135, 0.8387521, 0, -0.8387521, -0.5445135, -41.838768, 33.26226, -19.686666)
+light_color = Color(1, 0.99215686, 0.11372549, 1)
+sky_mode = 1
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Lights" unique_id=1362188357]
+transform = Transform3D(0.78292817, -2.7193384e-08, 0.6221121, -0.6221121, -3.422288e-08, 0.78292817, 0, -1, -4.371139e-08, 21.818443, 27.13039, -9.711899)
+light_color = Color(0.6831388, 0.56423956, 0.7992703, 1)
+sky_mode = 1

@@ -25,9 +25,10 @@ editor_description = "what enemy does:
 Roams Randomly,
 if player detected it follow him,
 if player stays detected for a 4 seconds, then player is telepostert to start point"
+collision_layer = 2
 script = ExtResource("1_hghv2")
-moveSpeed = 4.5
-maxChaseTime = 4.0
+moveSpeed = 6.0
+maxChaseTime = 2.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1813387056]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0335023, 0.016710281)
