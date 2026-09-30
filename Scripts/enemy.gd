@@ -92,7 +92,7 @@ func _wait_and_pick_next() -> void:
 	is_waiting = false
 
 
-func _on_eyesight_body_entered(body: CharacterBody3D) -> void:
+func _on_eyesight_body_entered(body: Object) -> void:
 	if(body.get_groups().has("PlayerGroup")):
 		is_playerDetected=true
 		startTimer=true
@@ -100,7 +100,7 @@ func _on_eyesight_body_entered(body: CharacterBody3D) -> void:
 		print("hello")
 
 
-func _on_eyesight_body_exited(body: CharacterBody3D) -> void:
+func _on_eyesight_body_exited(body: Object) -> void:
 	if(body.get_groups().has("PlayerGroup")):
 		is_playerDetected=false
 		startTimer=false

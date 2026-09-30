@@ -25,6 +25,7 @@ input_back = "move_forward"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1271453329]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.8668542, 4.626953, -3.3243027)
+visible = false
 
 [node name="Model" parent="." unique_id=1352637084 node_paths=PackedStringArray("playerAnimationPlayer") instance=ExtResource("2_x3wgy")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)

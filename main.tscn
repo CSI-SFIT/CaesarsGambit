@@ -24,7 +24,7 @@ shape = SubResource("BoxShape3D_h2yge")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.00979, -63.695984, -4.9540753)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1193764458]
-transform = Transform3D(0.7982278, 0, 0.60235566, 0, 1, 0, -0.60235566, 0, 0.7982278, -69.82778, -61.289623, 0)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -92.72616, -32.7214, 1.5572133)
 visible = false
 
 [node name="GameManager" type="Node3D" parent="." unique_id=992790746]
