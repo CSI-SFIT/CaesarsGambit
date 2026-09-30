@@ -9,7 +9,6 @@ const GameUIScript = preload("res://scripts/ui.gd")
 const PendulumBladeScene = preload("res://scenes/pendulum_blade.tscn")
 const RotatingSweeperScene = preload("res://scenes/rotating_sweeper.tscn")
 const CatapultStrikeScene = preload("res://scripts/catapult_strike.gd")
-const AssetLoaderScript = preload("res://scripts/asset_loader.gd")
 
 const PORT: int = 7777
 const GRID_ROWS: int = 8
@@ -39,15 +38,17 @@ const CATAPULT_INTERVAL: float = 7.5
 
 # Tournament statistics
 var round_start_time: float = 0.0
+var initial_sun_rotation: Vector3 = Vector3(-45.0, 30.0, 0.0)
 var total_steps: int = 0
 var safe_steps: int = 0
 var my_player_role: int = 1
 var is_solo_mode: bool = false
 var current_highest_row: int = 0
+var milestone_halfway_played: bool = false
+var milestone_final_played: bool = false
+var row_markers_container: Node3D
 
 # Broadcast camera mode
-var broadcast_camera: Camera3D
-var is_broadcast_cam_active: bool = false
 
 func _ready() -> void:
 	sound_fx.name = "SoundEffects"
@@ -56,9 +57,12 @@ func _ready() -> void:
 	hazards_container = Node3D.new()
 	hazards_container.name = "HazardsContainer"
 	add_child(hazards_container)
-	add_child(AssetLoaderScript.new())
-	setup_milestone_labels()
-	setup_broadcast_camera()
+	row_markers_container = Node3D.new()
+	row_markers_container.name = "RowMarkers"
+	add_child(row_markers_container)
+	var sun_node = get_node_or_null("DirectionalLight3D")
+	if sun_node:
+		initial_sun_rotation = sun_node.rotation_degrees
 	
 	# Connect UI signals
 	if ui:
@@ -76,35 +80,6 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
-
-func setup_broadcast_camera() -> void:
-	broadcast_camera = Camera3D.new()
-	broadcast_camera.name = "BroadcastCamera"
-	# Positioned high in the Colosseum stands overlooking the full arena track
-	broadcast_camera.position = Vector3(0, 16.5, 23.5)
-	broadcast_camera.rotation_degrees = Vector3(-38.0, 0, 0)
-	broadcast_camera.current = false
-	add_child(broadcast_camera)
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and (event.keycode == KEY_C or event.keycode == KEY_F1):
-		toggle_broadcast_camera()
-
-func toggle_broadcast_camera() -> void:
-	if not broadcast_camera:
-		return
-	is_broadcast_cam_active = not is_broadcast_cam_active
-	broadcast_camera.current = is_broadcast_cam_active
-	
-	if not is_broadcast_cam_active:
-		# Return camera to local player
-		var local_id = multiplayer.get_unique_id() if multiplayer.multiplayer_peer != null else 1
-		var p = players_container.get_node_or_null(str(local_id))
-		if p and p.has_node("CameraPivot/SpringArm3D/Camera3D"):
-			p.get_node("CameraPivot/SpringArm3D/Camera3D").current = true
-			
-	if ui and ui.has_method("set_broadcast_badge"):
-		ui.set_broadcast_badge(is_broadcast_cam_active)
 
 func _on_host_pressed() -> void:
 	var peer = ENetMultiplayerPeer.new()
@@ -194,6 +169,10 @@ func _process(delta: float) -> void:
 		round_timer -= delta
 		var curr_sec = int(round_timer)
 		
+		# Dynamic Roman sunset under 15 seconds
+		if curr_sec <= 15:
+			update_sunset_sky(round_timer / 15.0)
+
 		# Heartbeat audio under 15 seconds
 		if curr_sec < prev_sec:
 			if curr_sec <= 15 and curr_sec > 0:
@@ -222,8 +201,11 @@ func trigger_timeout_reset() -> void:
 			rpc("sync_puzzle_to_client", puzzle_data)
 
 func setup_grid_from_puzzle(data: Dictionary) -> void:
-	for child in tiles_container.get_children():
-		child.queue_free()
+	if not tiles_container:
+		tiles_container = get_node_or_null("Tiles")
+	if tiles_container:
+		for child in tiles_container.get_children():
+			child.queue_free()
 	tiles_grid.clear()
 	
 	if caesar_pillar and caesar_pillar.has_method("set_puzzle_info"):
@@ -259,6 +241,42 @@ func setup_grid_from_puzzle(data: Dictionary) -> void:
 			row_tiles.append(tile)
 		tiles_grid.append(row_tiles)
 
+		# Spawn Roman row numerals (I to VIII) along the course edges
+	if row_markers_container:
+		for child in row_markers_container.get_children():
+			child.queue_free()
+		var roman_nums = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"]
+		for r in range(min(GRID_ROWS, roman_nums.size())):
+			var z_pos = start_z + (r * TILE_SPACING_Z)
+			for x_pos in [-5.6, 5.6]:
+				var marker = Node3D.new()
+				marker.position = Vector3(x_pos, 0.0, z_pos)
+				
+				# Carved travertine stone pedestal
+				var pedestal = MeshInstance3D.new()
+				var box = BoxMesh.new()
+				box.size = Vector3(0.65, 0.3, 0.5)
+				pedestal.mesh = box
+				var stone_mat = StandardMaterial3D.new()
+				stone_mat.albedo_color = Color(0.82, 0.78, 0.70)
+				stone_mat.roughness = 0.85
+				pedestal.material_override = stone_mat
+				pedestal.position = Vector3(0, 0.15, 0)
+				marker.add_child(pedestal)
+				
+				# Glowing Roman Numeral Label (Billboard enabled for clear readability)
+				var lbl = Label3D.new()
+				lbl.text = roman_nums[r]
+				lbl.font_size = 48
+				lbl.modulate = Color(1.0, 0.86, 0.3)
+				lbl.outline_size = 10
+				lbl.outline_modulate = Color(0.22, 0.10, 0.04)
+				lbl.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+				lbl.position = Vector3(0, 0.82, 0)
+				marker.add_child(lbl)
+				
+				row_markers_container.add_child(marker)
+
 	# Spawn hazards
 	if hazards_container:
 		for child in hazards_container.get_children():
@@ -284,6 +302,9 @@ func setup_grid_from_puzzle(data: Dictionary) -> void:
 	total_steps = 0
 	safe_steps = 0
 	current_highest_row = 0
+	milestone_halfway_played = false
+	milestone_final_played = false
+	reset_sky_to_afternoon()
 	players_at_finish.clear()
 	game_active = true
 	
@@ -294,6 +315,22 @@ func _on_tile_stepped(row: int, col: int, is_safe: bool) -> void:
 	total_steps += 1
 	if is_safe:
 		safe_steps += 1
+		if sound_fx and sound_fx.has_method("play_chime"):
+			sound_fx.play_chime()
+		# War drum cadence on halfway (Row 4) and final stretch (Row 8)
+		if row >= 3 and not milestone_halfway_played:
+			milestone_halfway_played = true
+			if sound_fx and sound_fx.has_method("play_wardrum_cadence"):
+				sound_fx.play_wardrum_cadence()
+			elif sound_fx and sound_fx.has_method("play_wardrum"):
+				sound_fx.play_wardrum()
+		elif row >= 7 and not milestone_final_played:
+			milestone_final_played = true
+			if sound_fx and sound_fx.has_method("play_wardrum_cadence"):
+				sound_fx.play_wardrum_cadence()
+			elif sound_fx and sound_fx.has_method("play_wardrum"):
+				sound_fx.play_wardrum()
+
 		sound_fx.play_safe()
 		if row >= current_highest_row:
 			current_highest_row = row + 1
@@ -325,6 +362,10 @@ func rpc_sync_tile_stepped(row: int, col: int, is_safe: bool) -> void:
 				tile.trigger_crumble()
 
 func spawn_player(id: int) -> void:
+	if not players_container:
+		players_container = get_node_or_null("Players")
+	if not players_container:
+		return
 	var existing = players_container.get_node_or_null(str(id))
 	if existing:
 		return
@@ -476,7 +517,6 @@ func reset_player_positions() -> void:
 			if child.has_method("stop_spectating"):
 				child.stop_spectating()
 
-func setup_milestone_labels() -> void:
 	var numerals: Array[String] = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"]
 	var milestones_node = get_node_or_null("Milestones")
 	if milestones_node:
@@ -499,3 +539,34 @@ func trigger_catapult_strike() -> void:
 	strike.name = "CatapultStrike"
 	strike.target_position = target_pos
 	add_child(strike)
+
+func update_sunset_sky(ratio: float) -> void:
+	var t = clampf(1.0 - ratio, 0.0, 1.0) # 0.0 at 15s (afternoon), 1.0 at 0s (dramatic dusk)
+	var env_node = get_node_or_null("WorldEnvironment")
+	if env_node and env_node.environment and env_node.environment.sky:
+		var sky_mat = env_node.environment.sky.sky_material
+		if sky_mat is ProceduralSkyMaterial:
+			sky_mat.sky_top_color = lerp(Color(0.24, 0.35, 0.62), Color(0.16, 0.05, 0.26), t)
+			sky_mat.sky_horizon_color = lerp(Color(0.98, 0.68, 0.38), Color(0.98, 0.16, 0.08), t)
+			sky_mat.ground_horizon_color = lerp(Color(0.85, 0.52, 0.32), Color(0.82, 0.14, 0.06), t)
+			env_node.environment.fog_light_color = lerp(Color(0.82, 0.58, 0.38), Color(0.94, 0.22, 0.12), t)
+	var sun = get_node_or_null("DirectionalLight3D")
+	if sun:
+		sun.light_color = lerp(Color(1.0, 0.92, 0.82), Color(1.0, 0.42, 0.16), t)
+		sun.light_energy = lerp(1.7, 2.4, t)
+		sun.rotation_degrees.x = lerp(initial_sun_rotation.x, -16.0, t)
+
+func reset_sky_to_afternoon() -> void:
+	var env_node = get_node_or_null("WorldEnvironment")
+	if env_node and env_node.environment and env_node.environment.sky:
+		var sky_mat = env_node.environment.sky.sky_material
+		if sky_mat is ProceduralSkyMaterial:
+			sky_mat.sky_top_color = Color(0.24, 0.35, 0.62)
+			sky_mat.sky_horizon_color = Color(0.98, 0.68, 0.38)
+			sky_mat.ground_horizon_color = Color(0.85, 0.52, 0.32)
+			env_node.environment.fog_light_color = Color(0.82, 0.58, 0.38)
+	var sun = get_node_or_null("DirectionalLight3D")
+	if sun:
+		sun.light_color = Color(1.0, 0.92, 0.82)
+		sun.light_energy = 1.7
+		sun.rotation_degrees = initial_sun_rotation

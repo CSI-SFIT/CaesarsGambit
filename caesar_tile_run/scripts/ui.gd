@@ -27,7 +27,6 @@ signal play_again_pressed()
 @onready var word_tracker_label: Label = $HUD/TopBar/Margin/HBox/WordTracker
 @onready var timer_label: Label = $HUD/TopBar/Margin/HBox/TimerLabel
 @onready var adrenaline_vignette: Panel = $HUD/AdrenalineVignette
-@onready var broadcast_badge: Label = $HUD/BroadcastBadge
 @onready var p1_badge: Label = $HUD/PlayersBox/P1Badge
 @onready var p2_badge: Label = $HUD/PlayersBox/P2Badge
 @onready var hint_card: PanelContainer = $HUD/HintCard
@@ -238,10 +237,6 @@ func show_spectator_banner(text_msg: String) -> void:
 func hide_spectator_banner() -> void:
 	if spectator_banner:
 		spectator_banner.visible = false
-
-func set_broadcast_badge(visible_status: bool) -> void:
-	if broadcast_badge:
-		broadcast_badge.visible = visible_status
 
 func update_player_badges(p1_active: bool, p2_active: bool) -> void:
 	if p1_badge:

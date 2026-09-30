@@ -10,6 +10,8 @@ var whack_stream: AudioStream
 var footstep_stream: AudioStream
 var landing_stream: AudioStream
 var heartbeat_stream: AudioStream
+var chime_stream: AudioStream
+var wardrum_stream: AudioStream
 
 func _ready() -> void:
 	load_or_synthesize_sounds()
@@ -25,6 +27,8 @@ func load_or_synthesize_sounds() -> void:
 	footstep_stream = create_footstep(0.05)
 	landing_stream = create_thud(0.16)
 	heartbeat_stream = create_heartbeat(0.28)
+	chime_stream = create_chime(0.5)
+	wardrum_stream = create_wardrum(0.6)
 
 func play_safe() -> void:
 	play_stream(safe_stream, -4.0)
@@ -55,6 +59,20 @@ func play_footstep() -> void:
 
 func play_landing() -> void:
 	play_stream(landing_stream, -3.0)
+func play_chime() -> void:
+	play_stream(chime_stream, -2.0)
+
+func play_wardrum() -> void:
+	play_stream(wardrum_stream, 2.5)
+
+func play_wardrum_cadence() -> void:
+	play_wardrum()
+	var t = get_tree().create_timer(0.24)
+	t.timeout.connect(func():
+		play_stream(wardrum_stream, 3.8, 0.90)
+	)
+
+
 
 func play_stream(stream: AudioStream, vol: float, pitch: float = 1.0) -> void:
 	if stream:
@@ -227,6 +245,46 @@ func create_thud(duration: float) -> AudioStreamWAV:
 		var noise = (randf() * 2.0 - 1.0) * 0.25
 		var val = (bass + noise) * envelope
 		var int_val = clampi(int(val * 32767.0 * 0.85), -32768, 32767)
+		data.encode_s16(i * 2, int_val)
+	wav.data = data
+	return wav
+
+func create_chime(duration: float) -> AudioStreamWAV:
+	var wav = AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = 22050
+	wav.stereo = false
+	var sample_count = int(wav.mix_rate * duration)
+	var data = PackedByteArray()
+	data.resize(sample_count * 2)
+	for i in range(sample_count):
+		var t = float(i) / wav.mix_rate
+		var envelope = exp(-t * 7.5)
+		var h1 = sin(2.0 * PI * 1046.5 * t) * 0.5
+		var h2 = sin(2.0 * PI * 1318.5 * t) * 0.35
+		var h3 = sin(2.0 * PI * 1567.9 * t) * 0.2
+		var val = (h1 + h2 + h3) * envelope * 0.85
+		var int_val = clampi(int(val * 32767.0), -32768, 32767)
+		data.encode_s16(i * 2, int_val)
+	wav.data = data
+	return wav
+
+func create_wardrum(duration: float) -> AudioStreamWAV:
+	var wav = AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = 22050
+	wav.stereo = false
+	var sample_count = int(wav.mix_rate * duration)
+	var data = PackedByteArray()
+	data.resize(sample_count * 2)
+	for i in range(sample_count):
+		var t = float(i) / wav.mix_rate
+		var envelope = exp(-t * 8.5)
+		var freq = lerpf(70.0, 40.0, min(1.0, t * 14.0))
+		var sub = sin(2.0 * PI * freq * t)
+		var noise = (randf() * 2.0 - 1.0) * exp(-t * 26.0) * 0.3
+		var val = (sub * 0.85 + noise) * envelope
+		var int_val = clampi(int(val * 32767.0 * 0.95), -32768, 32767)
 		data.encode_s16(i * 2, int_val)
 	wav.data = data
 	return wav

@@ -120,12 +120,6 @@ func detonate() -> void:
 						blast_dir.y = 0.7
 						player.velocity += blast_dir * knockback_power
 						
-		var tiles_container = main.get_node_or_null("TilesContainer")
-		if tiles_container:
-			for tile in tiles_container.get_children():
-				if tile is RomanTile:
-					var d = tile.global_position.distance_to(global_position)
-					if d < 1.9 and tile.is_active:
-						tile.trigger_crumble()
+
 						
 	get_tree().create_timer(0.6).timeout.connect(queue_free)

@@ -25,6 +25,7 @@ const MOUSE_SENSITIVITY: float = 0.004
 
 var spawn_position: Vector3 = Vector3(0, 2, 0)
 var is_diving: bool = false
+var was_airborne_dive: bool = false
 var dive_cooldown: float = 0.0
 var dive_slide_timer: float = 0.0
 
@@ -89,9 +90,9 @@ func update_player_appearance() -> void:
 		# Player 1: Royal Crimson & Gold Imperial Caesar
 		mat_tunic.albedo_color = Color(0.78, 0.12, 0.12)
 		mat_fabric.albedo_color = Color(0.72, 0.10, 0.10)
-		mat_crest.albedo_color = Color(0.98, 0.82, 0.15)
+		mat_crest.albedo_color = Color(0.92, 0.12, 0.12)
 		mat_crest.emission_enabled = true
-		mat_crest.emission = Color(0.95, 0.75, 0.1)
+		mat_crest.emission = Color(0.95, 0.2, 0.1)
 		mat_crest.emission_energy_multiplier = 2.5
 		
 		mat_armor.albedo_color = Color(0.92, 0.75, 0.22)
@@ -105,9 +106,9 @@ func update_player_appearance() -> void:
 		# Player 2: Cobalt Blue & Silver Steel Centurion
 		mat_tunic.albedo_color = Color(0.12, 0.35, 0.82)
 		mat_fabric.albedo_color = Color(0.10, 0.30, 0.78)
-		mat_crest.albedo_color = Color(0.35, 0.70, 1.0)
+		mat_crest.albedo_color = Color(0.15, 0.45, 0.95)
 		mat_crest.emission_enabled = true
-		mat_crest.emission = Color(0.25, 0.60, 0.95)
+		mat_crest.emission = Color(0.2, 0.5, 0.98)
 		mat_crest.emission_energy_multiplier = 2.5
 		
 		mat_armor.albedo_color = Color(0.85, 0.88, 0.92)
@@ -125,6 +126,12 @@ func update_player_appearance() -> void:
 		shield_mesh.material_override = mat_fabric
 	if helmet_crest:
 		helmet_crest.material_override = mat_crest
+		if player_id == 1 or player_id <= 1:
+			helmet_crest.rotation_degrees = Vector3(0, 90.0, 0)
+			helmet_crest.scale = Vector3(1.15, 1.05, 1.3)
+		else:
+			helmet_crest.rotation_degrees = Vector3(0, 0, 0)
+			helmet_crest.scale = Vector3(0.9, 1.3, 1.05)
 		
 	var cuirass = visual_mesh.get_node_or_null("Cuirass")
 	if cuirass is MeshInstance3D:
@@ -174,6 +181,14 @@ func _input(event: InputEvent) -> void:
 		spring_arm.rotation.x = clampf(spring_arm.rotation.x, deg_to_rad(-60.0), deg_to_rad(30.0))
 
 func _physics_process(delta: float) -> void:
+	# Detect dive floor impact
+	if is_diving and not is_on_floor():
+		was_airborne_dive = true
+	elif is_diving and is_on_floor() and was_airborne_dive:
+		was_airborne_dive = false
+		spawn_dive_impact_dust()
+	elif not is_diving:
+		was_airborne_dive = false
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
 	
 	if not is_local:
@@ -350,3 +365,56 @@ func respawn() -> void:
 	is_triumph = false
 	if visual_mesh:
 		visual_mesh.rotation.x = 0.0
+
+func spawn_dive_impact_dust() -> void:
+	# Athletic bronze shockwave ground ring
+	var ripple = MeshInstance3D.new()
+	var cylinder = CylinderMesh.new()
+	cylinder.top_radius = 0.4
+	cylinder.bottom_radius = 0.4
+	cylinder.height = 0.02
+	ripple.mesh = cylinder
+	var rmat = StandardMaterial3D.new()
+	rmat.albedo_color = Color(0.85, 0.68, 0.42, 0.8)
+	rmat.emission_enabled = true
+	rmat.emission = Color(0.9, 0.65, 0.3)
+	rmat.emission_energy_multiplier = 1.2
+	rmat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	ripple.material_override = rmat
+	ripple.global_position = global_position + Vector3(0, 0.04, 0)
+	get_parent().add_child(ripple)
+	var tw = create_tween()
+	tw.tween_property(ripple, "scale", Vector3(2.6, 1.0, 2.6), 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.parallel().tween_property(rmat, "albedo_color:a", 0.0, 0.32)
+	tw.tween_callback(ripple.queue_free)
+
+	var p = CPUParticles3D.new()
+	p.name = "DiveImpactDust"
+	p.amount = 18
+	p.lifetime = 0.42
+	p.one_shot = true
+	p.explosiveness = 0.95
+	p.emission_shape = CPUParticles3D.EMISSION_SHAPE_RING
+	p.emission_ring_radius = 0.7
+	p.emission_ring_inner_radius = 0.25
+	p.direction = Vector3(0, 0.35, 0)
+	p.spread = 65.0
+	p.gravity = Vector3(0, -2.5, 0)
+	p.initial_velocity_min = 1.5
+	p.initial_velocity_max = 3.2
+	
+	var m = SphereMesh.new()
+	m.radius = 0.08
+	m.height = 0.16
+	p.mesh = m
+	
+	var mat = StandardMaterial3D.new()
+	mat.albedo_color = Color(0.85, 0.78, 0.62, 0.75)
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	p.material_override = mat
+	
+	p.global_position = global_position + Vector3(0, 0.12, 0)
+	get_parent().add_child(p)
+	
+	if sound_fx and sound_fx.has_method("play_landing"):
+		sound_fx.play_landing()
