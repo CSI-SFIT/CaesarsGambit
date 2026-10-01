@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cy0ftob4yma3i"]
 
 [ext_resource type="Script" uid="uid://fcf03fg0r7s5" path="res://scripts/game_manager.gd" id="1_gm"]
-[ext_resource type="PackedScene" uid="uid://clvagtgjercry" path="res://scenes/caesar_pillar.tscn" id="2_pillar"]
+[ext_resource type="PackedScene" path="res://scenes/caesar_pillar.tscn" id="2_pillar"]
 [ext_resource type="PackedScene" path="res://scenes/finish_arch.tscn" id="3_arch"]
 [ext_resource type="PackedScene" path="res://scenes/ui.tscn" id="4_ui"]
 [ext_resource type="PackedScene" path="res://scenes/roman_banner.tscn" id="5_banner"]
@@ -67,9 +67,6 @@ size = Vector3(20, 1.2, 14)
 
 [sub_resource type="BoxMesh" id="BoxMesh_finish_plat"]
 size = Vector3(20, 1.2, 14)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_kill"]
-size = Vector3(150, 2, 150)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_gladiator"]
 height = 1.65
@@ -211,11 +208,5 @@ shape = SubResource("CylinderShape3D_gladiator")
 transform = Transform3D(-0.9220106, 0, -0.38716447, 0, 1, 0, 0.38716447, 0, -0.9220106, 0, 0, 33)
 
 [node name="PlayersContainer" type="Node3D" parent="." unique_id=1904775438]
-
-[node name="KillZone" type="Area3D" parent="." unique_id=348086193]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 15)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="KillZone" unique_id=819438148]
-shape = SubResource("BoxShape3D_kill")
 
 [node name="UI" parent="." unique_id=413662714 instance=ExtResource("4_ui")]

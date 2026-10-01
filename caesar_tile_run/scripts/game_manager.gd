@@ -194,6 +194,7 @@ func _process(delta: float) -> void:
 func trigger_timeout_reset() -> void:
 	round_timer = ROUND_TIME
 	sound_fx.play_crumble()
+	reset_player_positions()
 	if multiplayer.is_server() or multiplayer.multiplayer_peer == null:
 		puzzle_data = CaesarCipherScript.generate_puzzle(GRID_ROWS, GRID_COLS)
 		setup_grid_from_puzzle(puzzle_data)
@@ -517,14 +518,7 @@ func reset_player_positions() -> void:
 			if child.has_method("stop_spectating"):
 				child.stop_spectating()
 
-	var numerals: Array[String] = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"]
-	var milestones_node = get_node_or_null("Milestones")
-	if milestones_node:
-		var children = milestones_node.get_children()
-		for i in range(min(numerals.size(), children.size())):
-			var label = children[i].get_node_or_null("NumeralLabel")
-			if label:
-				label.text = numerals[i]
+
 
 func trigger_catapult_strike() -> void:
 	if not game_active:
