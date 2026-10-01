@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bj1n7isoq2kp4"]
+
+[ext_resource type="Texture2D" uid="uid://dm6ux7tyll5fq" path="res://3D_MODELS/Arch Kit/materials/modular_fort_01_trim_diff_4k.png" id="1_4ja1h"]
+
+[resource]
+transparency = 1
+albedo_texture = ExtResource("1_4ja1h")

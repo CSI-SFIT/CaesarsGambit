@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dskwtifmpf11a" path="res://Scripts/Player A/DoorLogic.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://cncglo70geos6" path="res://Scripts/Player A/Torch_Flicker.gd" id="2_1bvp3"]
-[ext_resource type="Script" uid="uid://c0xiua20yw1ko" path="res://Scripts/Player A/player.gd" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="3_6r6ri"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1bvp3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -15,8 +15,6 @@ sky_material = SubResource("ProceduralSkyMaterial_1bvp3")
 background_mode = 2
 sky = SubResource("Sky_lquwl")
 glow_enabled = true
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y8wm3"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xwue4"]
 albedo_color = Color(0.23827136, 0.09260438, 0.006697394, 1)
@@ -33,16 +31,6 @@ environment = SubResource("Environment_7mycd")
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 light_energy = 0.0
 shadow_enabled = true
-
-[node name="Player" type="CharacterBody3D" parent="." unique_id=1791838167 groups=["player"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-script = ExtResource("2_h2yge")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1355463449]
-shape = SubResource("CapsuleShape3D_y8wm3")
-
-[node name="Camera3D" type="Camera3D" parent="Player" unique_id=1631375544]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
 [node name="TopFloor" type="Node3D" parent="." unique_id=1099310961]
 
@@ -256,6 +244,9 @@ use_collision = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 32)
 use_collision = true
 size = Vector3(20, 0.1, 20)
+
+[node name="Player" parent="." unique_id=1932707054 groups=["player"] instance=ExtResource("3_6r6ri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [connection signal="body_entered" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_exited"]
