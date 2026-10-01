@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://bpv8vaclnf38i"]
+
+[ext_resource type="Script" uid="uid://dhi53qd26givc" path="res://Scripts/EventBus.gd" id="1_28flt"]
+
+[node name="MainMenu" type="Node3D" unique_id=70712535]
+
+[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=612990263]
+
+[node name="Control" type="Control" parent="CanvasGroup" unique_id=1670692843]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasGroup/Control" unique_id=1281948625]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 253.0
+offset_top = 228.0
+offset_right = 906.0
+offset_bottom = 413.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasGroup/Control/VBoxContainer" unique_id=864756983]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Multiplayer System Testing"
+
+[node name="hostButton" type="Button" parent="CanvasGroup/Control/VBoxContainer" unique_id=1822551579]
+layout_mode = 2
+theme_override_font_sizes/font_size = 33
+text = "host"
+
+[node name="joinButton" type="Button" parent="CanvasGroup/Control/VBoxContainer" unique_id=680384595]
+layout_mode = 2
+theme_override_font_sizes/font_size = 33
+text = "join
+"
+
+[node name="EventBus" type="Node3D" parent="." unique_id=327668367]
+script = ExtResource("1_28flt")
+
+[connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/hostButton" to="EventBus" method="_on_host_button_pressed"]
+[connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/joinButton" to="EventBus" method="_on_join_button_pressed"]

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://by0tplgsa280w"]
 
-[ext_resource type="Script" uid="uid://c3xqqugvawwco" path="res://Scripts/enemy.gd" id="1_hghv2"]
-[ext_resource type="Script" uid="uid://bigq0rjnf6ng6" path="res://Scripts/PlayerDetectionScript.gd" id="2_1f0kj"]
+[ext_resource type="Script" uid="uid://c3xqqugvawwco" path="res://Scripts/enemyScripts/enemy.gd" id="1_hghv2"]
+[ext_resource type="Script" uid="uid://bigq0rjnf6ng6" path="res://Scripts/playerScripts/PlayerDetectionScript.gd" id="2_1f0kj"]
 [ext_resource type="PackedScene" uid="uid://cd3ihiw65icdc" path="res://3D_MODELS/Enemy/Walking (2).fbx" id="3_afpow"]
-[ext_resource type="Script" uid="uid://p8qsycpe5cqn" path="res://Scripts/EnemyAnimationController.gd" id="4_287tu"]
+[ext_resource type="Script" uid="uid://p8qsycpe5cqn" path="res://Scripts/enemyScripts/EnemyAnimationController.gd" id="4_287tu"]
 [ext_resource type="AnimationLibrary" uid="uid://btsrlujxb7ap" path="res://3D_MODELS/Enemy/idle_anim.fbx" id="5_1dp5w"]
 [ext_resource type="AnimationLibrary" uid="uid://gkfbxx4dhgmm" path="res://3D_MODELS/Enemy/run_anim.fbx" id="5_ghaa6"]
 [ext_resource type="AnimationLibrary" uid="uid://ctk4d4jncon3b" path="res://3D_MODELS/Enemy/walk_anim.fbx" id="6_1dp5w"]
