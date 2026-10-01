@@ -2,6 +2,9 @@ extends Node
 
 enum SpawnPointNames {
 	Church,
+	one,
+	two,
+	three,
 }
 
 var spawn_points: Array[Area3D] = []
