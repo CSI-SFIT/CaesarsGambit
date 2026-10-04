@@ -1,7 +1,7 @@
 extends CSGCylinder3D 
 
 @export var clue_ui: TextureRect
-@onready var interact_prompt = $"../UI/InteractPrompt" # Grabs the new label
+@export var interact_prompt: Label
 
 var player_near = false
 
@@ -14,23 +14,23 @@ func _ready():
 func _on_paper_interact_zone_body_entered(body):
 	if body.is_in_group("player"):
 		player_near = true
-		if interact_prompt:
-			interact_prompt.show() # Show "Press E"
+		if interact_prompt and not clue_ui.visible:
+			interact_prompt.show()
 
 func _on_paper_interact_zone_body_exited(body):
 	if body.is_in_group("player"):
 		player_near = false
 		if interact_prompt:
-			interact_prompt.hide() # Hide "Press E"
+			interact_prompt.hide()
 		if clue_ui:
 			clue_ui.hide()
 
-func _unhandled_input(event):
+# Changed to _input so it ALWAYS registers the E key
+func _input(event):
 	if event.is_action_pressed("interact") and player_near:
 		if clue_ui:
 			clue_ui.visible = !clue_ui.visible
-			# Hide the prompt while reading the paper
 			if clue_ui.visible:
-				interact_prompt.hide()
+				if interact_prompt: interact_prompt.hide()
 			else:
-				interact_prompt.show()
+				if interact_prompt: interact_prompt.show()

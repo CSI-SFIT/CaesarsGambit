@@ -23,15 +23,20 @@ func _ready():
 		push_error("ERROR: Please assign the UI Layer and Symbol Wall in the Inspector for ", name)
 		return
 		
-	# Connect UI signals dynamically so duplicated rooms don't conflict
 	var line_edit = ui_layer.get_node("Panel/LineEdit")
 	var button = ui_layer.get_node("Panel/Button")
 	line_edit.text_submitted.connect(_on_line_edit_text_submitted)
 	button.pressed.connect(_on_button_pressed)
 	
+	# Force the CanvasLayer to stay visible so prompts can be seen!
+	ui_layer.show()
+	
 	close_ui()
 	
-	# Generate the symbols for the wall
+	var prompt = ui_layer.get_node_or_null("InteractPrompt")
+	if prompt:
+		prompt.hide()
+	
 	var displayed_symbols = ""
 	var word_upper = secret_word.to_upper()
 	
@@ -50,30 +55,52 @@ func _ready():
 func _on_interact_zone_body_entered(body):
 	if body.is_in_group("player") and not is_open:
 		player_near = true
+		var prompt = ui_layer.get_node_or_null("InteractPrompt")
+		# Only show prompt if the password panel is closed
+		if prompt and not ui_layer.get_node("Panel").visible:
+			prompt.show()
 
 func _on_interact_zone_body_exited(body):
 	if body.is_in_group("player"):
 		player_near = false
+		var prompt = ui_layer.get_node_or_null("InteractPrompt")
+		if prompt:
+			prompt.hide()
 		close_ui()
 
 func _unhandled_input(event):
 	if event.is_action_pressed("interact"):
 		if player_near and not is_open:
-			if ui_layer.visible:
+			if ui_layer.get_node("Panel").visible:
 				close_ui()
 			else:
 				open_ui()
 
+func _input(event):
+	# If the Panel is open and we press Escape, close it!
+	if ui_layer and ui_layer.get_node("Panel").visible and event.is_action_pressed("ui_cancel"):
+		close_ui()
+
 func open_ui():
-	ui_layer.show()
+	# Only show the Panel, not the whole layer
+	ui_layer.get_node("Panel").show()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	var line_edit = ui_layer.get_node("Panel/LineEdit")
 	line_edit.text = ""
 	line_edit.grab_focus()
+	
+	var prompt = ui_layer.get_node_or_null("InteractPrompt")
+	if prompt:
+		prompt.hide()
 
 func close_ui():
-	ui_layer.hide()
+	# Only hide the Panel, not the whole layer
+	ui_layer.get_node("Panel").hide()
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	var prompt = ui_layer.get_node_or_null("InteractPrompt")
+	if prompt and player_near and not is_open:
+		prompt.show()
 
 func _on_button_pressed():
 	var line_edit = ui_layer.get_node("Panel/LineEdit")
@@ -93,9 +120,12 @@ func open_door():
 	is_open = true
 	player_near = false
 	
+	var prompt = ui_layer.get_node_or_null("InteractPrompt")
+	if prompt:
+		prompt.hide()
+	
 	if door_open_sound:
 		door_open_sound.play()
 	
-	# Slide the door up
 	var tween = create_tween()
 	tween.tween_property(self, "position:y", position.y + 4.0, 1.5).set_trans(Tween.TRANS_SINE)

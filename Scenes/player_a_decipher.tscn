@@ -4,31 +4,28 @@
 [ext_resource type="Material" uid="uid://ccqrgq3avsqt3" path="res://3D_MODELS/Arch Kit/materials/plain_tile.tres" id="1_bcdqc"]
 [ext_resource type="Script" uid="uid://cncglo70geos6" path="res://Scripts/Player A/Torch_Flicker.gd" id="2_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://dn2glrj5ipe23" path="res://3D_MODELS/Arch Kit/materials/wood_door_01.png" id="2_f8vpv"]
+[ext_resource type="Material" uid="uid://xlk5pd0x2654" path="res://3D_MODELS/Arch Kit/materials/door_material.tres" id="2_q4jso"]
 [ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://addons/proto_controller/proto_controller.tscn" id="3_6r6ri"]
-[ext_resource type="Texture2D" uid="uid://c43w1q3n2tbns" path="res://icon.svg" id="3_f0r4n"]
 [ext_resource type="PackedScene" uid="uid://djqklihkm7meq" path="res://Scenes/Decipher Game/thick_corner.tscn" id="4_aql8u"]
 [ext_resource type="Script" uid="uid://541vhlgiaass" path="res://Scripts/Player A/PaperClue.gd" id="4_bcdqc"]
+[ext_resource type="Texture2D" uid="uid://d02or2q5340nb" path="res://3D_MODELS/Arch Kit/materials/cipher_key.png" id="5_4p6xf"]
 [ext_resource type="PackedScene" uid="uid://d1a6jyxe0evre" path="res://Scenes/Decipher Game/wall_straight.tscn" id="5_cqrcb"]
 [ext_resource type="PackedScene" uid="uid://c7md4b1nhg56u" path="res://Scenes/Decipher Game/straight_wall.tscn" id="6_cqrcb"]
 [ext_resource type="PackedScene" uid="uid://drx2yv0272d1q" path="res://Scenes/Decipher Game/gateway.tscn" id="7_pue00"]
 [ext_resource type="Material" uid="uid://csgcfrcx432e" path="res://3D_MODELS/Arch Kit/materials/plain.tres" id="10_4p6xf"]
 [ext_resource type="PackedScene" uid="uid://g8g7lqlvlvq7" path="res://Scenes/Decipher Game/straight_tile.tscn" id="10_bcdqc"]
 [ext_resource type="PackedScene" uid="uid://bqpxjgpguiyou" path="res://Scenes/Decipher Game/roman_stairs.tscn" id="13_epqfo"]
+[ext_resource type="Script" uid="uid://dw1cv0b10q8k8" path="res://Scripts/Player A/Killzone.gd" id="15_epqfo"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1bvp3"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_lquwl"]
-sky_material = SubResource("ProceduralSkyMaterial_1bvp3")
-
-[sub_resource type="Environment" id="Environment_7mycd"]
-background_mode = 2
-sky = SubResource("Sky_lquwl")
+[sub_resource type="Environment" id="Environment_4p6xf"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.101960786, 0.16862746, 0.23529412, 1)
 glow_enabled = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q4jso"]
-albedo_texture = ExtResource("2_f8vpv")
+glow_intensity = 1.5
+fog_enabled = true
+fog_light_energy = 0.1
+fog_density = 0.05
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_y8wm3"]
 size = Vector3(1, 1, 2)
@@ -44,17 +41,24 @@ albedo_color = Color(0.36078432, 1, 1, 0.32941177)
 transparency = 1
 albedo_color = Color(0.34901962, 1, 1, 0.23137255)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xwue4"]
-albedo_color = Color(0.23827136, 0.09260438, 0.006697394, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdfb5"]
+albedo_texture = ExtResource("2_f8vpv")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_suv43"]
+size = Vector3(100, 2, 100)
+
+[sub_resource type="LabelSettings" id="LabelSettings_kwdjp"]
+font_size = 72
+font_color = Color(0.88601404, 0.15845767, 4.813075e-07, 1)
 
 [node name="Main" type="Node3D" unique_id=1190309061]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=382672486]
-environment = SubResource("Environment_7mycd")
+environment = SubResource("Environment_4p6xf")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=142029049]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-light_energy = 0.0
+transform = Transform3D(-0.86602557, -0.43301272, 0.24999988, 0.29946473, -0.048796415, 0.95285875, -0.40040088, 0.9000661, 0.17193095, 0, 20.301542, -20.090996)
+light_energy = 0.5
 shadow_enabled = true
 
 [node name="TopFloor" type="Node3D" parent="." unique_id=1099310961]
@@ -68,7 +72,7 @@ material = ExtResource("1_bcdqc")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35409975, 2.2, -10.2)
 use_collision = true
 size = Vector3(3.5, 4.5, 0.5)
-material = SubResource("StandardMaterial3D_q4jso")
+material = ExtResource("2_q4jso")
 script = ExtResource("1_0xm2m")
 symbol_wall = NodePath("../SymbollWall")
 ui_layer = NodePath("../UI")
@@ -93,13 +97,44 @@ font_size = 24
 [node name="TorchLight" type="OmniLight3D" parent="TopFloor/SymbollWall" unique_id=1923793490]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.5)
 light_color = Color(1, 0.7058824, 0.34901962, 1)
-light_energy = 2.0
+light_energy = 3.0
 shadow_enabled = true
-omni_range = 8.0
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight5" type="OmniLight3D" parent="TopFloor/SymbollWall" unique_id=401142998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0577693, 0.5, -2.7436657)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight2" type="OmniLight3D" parent="TopFloor/SymbollWall" unique_id=353551756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0232353, 2.6138191, 16.362556)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight4" type="OmniLight3D" parent="TopFloor/SymbollWall" unique_id=587754012]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.211773, 1.9260197, 10.931529)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight3" type="OmniLight3D" parent="TopFloor/SymbollWall" unique_id=1286678321]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.347499, 2.6138191, 15.563501)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
 script = ExtResource("2_1bvp3")
 
 [node name="UI" type="CanvasLayer" parent="TopFloor" unique_id=1135546885]
-visible = false
 
 [node name="Panel" type="Panel" parent="TopFloor/UI" unique_id=1881017303]
 anchors_preset = 8
@@ -127,37 +162,46 @@ offset_right = 240.0
 offset_bottom = 69.0
 text = "Unlock"
 
-[node name="ClueImage" type="TextureRect" parent="TopFloor/UI" unique_id=946285513]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -250.0
-offset_right = 250.0
-offset_bottom = 250.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_f0r4n")
+[node name="InteractPrompt" type="Label" parent="TopFloor/UI" unique_id=854726103]
+offset_left = 500.0
+offset_top = 400.0
+offset_right = 648.0
+offset_bottom = 423.0
+text = "Press 'E' to interact"
 
-[node name="InteractPrompt" type="Label" parent="TopFloor/UI" unique_id=117743639]
-visible = false
-offset_right = 500.0
-offset_bottom = 400.0
-text = "Press 'E' to read."
-
-[node name="Pedestal" type="CSGCylinder3D" parent="TopFloor" unique_id=411120541 node_paths=PackedStringArray("clue_ui")]
+[node name="Pedestal" type="CSGCylinder3D" parent="TopFloor" unique_id=411120541 node_paths=PackedStringArray("clue_ui", "interact_prompt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.1, 0.5, -0.3)
 use_collision = true
 height = 1.0
 script = ExtResource("4_bcdqc")
-clue_ui = NodePath("../UI/ClueImage")
+clue_ui = NodePath("PaperUI/ClueImage")
+interact_prompt = NodePath("PaperUI/InteractPrompt")
 
 [node name="PaperInteractZone" type="Area3D" parent="TopFloor/Pedestal" unique_id=1605010687]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TopFloor/Pedestal/PaperInteractZone" unique_id=616248141]
 shape = SubResource("BoxShape3D_xwue4")
+
+[node name="PaperUI" type="CanvasLayer" parent="TopFloor/Pedestal" unique_id=1864956474]
+
+[node name="ClueImage" type="TextureRect" parent="TopFloor/Pedestal/PaperUI" unique_id=946285513]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -400.0
+offset_right = 400.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_4p6xf")
+
+[node name="InteractPrompt" type="Label" parent="TopFloor/Pedestal/PaperUI" unique_id=117743639]
+offset_right = 500.0
+offset_bottom = 400.0
+text = "Press 'E' to read."
 
 [node name="Walls" type="CSGCombiner3D" parent="TopFloor" unique_id=259802256]
 visible = false
@@ -174,8 +218,9 @@ use_collision = true
 size = Vector3(0.5, 6, 20)
 
 [node name="ArchwayHole" type="CSGBox3D" parent="TopFloor/Walls/LeftWall" unique_id=1045870550]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 2, 0, -1, 0)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 2, 0, -0.556154, -0.73354864)
 operation = 2
+size = Vector3(1, 1.2, 1.5)
 
 [node name="RightWall" type="CSGBox3D" parent="TopFloor/Walls" unique_id=1081655677]
 transform = Transform3D(0.5, 0, 0, 0, 6, 0, 0, 0, 20, 9.75, 3, 0)
@@ -196,78 +241,97 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
 operation = 2
 size = Vector3(2, 3, 2)
 
-[node name="CSGCombiner3D" type="CSGCombiner3D" parent="TopFloor" unique_id=883176790]
+[node name="SideRoomWalls" type="CSGCombiner3D" parent="TopFloor" unique_id=883176790]
+visible = false
 material_override = SubResource("StandardMaterial3D_y8wm3")
 use_collision = true
 
-[node name="SideRoomFront" type="CSGBox3D" parent="TopFloor/CSGCombiner3D" unique_id=235501908]
+[node name="SideRoomFront" type="CSGBox3D" parent="TopFloor/SideRoomWalls" unique_id=235501908]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.75, 3, -4.75)
 use_collision = true
 size = Vector3(20, 6, 0.5)
 
-[node name="SideRoomBack" type="CSGBox3D" parent="TopFloor/CSGCombiner3D" unique_id=1452397992]
+[node name="SideRoomBack" type="CSGBox3D" parent="TopFloor/SideRoomWalls" unique_id=1452397992]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.75, 3, 4.75)
 use_collision = true
 size = Vector3(20, 6, 0.5)
 
-[node name="SideRoomFarWall" type="CSGBox3D" parent="TopFloor/CSGCombiner3D" unique_id=1103000896]
+[node name="SideRoomFarWall" type="CSGBox3D" parent="TopFloor/SideRoomWalls" unique_id=1103000896]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.5, 3, 0)
 use_collision = true
 size = Vector3(0.5, 6, 10)
 
-[node name="SideRoomCeiling" type="CSGBox3D" parent="TopFloor/CSGCombiner3D" unique_id=6916699]
+[node name="SideRoomCeiling" type="CSGBox3D" parent="TopFloor/SideRoomWalls" unique_id=6916699]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.75, 6, 0)
 use_collision = true
 size = Vector3(20, 0.5, 10)
 material = ExtResource("1_bcdqc")
-
-[node name="thick_corner" parent="TopFloor" unique_id=50230000 instance=ExtResource("4_aql8u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0357275, 6.59042, 10.079107)
-
-[node name="wall_straight" parent="TopFloor" unique_id=128977766 instance=ExtResource("5_cqrcb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2000003, 0, 11)
-
-[node name="thick_corner2" parent="TopFloor" unique_id=859540660 instance=ExtResource("4_aql8u")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -10, 6.7, 9.5)
-
-[node name="thick_corner3" parent="TopFloor" unique_id=247891520 instance=ExtResource("4_aql8u")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -10.3, 6.7, -7.8)
-
-[node name="thick_corner5" parent="TopFloor" unique_id=1123441291 instance=ExtResource("4_aql8u")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -30, 6.7, -5.5)
-
-[node name="thick_corner6" parent="TopFloor" unique_id=1329958999 instance=ExtResource("4_aql8u")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -30.7, 6.7, 3.5)
-
-[node name="thick_corner4" parent="TopFloor" unique_id=1401055891 instance=ExtResource("4_aql8u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10, 6.7, -9.5)
-
-[node name="wall_straight2" parent="TopFloor" unique_id=697057703 instance=ExtResource("5_cqrcb")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.5, -0.19999999, -6)
-
-[node name="wall_straight3" parent="TopFloor" unique_id=523384274 instance=ExtResource("5_cqrcb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 5)
-
-[node name="wall_straight4" parent="TopFloor" unique_id=742385211 instance=ExtResource("5_cqrcb")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -26.000002, 0, -5.5)
-
-[node name="straight_wall" parent="TopFloor" unique_id=1005344398 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -33.1, 5.9, 1)
-
-[node name="straight_wall2" parent="TopFloor" unique_id=1905697602 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3.9, 5.8, -13)
-
-[node name="straight_wall3" parent="TopFloor" unique_id=1629695899 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -6.5, 5.8, -13)
-
-[node name="straight_wall4" parent="TopFloor" unique_id=1389488963 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -14, 6, 5.7999997)
 
 [node name="SideRoomFloor" type="CSGBox3D" parent="TopFloor" unique_id=801740927]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.75, 0, 0)
 use_collision = true
 size = Vector3(20, 0.1, 10)
 material = ExtResource("1_bcdqc")
+
+[node name="FillLight" type="OmniLight3D" parent="TopFloor" unique_id=1418640175]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+light_color = Color(0.54509807, 0.6392157, 0.70980394, 1)
+light_energy = 0.5
+omni_range = 25.0
+
+[node name="Architecture" type="Node3D" parent="TopFloor" unique_id=281585795]
+
+[node name="Main Room" type="Node3D" parent="TopFloor/Architecture" unique_id=2017826107]
+
+[node name="thick_corner" parent="TopFloor/Architecture/Main Room" unique_id=50230000 instance=ExtResource("4_aql8u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.0357275, 6.59042, 10.079107)
+
+[node name="wall_straight" parent="TopFloor/Architecture/Main Room" unique_id=128977766 instance=ExtResource("5_cqrcb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2000003, 0, 11)
+
+[node name="thick_corner2" parent="TopFloor/Architecture/Main Room" unique_id=859540660 instance=ExtResource("4_aql8u")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -10, 6.7, 9.5)
+
+[node name="thick_corner3" parent="TopFloor/Architecture/Main Room" unique_id=247891520 instance=ExtResource("4_aql8u")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -10.3, 6.7, -7.8)
+
+[node name="thick_corner4" parent="TopFloor/Architecture/Main Room" unique_id=1401055891 instance=ExtResource("4_aql8u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10, 6.7, -9.5)
+
+[node name="wall_straight2" parent="TopFloor/Architecture/Main Room" unique_id=697057703 instance=ExtResource("5_cqrcb")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.5, -0.19999999, -6)
+
+[node name="straight_wall2" parent="TopFloor/Architecture/Main Room" unique_id=1905697602 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3.9, 5.8, -13)
+
+[node name="straight_wall3" parent="TopFloor/Architecture/Main Room" unique_id=1629695899 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -6.5, 5.8, -13)
+
+[node name="gateway2" parent="TopFloor/Architecture/Main Room" unique_id=1531861589 instance=ExtResource("7_pue00")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, -0.2, -11.6)
+
+[node name="Side Room" type="Node3D" parent="TopFloor/Architecture" unique_id=2131494090]
+
+[node name="thick_corner5" parent="TopFloor/Architecture/Side Room" unique_id=1123441291 instance=ExtResource("4_aql8u")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -30, 6.7, -5.5)
+
+[node name="thick_corner6" parent="TopFloor/Architecture/Side Room" unique_id=1329958999 instance=ExtResource("4_aql8u")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -30.7, 6.7, 3.5)
+
+[node name="wall_straight3" parent="TopFloor/Architecture/Side Room" unique_id=523384274 instance=ExtResource("5_cqrcb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 5)
+
+[node name="wall_straight4" parent="TopFloor/Architecture/Side Room" unique_id=742385211 instance=ExtResource("5_cqrcb")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -26.000002, 0, -5.5)
+
+[node name="straight_wall" parent="TopFloor/Architecture/Side Room" unique_id=1005344398 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -33.1, 5.9, 1)
+
+[node name="gateway" parent="TopFloor/Architecture/Side Room" unique_id=1495519261 instance=ExtResource("7_pue00")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -12.568706, -0.33040357, -0.27116203)
+
+[node name="straight_wall4" parent="TopFloor/Architecture/Side Room" unique_id=1389488963 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -14, 6, 5.7999997)
 
 [node name="BottomFloor" type="Node3D" parent="." unique_id=1683980250]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -56)
@@ -279,8 +343,8 @@ material = ExtResource("1_bcdqc")
 
 [node name="Door" type="CSGBox3D" parent="BottomFloor" unique_id=712087444 node_paths=PackedStringArray("symbol_wall", "ui_layer")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 1, 0, 2, -10)
-material_override = SubResource("StandardMaterial3D_xwue4")
 use_collision = true
+material = SubResource("StandardMaterial3D_fdfb5")
 script = ExtResource("1_0xm2m")
 secret_word = "CAESAR"
 symbol_wall = NodePath("../SymbollWall")
@@ -306,13 +370,60 @@ font_size = 24
 [node name="TorchLight" type="OmniLight3D" parent="BottomFloor/SymbollWall" unique_id=904132073]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.5)
 light_color = Color(1, 0.7058824, 0.34901962, 1)
-light_energy = 2.0
+light_energy = 3.0
 shadow_enabled = true
-omni_range = 8.0
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight6" type="OmniLight3D" parent="BottomFloor/SymbollWall" unique_id=509658901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8870986, 0.5, -3.0657883)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight7" type="OmniLight3D" parent="BottomFloor/SymbollWall" unique_id=1191927839]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2739906, 0.5, -3.0657883)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight5" type="OmniLight3D" parent="BottomFloor/SymbollWall" unique_id=133976889]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3463144, 2.0545306, 13.924393)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight2" type="OmniLight3D" parent="BottomFloor/SymbollWall" unique_id=1693316338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.774598, 2.1239252, 1.8536453)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight3" type="OmniLight3D" parent="BottomFloor/SymbollWall" unique_id=133427247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.01739, 1.7625632, 14.637619)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="TorchLight4" type="OmniLight3D" parent="BottomFloor/SymbollWall" unique_id=678894174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.525335, 1.7625632, 13.0645485)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
 script = ExtResource("2_1bvp3")
 
 [node name="UI" type="CanvasLayer" parent="BottomFloor" unique_id=1796535617]
-visible = false
 
 [node name="Panel" type="Panel" parent="BottomFloor/UI" unique_id=2055551121]
 anchors_preset = 8
@@ -340,10 +451,13 @@ offset_right = 240.0
 offset_bottom = 69.0
 text = "Unlock"
 
-[node name="Pedestal" type="CSGCylinder3D" parent="BottomFloor" unique_id=349934864]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.5, 2)
-use_collision = true
-height = 1.0
+[node name="InteractPrompt" type="Label" parent="BottomFloor/UI" unique_id=63151958]
+offset_left = 500.0
+offset_top = 400.0
+offset_right = 648.0
+offset_bottom = 449.0
+text = "Press 'E' to interact
+"
 
 [node name="Walls" type="CSGCombiner3D" parent="BottomFloor" unique_id=587245973]
 material_override = ExtResource("10_4p6xf")
@@ -358,8 +472,9 @@ transform = Transform3D(0.5, 0, 0, 0, 6, 0, 0, 0, 20, 9.75, 3, 0)
 use_collision = true
 
 [node name="ArchwayHole2" type="CSGBox3D" parent="BottomFloor/Walls/RightWall" unique_id=366420459]
-transform = Transform3D(8, 0, 0, 0, 0.6666667, 0, 0, 0, 0.10000005, 1, -0.16666603, -0.049999952)
+transform = Transform3D(8, 0, 0, 0, 0.6666667, 0, 0, 0, 0.10000005, 1, -0.064705014, -0.10190368)
 operation = 2
+size = Vector3(1, 1.2, 1.7)
 
 [node name="Ceiling" type="CSGBox3D" parent="BottomFloor/Walls" unique_id=1640339903]
 transform = Transform3D(20, 0, 0, 0, 0.5, 0, 0, 0, 20, 0, 6, 0)
@@ -370,10 +485,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -9.75)
 use_collision = true
 size = Vector3(20, 6, 0.5)
 
-[node name="DoorwayHole" type="CSGBox3D" parent="BottomFloor/Walls/FrontWall" unique_id=2085156119]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+[node name="ArchwayHole3" type="CSGBox3D" parent="BottomFloor/Walls/FrontWall" unique_id=160880066]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 2.000001, 0.027071953, -0.55293083, -0.76031494)
 operation = 2
-size = Vector3(4, 4, 2)
+size = Vector3(0.8, 1.2, 1.7)
 
 [node name="BottomSideRoom" type="CSGCombiner3D" parent="BottomFloor" unique_id=1712478968]
 material_override = ExtResource("10_4p6xf")
@@ -404,16 +519,105 @@ use_collision = true
 size = Vector3(20, 0.1, 10)
 material = ExtResource("1_bcdqc")
 
-[node name="wall_straight" parent="BottomFloor" unique_id=51196576 instance=ExtResource("5_cqrcb")]
+[node name="Pedestal2" type="CSGCylinder3D" parent="BottomFloor" unique_id=402566356 node_paths=PackedStringArray("clue_ui", "interact_prompt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.5, 0)
+use_collision = true
+height = 1.0
+script = ExtResource("4_bcdqc")
+clue_ui = NodePath("PaperUI/ClueImage")
+interact_prompt = NodePath("PaperUI/InteractPrompt")
+
+[node name="PaperInteractZone" type="Area3D" parent="BottomFloor/Pedestal2" unique_id=1160608487]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BottomFloor/Pedestal2/PaperInteractZone" unique_id=1513703597]
+shape = SubResource("BoxShape3D_xwue4")
+
+[node name="PaperUI" type="CanvasLayer" parent="BottomFloor/Pedestal2" unique_id=1317942990]
+
+[node name="ClueImage" type="TextureRect" parent="BottomFloor/Pedestal2/PaperUI" unique_id=116551234]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -400.0
+offset_right = 400.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_4p6xf")
+
+[node name="InteractPrompt" type="Label" parent="BottomFloor/Pedestal2/PaperUI" unique_id=687677383]
+offset_right = 500.0
+offset_bottom = 400.0
+text = "Press 'E' to read."
+
+[node name="FillLight" type="OmniLight3D" parent="BottomFloor" unique_id=1819032668]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+light_color = Color(0.54509807, 0.6392157, 0.70980394, 1)
+light_energy = 0.5
+omni_range = 25.0
+
+[node name="Architecture" type="Node3D" parent="BottomFloor" unique_id=1928948448]
+
+[node name="Main Room" type="Node3D" parent="BottomFloor/Architecture" unique_id=429511689]
+
+[node name="thick_corner" parent="BottomFloor/Architecture/Main Room" unique_id=257861567 instance=ExtResource("4_aql8u")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -9.7951565, 6.7618613, -8.017204)
+
+[node name="wall_straight" parent="BottomFloor/Architecture/Main Room" unique_id=1067243811 instance=ExtResource("5_cqrcb")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -11.59927, 0.13462162, 8.286503)
+
+[node name="gateway3" parent="BottomFloor/Architecture/Main Room" unique_id=1739316960 instance=ExtResource("7_pue00")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3547784, -0.1580677, -8.952644)
+
+[node name="straight_wall" parent="BottomFloor/Architecture/Main Room" unique_id=1752173673 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 13.393, 6.005, 6.619999)
+
+[node name="straight_wall5" parent="BottomFloor/Architecture/Main Room" unique_id=1118832244 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 13.393365, 6.0050073, 2.0451164)
+
+[node name="thick_corner2" parent="BottomFloor/Architecture/Main Room" unique_id=976673696 instance=ExtResource("4_aql8u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.876906, 6.7511325, -8.0673065)
+
+[node name="straight_wall2" parent="BottomFloor/Architecture/Main Room" unique_id=271383808 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.719926, 6.103143, -9.171875)
+
+[node name="straight_wall3" parent="BottomFloor/Architecture/Main Room" unique_id=2009566082 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.4261866, 6.103143, -8.261299)
+
+[node name="straight_wall6" parent="BottomFloor/Architecture/Main Room" unique_id=959475223 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.91, 5.83, 12.939999)
+
+[node name="straight_wall8" parent="BottomFloor/Architecture/Main Room" unique_id=666608097 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0862746, 5.830187, 12.930153)
+
+[node name="straight_wall9" parent="BottomFloor/Architecture/Main Room" unique_id=507078474 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.445, 5.83, 12.939999)
+
+[node name="straight_wall7" parent="BottomFloor/Architecture/Main Room" unique_id=610678628 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0482492, 5.838583, 12.930153)
+
+[node name="Side Room" type="Node3D" parent="BottomFloor/Architecture" unique_id=1873290555]
+
+[node name="gateway4" parent="BottomFloor/Architecture/Side Room" unique_id=280049976 instance=ExtResource("7_pue00")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 9.737058, 0.050001144, -1.782795)
+
+[node name="wall_straight" parent="BottomFloor/Architecture/Side Room" unique_id=51196576 instance=ExtResource("5_cqrcb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.956089, -0.2052517, 7.3818817)
 
-[node name="wall_straight2" parent="BottomFloor" unique_id=994751486 instance=ExtResource("5_cqrcb")]
+[node name="wall_straight2" parent="BottomFloor/Architecture/Side Room" unique_id=994751486 instance=ExtResource("5_cqrcb")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 13.348507, -0.37535572, -5.7830887)
 
-[node name="Stairs" type="CSGBox3D" parent="." unique_id=74292181]
-transform = Transform3D(10, 0, 0, 0, 0.4698463, 10.260604, 0, -0.17101006, 28.190779, 0, -5, -33)
-visible = false
-use_collision = true
+[node name="thick_corner3" parent="BottomFloor/Architecture/Side Room" unique_id=1077350376 instance=ExtResource("4_aql8u")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 29.61123, 6.638554, -4.6440125)
+
+[node name="thick_corner4" parent="BottomFloor/Architecture/Side Room" unique_id=1082739115 instance=ExtResource("4_aql8u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.537424, 6.7941585, 5.473793)
+
+[node name="straight_wall4" parent="BottomFloor/Architecture/Side Room" unique_id=315770223 instance=ExtResource("6_cqrcb")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32.853424, 5.9405336, -0.95754623)
 
 [node name="MeetingPoint" type="CSGBox3D" parent="." unique_id=1125147446]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -85)
@@ -423,82 +627,68 @@ material = ExtResource("1_bcdqc")
 
 [node name="Player" parent="." unique_id=1932707054 groups=["player"] instance=ExtResource("3_6r6ri")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+floor_snap_length = 0.5
 
 [node name="Landing" type="CSGBox3D" parent="." unique_id=1600755188]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.75)
 visible = false
-use_collision = true
 size = Vector3(10, 0.1, 10)
 material = ExtResource("1_bcdqc")
 
-[node name="gateway2" parent="." unique_id=1531861589 instance=ExtResource("7_pue00")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, -0.2, -11.6)
+[node name="Killzone" type="Area3D" parent="." unique_id=1557087621]
+script = ExtResource("15_epqfo")
 
-[node name="gateway" parent="." unique_id=1495519261 instance=ExtResource("7_pue00")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -12.568706, -0.33040357, -0.27116203)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzone" unique_id=1681969667]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, -30)
+shape = SubResource("BoxShape3D_suv43")
 
-[node name="roman_stairs" parent="." unique_id=1635490541 instance=ExtResource("13_epqfo")]
-transform = Transform3D(-0.022687318, 0, -0.99974257, 0, 1, 0, 0.99974257, 0, -0.022687318, -1.0305514, -7.0817113, -19.380062)
+[node name="DeathUI" type="CanvasLayer" parent="Killzone" unique_id=1264161179]
 
-[node name="thick_corner" parent="." unique_id=257861567 instance=ExtResource("4_aql8u")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -9.7951565, -3.2381387, -64.017204)
+[node name="ColorRect" type="ColorRect" parent="Killzone/DeathUI" unique_id=1551771347]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
-[node name="wall_straight" parent="." unique_id=1067243811 instance=ExtResource("5_cqrcb")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -11.59927, -9.865378, -47.713497)
+[node name="Label" type="Label" parent="Killzone/DeathUI/ColorRect" unique_id=242163162]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -169.5
+offset_top = -49.5
+offset_right = 169.5
+offset_bottom = 49.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "YOU DIED"
+label_settings = SubResource("LabelSettings_kwdjp")
 
-[node name="gateway3" parent="." unique_id=1739316960 instance=ExtResource("7_pue00")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3547784, -10.158068, -64.952644)
+[node name="InvisibleRamp" type="CSGBox3D" parent="." unique_id=1695214333]
+transform = Transform3D(1, 0, 0, 0, 0.84804803, 0.5299192, 0, -0.5299192, 0.84804803, 0.51234865, -3.2606378, -18.126415)
+visible = false
+size = Vector3(4, 0.5, 10)
 
-[node name="straight_wall" parent="." unique_id=1752173673 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 13.393365, -3.9949927, -49.396023)
+[node name="Stairs" type="Node3D" parent="." unique_id=1274765366]
 
-[node name="straight_wall5" parent="." unique_id=1118832244 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 13.393365, -3.9949927, -52.04082)
+[node name="roman_stairs" parent="Stairs" unique_id=1635490541 instance=ExtResource("13_epqfo")]
+transform = Transform3D(-0.022687318, 0, -0.99974257, 0, 1, 0, 0.99974257, 0, -0.022687318, -1.0305514, -7.68512, -19.380062)
 
-[node name="thick_corner2" parent="." unique_id=976673696 instance=ExtResource("4_aql8u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.876906, -3.2488675, -64.06731)
+[node name="straight_tile" parent="Stairs" unique_id=1044871752 instance=ExtResource("10_bcdqc")]
+transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -8.647451, -26.690716)
 
-[node name="gateway4" parent="." unique_id=280049976 instance=ExtResource("7_pue00")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 9.737058, -9.949999, -57.782795)
+[node name="straight_tile2" parent="Stairs" unique_id=915107338 instance=ExtResource("10_bcdqc")]
+transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -8.878759, -32.350433)
 
-[node name="straight_wall2" parent="." unique_id=271383808 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.719926, -3.8968568, -65.171875)
-
-[node name="straight_wall3" parent="." unique_id=2009566082 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.4261866, -3.8968568, -64.2613)
-
-[node name="thick_corner3" parent="." unique_id=1077350376 instance=ExtResource("4_aql8u")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 30.255377, -3.361446, -60.644012)
-
-[node name="thick_corner4" parent="." unique_id=1082739115 instance=ExtResource("4_aql8u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.537424, -3.2058415, -50.526207)
-
-[node name="straight_wall4" parent="." unique_id=315770223 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32.853424, -4.0594664, -56.957546)
-
-[node name="straight_tile" parent="." unique_id=1044871752 instance=ExtResource("10_bcdqc")]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -7.8543406, -26.690716)
-
-[node name="straight_tile2" parent="." unique_id=915107338 instance=ExtResource("10_bcdqc")]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -8.770123, -32.350433)
-
-[node name="straight_tile3" parent="." unique_id=524676331 instance=ExtResource("10_bcdqc")]
+[node name="straight_tile3" parent="Stairs" unique_id=524676331 instance=ExtResource("10_bcdqc")]
 transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -9.461652, -38.228413)
 
-[node name="straight_tile4" parent="." unique_id=234346993 instance=ExtResource("10_bcdqc")]
+[node name="straight_tile4" parent="Stairs" unique_id=234346993 instance=ExtResource("10_bcdqc")]
 transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -10.416549, -42.276936)
-
-[node name="straight_wall6" parent="." unique_id=959475223 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.909747, -4.169813, -43.069847)
-
-[node name="straight_wall8" parent="." unique_id=666608097 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0862746, -4.169813, -43.069847)
-
-[node name="straight_wall9" parent="." unique_id=507078474 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4447474, -4.169813, -43.069847)
-
-[node name="straight_wall7" parent="." unique_id=610678628 instance=ExtResource("6_cqrcb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0482492, -4.161417, -43.069847)
 
 [connection signal="body_entered" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_exited"]
@@ -506,3 +696,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0482492, -4.161417, -43.069
 [connection signal="body_exited" from="TopFloor/Pedestal/PaperInteractZone" to="TopFloor/Pedestal" method="_on_paper_interact_zone_body_exited"]
 [connection signal="body_entered" from="BottomFloor/Door/InteractZone" to="BottomFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="BottomFloor/Door/InteractZone" to="BottomFloor/Door" method="_on_interact_zone_body_exited"]
+[connection signal="body_entered" from="BottomFloor/Pedestal2/PaperInteractZone" to="BottomFloor/Pedestal2" method="_on_paper_interact_zone_body_entered"]
+[connection signal="body_exited" from="BottomFloor/Pedestal2/PaperInteractZone" to="BottomFloor/Pedestal2" method="_on_paper_interact_zone_body_exited"]
+[connection signal="body_entered" from="Killzone" to="Killzone" method="_on_body_entered"]
