@@ -14,6 +14,9 @@
 [ext_resource type="PackedScene" uid="uid://drx2yv0272d1q" path="res://Scenes/Decipher Game/gateway.tscn" id="7_pue00"]
 [ext_resource type="Material" uid="uid://csgcfrcx432e" path="res://3D_MODELS/Arch Kit/materials/plain.tres" id="10_4p6xf"]
 [ext_resource type="PackedScene" uid="uid://g8g7lqlvlvq7" path="res://Scenes/Decipher Game/straight_tile.tscn" id="10_bcdqc"]
+[ext_resource type="PackedScene" uid="uid://b6wetux6q4kxg" path="res://Scenes/Decipher Game/paper_clue.tscn" id="11_h5e4j"]
+[ext_resource type="PackedScene" uid="uid://bbl0heyjabi2q" path="res://Scenes/Decipher Game/torch.tscn" id="12_y3nkj"]
+[ext_resource type="PackedScene" uid="uid://qg2g5liw8yc5" path="res://Scenes/Decipher Game/old_chest.tscn" id="13_2guir"]
 [ext_resource type="PackedScene" uid="uid://bqpxjgpguiyou" path="res://Scenes/Decipher Game/roman_stairs.tscn" id="13_epqfo"]
 [ext_resource type="Script" uid="uid://dw1cv0b10q8k8" path="res://Scripts/Player A/Killzone.gd" id="15_epqfo"]
 
@@ -127,7 +130,7 @@ omni_range = 15.0
 script = ExtResource("2_1bvp3")
 
 [node name="TorchLight3" type="OmniLight3D" parent="TopFloor/SymbollWall" unique_id=1286678321]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.347499, 2.6138191, 15.563501)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.690287, 2.9098878, 16.4668)
 light_color = Color(1, 0.7058824, 0.34901962, 1)
 light_energy = 3.0
 shadow_enabled = true
@@ -332,6 +335,29 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -12.
 
 [node name="straight_wall4" parent="TopFloor/Architecture/Side Room" unique_id=1389488963 instance=ExtResource("6_cqrcb")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -14, 6, 5.7999997)
+
+[node name="paper_clue" parent="TopFloor" unique_id=104830580 instance=ExtResource("11_h5e4j")]
+transform = Transform3D(0.9591004, 0, -0.28306603, 0, 1, 0, 0.28306603, 0, 0.9591004, -28.197414, 1.0119529, -0.37831655)
+
+[node name="Torches" type="Node3D" parent="TopFloor" unique_id=292857630]
+
+[node name="Torch" parent="TopFloor/Torches" unique_id=1332966786 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(0.111825995, 0, 0.9937278, 0, 1, 0, -0.9937278, 0, 0.111825995, -8.240223, 3.4931881, 8.275748)
+
+[node name="Torch2" parent="TopFloor/Torches" unique_id=2072042596 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(-0.988268, 0, -0.15272927, 0, 1, 0, 0.15272927, 0, -0.988268, -18.881393, 2.6314926, 2.7025888)
+
+[node name="Torch3" parent="TopFloor/Torches" unique_id=868737371 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(-0.14134517, 0, -0.98996013, 0, 1, 0, 0.98996013, 0, -0.14134517, 2.582694, 1.5814252, -11.654507)
+
+[node name="Torch4" parent="TopFloor/Torches" unique_id=855152397 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(-0.26921794, 0, -0.9630793, 0, 1, 0, 0.9630793, 0, -0.26921794, 8.35972, 2.9547806, 7.8896437)
+
+[node name="Old Chest" parent="TopFloor" unique_id=1225424341 instance=ExtResource("13_2guir")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 7.82942, -4.7683716e-07, -6.42493)
+
+[node name="Old Chest2" parent="TopFloor" unique_id=289764641 instance=ExtResource("13_2guir")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.080608, -4.7683716e-07, -2.7059045)
 
 [node name="BottomFloor" type="Node3D" parent="." unique_id=1683980250]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -56)
@@ -619,6 +645,35 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.537424, 6.7941585, 5.47379
 [node name="straight_wall4" parent="BottomFloor/Architecture/Side Room" unique_id=315770223 instance=ExtResource("6_cqrcb")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32.853424, 5.9405336, -0.95754623)
 
+[node name="paper_clue" parent="BottomFloor" unique_id=261055931 instance=ExtResource("11_h5e4j")]
+transform = Transform3D(0.9595905, 0, 0.2814002, 0, 1, 0, -0.2814002, 0, 0.9595905, 27.88913, 1.0224495, -0.004917145)
+
+[node name="Torches" type="Node3D" parent="BottomFloor" unique_id=89491627]
+
+[node name="Torch5" parent="BottomFloor/Torches" unique_id=1495374845 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(0.109757066, 0, 0.9939585, 0, 1, 0, -0.9939585, 0, 0.109757066, -9.355871, 3.153564, 5.362297)
+
+[node name="Torch" parent="BottomFloor/Torches" unique_id=815780014 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(-0.9999931, 0, 0.0036784168, 0, 1, 0, -0.0036784168, 0, -0.9999931, 20.885468, 2.666893, 4.9983063)
+
+[node name="Torch3" parent="BottomFloor/Torches" unique_id=1582717623 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(-0.99012315, 0, -0.14019942, 0, 1, 0, 0.14019942, 0, -0.99012315, -1.8052673, 1.5832539, -11.671623)
+
+[node name="Torch4" parent="BottomFloor/Torches" unique_id=187242334 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(-0.99012315, 0, -0.14019942, 0, 1, 0, 0.14019942, 0, -0.99012315, 2.625432, 1.5832539, -11.671623)
+
+[node name="Torch6" parent="BottomFloor/Torches" unique_id=1030826103 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.839283, 3.1857347, -7.3766212)
+
+[node name="Torch7" parent="BottomFloor/Torches" unique_id=742166009 instance=ExtResource("12_y3nkj")]
+transform = Transform3D(-0.025420235, 0, -0.9996769, 0, 1, 0, 0.9996769, 0, -0.025420235, 9.310307, 2.7042184, 5.759693)
+
+[node name="Old Chest3" parent="BottomFloor" unique_id=749808963 instance=ExtResource("13_2guir")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.22841, -0.0017824173, -7.458542)
+
+[node name="Old Chest4" parent="BottomFloor" unique_id=2016842963 instance=ExtResource("13_2guir")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 14.874554, 0.09739399, 2.710575)
+
 [node name="MeetingPoint" type="CSGBox3D" parent="." unique_id=1125147446]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -85)
 use_collision = true
@@ -628,12 +683,6 @@ material = ExtResource("1_bcdqc")
 [node name="Player" parent="." unique_id=1932707054 groups=["player"] instance=ExtResource("3_6r6ri")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 floor_snap_length = 0.5
-
-[node name="Landing" type="CSGBox3D" parent="." unique_id=1600755188]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.75)
-visible = false
-size = Vector3(10, 0.1, 10)
-material = ExtResource("1_bcdqc")
 
 [node name="Killzone" type="Area3D" parent="." unique_id=1557087621]
 script = ExtResource("15_epqfo")
@@ -667,11 +716,6 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "YOU DIED"
 label_settings = SubResource("LabelSettings_kwdjp")
-
-[node name="InvisibleRamp" type="CSGBox3D" parent="." unique_id=1695214333]
-transform = Transform3D(1, 0, 0, 0, 0.84804803, 0.5299192, 0, -0.5299192, 0.84804803, 0.51234865, -3.2606378, -18.126415)
-visible = false
-size = Vector3(4, 0.5, 10)
 
 [node name="Stairs" type="Node3D" parent="." unique_id=1274765366]
 
