@@ -115,6 +115,17 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE):
 		handle_escape_key()
 
+func is_any_modal_open() -> bool:
+	if rules_modal and rules_modal.visible:
+		return true
+	if leaderboard_modal and leaderboard_modal.visible:
+		return true
+	if lobby_panel and lobby_panel.visible:
+		return true
+	if victory_panel and victory_panel.visible:
+		return true
+	return false
+
 func handle_escape_key() -> void:
 	get_viewport().set_input_as_handled()
 	
@@ -128,17 +139,16 @@ func handle_escape_key() -> void:
 		is_hint_open = false
 		if hint_card:
 			hint_card.visible = false
+		return
 	if alphabet_strip and alphabet_strip.visible:
 		alphabet_strip.visible = false
+		return
 		
 	if (lobby_panel and lobby_panel.visible) or (victory_panel and victory_panel.visible):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		return
 		
-	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	else:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	open_rules()
 func toggle_alphabet_strip() -> void:
 	if not alphabet_strip:
 		return
@@ -161,6 +171,17 @@ func toggle_hint_card() -> void:
 	hint_card.visible = is_hint_open
 	if is_hint_open and round_elapsed_timer >= HINT_LOCKOUT_TIME:
 		hint_penalty_used = true
+
+func reset_round_ui() -> void:
+	round_elapsed_timer = 0.0
+	hint_penalty_used = false
+	is_hint_open = false
+	if hint_card:
+		hint_card.visible = false
+	if alphabet_strip:
+		alphabet_strip.visible = false
+	if adrenaline_vignette:
+		adrenaline_vignette.visible = false
 
 func start_game_ui() -> void:
 	lobby_panel.visible = false

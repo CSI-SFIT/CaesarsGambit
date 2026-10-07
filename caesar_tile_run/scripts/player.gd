@@ -167,7 +167,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not is_local:
 		return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED and not is_spectating:
+		if is_spectating:
+			return
+		var ui = get_tree().root.get_node_or_null("Main/UI")
+		if ui and ui.has_method("is_any_modal_open") and ui.is_any_modal_open():
+			return
+		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 func _input(event: InputEvent) -> void:
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()

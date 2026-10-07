@@ -5,9 +5,7 @@
 [ext_resource type="PackedScene" path="res://scenes/finish_arch.tscn" id="3_arch"]
 [ext_resource type="PackedScene" path="res://scenes/ui.tscn" id="4_ui"]
 [ext_resource type="PackedScene" path="res://scenes/roman_banner.tscn" id="5_banner"]
-[ext_resource type="PackedScene" path="res://scenes/roman_brazier.tscn" id="6_brazier"]
 [ext_resource type="PackedScene" uid="uid://b57tergeybwsq" path="res://assets/models/colosseum.glb" id="7_colosseum"]
-[ext_resource type="PackedScene" path="res://assets/models/gladiator.glb" id="8_gladiator"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rome"]
 sky_top_color = Color(0.24, 0.35, 0.62, 1)
@@ -26,7 +24,7 @@ ambient_light_source = 3
 ambient_light_color = Color(0.95, 0.85, 0.75, 1)
 ambient_light_energy = 0.75
 tonemap_mode = 3
-glow_enabled = true
+glow_enabled = false
 glow_intensity = 0.85
 glow_bloom = 0.22
 fog_enabled = true
@@ -68,10 +66,6 @@ size = Vector3(20, 1.2, 14)
 [sub_resource type="BoxMesh" id="BoxMesh_finish_plat"]
 size = Vector3(20, 1.2, 14)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_gladiator"]
-height = 1.65
-radius = 0.55
-
 [node name="Main" type="Node3D" unique_id=1281352569]
 script = ExtResource("1_gm")
 
@@ -83,6 +77,10 @@ transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0
 light_color = Color(1, 0.92, 0.82, 1)
 light_energy = 1.7
 shadow_enabled = true
+directional_shadow_max_distance = 35.0
+directional_shadow_split_1 = 0.2
+directional_shadow_split_2 = 0.5
+directional_shadow_split_3 = 0.8
 
 [node name="SketchfabColosseum" parent="." unique_id=50439798 instance=ExtResource("7_colosseum")]
 transform = Transform3D(-7.86805e-07, 0, -18, 0, 18, 0, 18, 0, -7.86805e-07, 0, 3.5013628, 9.748268)
@@ -163,12 +161,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 4.5)
 [node name="BannerStartRight" parent="." unique_id=1689046772 instance=ExtResource("5_banner")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 4.5)
 
-[node name="BrazierCorner1" parent="." unique_id=438057889 instance=ExtResource("6_brazier")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 4.5)
-
-[node name="BrazierCorner2" parent="." unique_id=296527878 instance=ExtResource("6_brazier")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 4.5)
-
 [node name="CaesarPillar" parent="." unique_id=930788756 instance=ExtResource("2_pillar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5)
 
@@ -183,26 +175,6 @@ shape = SubResource("BoxShape3D_finish_plat")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="FinishPlatform" unique_id=788243823]
 mesh = SubResource("BoxMesh_finish_plat")
 surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
-
-[node name="GuardianGladiatorLeft" parent="." instance=ExtResource("8_gladiator")]
-transform = Transform3D(0.216506, 0, -0.125, 0, 0.25, 0, 0.125, 0, 0.216506, -4.8, 0, 29)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="GuardianGladiatorLeft"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GuardianGladiatorLeft/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.825, 0)
-shape = SubResource("CylinderShape3D_gladiator")
-
-[node name="GuardianGladiatorRight" parent="." instance=ExtResource("8_gladiator")]
-transform = Transform3D(0.216506, 0, 0.125, 0, 0.25, 0, -0.125, 0, 0.216506, 4.8, 0, 29)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="GuardianGladiatorRight"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GuardianGladiatorRight/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.825, 0)
-shape = SubResource("CylinderShape3D_gladiator")
 
 [node name="FinishArch" parent="." unique_id=1269890929 instance=ExtResource("3_arch")]
 transform = Transform3D(-0.9220106, 0, -0.38716447, 0, 1, 0, 0.38716447, 0, -0.9220106, 0, 0, 33)

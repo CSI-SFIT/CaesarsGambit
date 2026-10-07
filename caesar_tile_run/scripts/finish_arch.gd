@@ -61,3 +61,13 @@ func trigger_grand_victory_shower() -> void:
 	
 	celebration_particles.position = Vector3(0, 6.8, 0)
 	add_child(celebration_particles)
+
+
+func reset() -> void:
+	players_reached.clear()
+	if victory_label:
+		victory_label.visible = false
+	if portal_glow:
+		portal_glow.light_energy = 4.5
+	if celebration_particles:
+		celebration_particles.emitting = false

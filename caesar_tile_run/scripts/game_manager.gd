@@ -30,11 +30,13 @@ var tiles_grid: Array = []
 var players_at_finish: Array[int] = []
 var sound_fx = preload("res://scripts/sound_effects.gd").new()
 var hazards_container: Node3D
+var catapult_timer: float = 0.0
+const CATAPULT_INTERVAL: float = 7.5
 const ROUND_TIME: float = 45.0
 var round_timer: float = ROUND_TIME
 var game_active: bool = false
-var catapult_timer: float = 0.0
-const CATAPULT_INTERVAL: float = 7.5
+var coop_finish_countdown: float = 0.0
+var is_waiting_for_coop_partner: bool = false
 
 # Tournament statistics
 var round_start_time: float = 0.0
@@ -57,6 +59,10 @@ func _ready() -> void:
 	hazards_container = Node3D.new()
 	hazards_container.name = "HazardsContainer"
 	add_child(hazards_container)
+	
+	var colosseum = get_node_or_null("SketchfabColosseum")
+	if colosseum:
+		_disable_shadows_recursive(colosseum)
 	row_markers_container = Node3D.new()
 	row_markers_container.name = "RowMarkers"
 	add_child(row_markers_container)
@@ -92,6 +98,7 @@ func _on_host_pressed() -> void:
 	
 	my_player_role = 1
 	is_solo_mode = false
+	game_active = false
 	
 	puzzle_data = CaesarCipherScript.generate_puzzle(GRID_ROWS, GRID_COLS)
 	setup_grid_from_puzzle(puzzle_data)
@@ -102,6 +109,8 @@ func _on_host_pressed() -> void:
 			ui.start_game_ui()
 		ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, 1, false)
 		ui.update_player_badges(true, false)
+		ui.update_timer(int(ROUND_TIME))
+		ui.show_spectator_banner("WAITING FOR PLAYER 2 (CENTURION) TO JOIN...")
 
 func _on_join_pressed(ip: String) -> void:
 	var peer = ENetMultiplayerPeer.new()
@@ -112,9 +121,14 @@ func _on_join_pressed(ip: String) -> void:
 	multiplayer.multiplayer_peer = peer
 	my_player_role = 2
 	is_solo_mode = false
+	game_active = false
 	print("Connecting to host at ", ip)
-	if ui and ui.has_method("start_game_ui"):
-		ui.start_game_ui()
+	if ui:
+		if ui.has_method("start_game_ui"):
+			ui.start_game_ui()
+		ui.update_player_badges(true, false)
+		ui.update_timer(int(ROUND_TIME))
+		ui.show_spectator_banner("CONNECTING TO HOST SERVER...")
 
 func _on_solo_pressed() -> void:
 	my_player_role = 1
@@ -122,29 +136,60 @@ func _on_solo_pressed() -> void:
 	puzzle_data = CaesarCipherScript.generate_puzzle(GRID_ROWS, GRID_COLS)
 	setup_grid_from_puzzle(puzzle_data)
 	spawn_player(1)
+	game_active = true
+	round_timer = ROUND_TIME
+	round_start_time = Time.get_ticks_msec() / 1000.0
 	
 	if ui:
 		if ui.has_method("start_game_ui"):
 			ui.start_game_ui()
+		ui.hide_spectator_banner()
 		ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, 1, true)
 		ui.update_player_badges(true, true)
+		ui.update_timer(int(ROUND_TIME))
 
 func _on_peer_connected(id: int) -> void:
 	print("Peer connected: ", id)
 	if multiplayer.is_server():
 		spawn_player(id)
 		rpc_id(id, "sync_puzzle_to_client", puzzle_data)
-		if ui:
-			ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, 1, false)
-			ui.update_player_badges(true, true)
+		start_coop_match()
+
+func start_coop_match() -> void:
+	game_active = true
+	round_timer = ROUND_TIME
+	round_start_time = Time.get_ticks_msec() / 1000.0
+	sound_fx.play_safe()
+	if ui:
+		ui.hide_spectator_banner()
+		ui.update_player_badges(true, true)
+		ui.update_timer(int(ROUND_TIME))
+		ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, 1, false)
+	if multiplayer.is_server():
+		rpc("rpc_start_coop_match")
+
+@rpc("authority", "call_remote", "reliable")
+func rpc_start_coop_match() -> void:
+	game_active = true
+	round_timer = ROUND_TIME
+	round_start_time = Time.get_ticks_msec() / 1000.0
+	sound_fx.play_safe()
+	if ui:
+		ui.hide_spectator_banner()
+		ui.update_player_badges(true, true)
+		ui.update_timer(int(ROUND_TIME))
+		if puzzle_data.has("cipher_word"):
+			ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, 2, false)
 
 func _on_peer_disconnected(id: int) -> void:
 	print("Peer disconnected: ", id)
 	var p = players_container.get_node_or_null(str(id))
 	if p:
 		p.queue_free()
+	game_active = false
 	if ui:
 		ui.update_player_badges(true, false)
+		ui.show_spectator_banner("PARTNER DISCONNECTED - WAITING FOR RECONNECT...")
 
 func _on_connected_to_server() -> void:
 	print("Connected to host server as Centurion (Player 2)!")
@@ -158,13 +203,22 @@ func _on_connection_failed() -> void:
 func sync_puzzle_to_client(data: Dictionary) -> void:
 	puzzle_data = data
 	setup_grid_from_puzzle(puzzle_data)
+	
+	# Spawn both players on client machine
+	spawn_player(1)
+	spawn_player(multiplayer.get_unique_id())
+	
 	if ui:
 		if ui.has_method("start_game_ui"):
 			ui.start_game_ui()
 		ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, 2, false)
+		ui.update_player_badges(true, true)
 
 func _process(delta: float) -> void:
-	if game_active and round_timer > 0.0:
+	if not game_active:
+		return
+		
+	if round_timer > 0.0:
 		var prev_sec = int(round_timer)
 		round_timer -= delta
 		var curr_sec = int(round_timer)
@@ -191,7 +245,36 @@ func _process(delta: float) -> void:
 			catapult_timer = 0.0
 			trigger_catapult_strike()
 
+		# Co-op Finish Grace Countdown (when 1 player has reached)
+		if is_waiting_for_coop_partner and game_active:
+			coop_finish_countdown -= delta
+			var sec_left = max(1, int(ceil(coop_finish_countdown)))
+			var local_role = 1 if (multiplayer.multiplayer_peer == null or multiplayer.is_server()) else 2
+			var first_arrived_pid = players_at_finish[0] if players_at_finish.size() > 0 else 1
+			if ui and ui.has_method("show_spectator_banner"):
+				if local_role == first_arrived_pid:
+					ui.show_spectator_banner("GLADIATOR %d ARRIVED! Partner has %ds to reach..." % [first_arrived_pid, sec_left])
+				else:
+					ui.show_spectator_banner("PARTNER FINISHED! %ds to reach the arch for S-Rank!" % sec_left)
+			if coop_finish_countdown <= 0.0:
+				is_waiting_for_coop_partner = false
+				if multiplayer.multiplayer_peer != null:
+					if multiplayer.is_server():
+						rpc("rpc_trigger_victory")
+				else:
+					trigger_victory_ui()
+
+
+
 func trigger_timeout_reset() -> void:
+	if players_at_finish.size() > 0:
+		if multiplayer.multiplayer_peer != null:
+			if multiplayer.is_server():
+				rpc("rpc_trigger_victory")
+		else:
+			trigger_victory_ui()
+		return
+		
 	round_timer = ROUND_TIME
 	sound_fx.play_crumble()
 	reset_player_positions()
@@ -278,7 +361,7 @@ func setup_grid_from_puzzle(data: Dictionary) -> void:
 				
 				row_markers_container.add_child(marker)
 
-	# Spawn hazards
+	# Spawn hazards (Pendulum Blades & Rotating Sweeper)
 	if hazards_container:
 		for child in hazards_container.get_children():
 			child.queue_free()
@@ -298,6 +381,8 @@ func setup_grid_from_puzzle(data: Dictionary) -> void:
 		p2.swing_speed = 2.8
 		hazards_container.add_child(p2)
 
+
+
 	round_timer = ROUND_TIME
 	round_start_time = Time.get_ticks_msec() / 1000.0
 	total_steps = 0
@@ -307,12 +392,17 @@ func setup_grid_from_puzzle(data: Dictionary) -> void:
 	milestone_final_played = false
 	reset_sky_to_afternoon()
 	players_at_finish.clear()
-	game_active = true
-	
-	if ui and ui.has_method("update_word_tracker"):
-		ui.update_word_tracker("", puzzle_data.get("plain_word", "ROMA").length())
+	if ui:
+		if ui.has_method("reset_round_ui"):
+			ui.reset_round_ui()
+		if ui.has_method("update_word_tracker"):
+			ui.update_word_tracker("", puzzle_data.get("plain_word", "ROMA").length())
+		if ui.has_method("update_cipher_display_split") and my_player_role > 0 and puzzle_data.has("cipher_word"):
+			ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, my_player_role, is_solo_mode)
 
 func _on_tile_stepped(row: int, col: int, is_safe: bool) -> void:
+	if not game_active:
+		return
 	total_steps += 1
 	if is_safe:
 		safe_steps += 1
@@ -364,7 +454,7 @@ func rpc_sync_tile_stepped(row: int, col: int, is_safe: bool) -> void:
 
 func spawn_player(id: int) -> void:
 	if not players_container:
-		players_container = get_node_or_null("Players")
+		players_container = get_node_or_null("PlayersContainer")
 	if not players_container:
 		return
 	var existing = players_container.get_node_or_null(str(id))
@@ -380,10 +470,36 @@ func spawn_player(id: int) -> void:
 	player.position = spawn_pos
 	player.spawn_position = spawn_pos
 	
-	players_container.add_child(player)
-	
+	# Set multiplayer authority BEFORE add_child so _ready() configures correctly
 	if multiplayer.multiplayer_peer != null:
 		player.set_multiplayer_authority(id)
+		
+	players_container.add_child(player)
+	
+	# Ensure camera is current for the local player authority
+	var is_local = (multiplayer.multiplayer_peer == null) or (multiplayer.get_unique_id() == id)
+	if player.has_node("CameraPivot/SpringArm3D/Camera3D"):
+		var cam = player.get_node("CameraPivot/SpringArm3D/Camera3D")
+		if is_local:
+			cam.current = true
+			cam.make_current()
+		else:
+			cam.current = false
+
+func get_local_player() -> RomanPlayer:
+	if not players_container:
+		return null
+	var local_id = multiplayer.get_unique_id() if multiplayer.multiplayer_peer != null else 1
+	return players_container.get_node_or_null(str(local_id)) as RomanPlayer
+
+func get_other_player() -> RomanPlayer:
+	if not players_container:
+		return null
+	var local_id = multiplayer.get_unique_id() if multiplayer.multiplayer_peer != null else 1
+	for child in players_container.get_children():
+		if child is RomanPlayer and child.name != str(local_id):
+			return child
+	return null
 
 func _on_player_arrived_at_finish(player_id: int) -> void:
 	if not players_at_finish.has(player_id):
@@ -400,34 +516,66 @@ func rpc_player_arrived(arrived_id: int) -> void:
 		players_at_finish.append(arrived_id)
 	handle_player_arrival(arrived_id)
 
+@rpc("any_peer", "call_local", "reliable")
+func rpc_trigger_victory() -> void:
+	trigger_victory_ui()
+
 func handle_player_arrival(arrived_id: int) -> void:
+	# Trigger celebration animation on the gladiator who arrived
+	for child in players_container.get_children():
+		if child is RomanPlayer and child.player_id == arrived_id:
+			if child.has_method("set_triumph"):
+				child.set_triumph(true)
+				
+	if finish_arch and finish_arch.has_method("celebrate_player"):
+		finish_arch.celebrate_player(arrived_id)
+		
 	var is_solo = (multiplayer.multiplayer_peer == null) or is_solo_mode
-	
-	if not is_solo and players_at_finish.size() == 1:
-		var local_id = multiplayer.get_unique_id() if multiplayer.multiplayer_peer != null else 1
-		if arrived_id == local_id:
-			for child in players_container.get_children():
-				if child is RomanPlayer and child.name != str(local_id):
-					var my_player = players_container.get_node_or_null(str(local_id))
-					if my_player and my_player.has_method("start_spectating"):
-						my_player.start_spectating(child)
-					if ui:
-						ui.show_spectator_banner("FINISHED! Spectating your partner...")
-					break
+	if is_solo:
+		trigger_victory_ui()
 		return
 		
-	if is_solo or players_at_finish.size() >= 2:
+	if players_at_finish.size() == 1:
+		# First player in co-op arrived!
+		is_waiting_for_coop_partner = true
+		coop_finish_countdown = 15.0
+		
+		var local_role = 1 if multiplayer.is_server() else 2
+		if arrived_id == local_role:
+			var local_player = get_local_player()
+			var teammate = get_other_player()
+			if local_player and teammate and local_player.has_method("start_spectating"):
+				local_player.start_spectating(teammate)
+			if ui:
+				ui.show_spectator_banner("GLADIATOR %d ARRIVED! Waiting for partner (15s)..." % arrived_id)
+		else:
+			sound_fx.play_safe()
+			if ui:
+				ui.show_spectator_banner("PARTNER FINISHED! Reach the arch within 15s for S-Rank!")
+		return
+		
+	# Both players reached!
+	is_waiting_for_coop_partner = false
+	if ui and ui.has_method("hide_spectator_banner"):
+		ui.hide_spectator_banner()
+	if multiplayer.multiplayer_peer != null:
+		if multiplayer.is_server():
+			rpc("rpc_trigger_victory")
+	else:
 		trigger_victory_ui()
 
 func trigger_victory_ui() -> void:
+	if not game_active:
+		return
 	game_active = false
+	is_waiting_for_coop_partner = false
 	sound_fx.play_victory()
 	
 	# Trigger Golden Laurel Confetti Shower from Arch of Constantine
 	if finish_arch and finish_arch.has_method("trigger_grand_victory_shower"):
 		finish_arch.trigger_grand_victory_shower()
 		
-	# Trigger player celebratory triumph pose
+	# Trigger all players celebratory triumph pose
 	for p in players_container.get_children():
 		if p is RomanPlayer and p.has_method("set_triumph"):
 			p.set_triumph(true)
@@ -435,16 +583,23 @@ func trigger_victory_ui() -> void:
 	var clear_time = maxf(1.0, (Time.get_ticks_msec() / 1000.0) - round_start_time)
 	var accuracy = 100.0 if total_steps == 0 else (float(safe_steps) / float(total_steps) * 100.0)
 	
+	var is_solo = (multiplayer.multiplayer_peer == null) or is_solo_mode
 	var rank = "S - IMPERATOR"
-	if clear_time > 36.0 or accuracy < 75.0:
-		rank = "B - LEGIONNAIRE"
-	elif clear_time > 26.0 or accuracy < 88.0:
-		rank = "A - CENTURION"
-	if accuracy < 60.0:
-		rank = "C - GLADIATOR"
+	if is_solo:
+		if clear_time > 36.0 or accuracy < 75.0:
+			rank = "B - LEGIONNAIRE"
+		elif clear_time > 26.0 or accuracy < 88.0:
+			rank = "A - CENTURION"
+		if accuracy < 60.0:
+			rank = "C - GLADIATOR"
+	else:
+		if players_at_finish.size() >= 2:
+			rank = "S - VICTORIA TANDEM"
+		else:
+			rank = "A - GLADIATOR CLEAR (Solo Arrival)"
 		
 	# Penalty check: if hint was opened, disqualify S rank
-	if ui and "hint_penalty_used" in ui and ui.hint_penalty_used and rank == "S - IMPERATOR":
+	if ui and "hint_penalty_used" in ui and ui.hint_penalty_used and rank.begins_with("S"):
 		rank = "A - CENTURION (Hint Used)"
 		
 	var word = puzzle_data.get("plain_word", "ROMA")
@@ -494,20 +649,36 @@ func rpc_sync_reset_round(data: Dictionary) -> void:
 	puzzle_data = data
 	setup_grid_from_puzzle(puzzle_data)
 	reset_player_positions()
+	players_at_finish.clear()
+	is_waiting_for_coop_partner = false
+	coop_finish_countdown = 0.0
+	game_active = true
+	round_timer = ROUND_TIME
+	if finish_arch and finish_arch.has_method("reset"):
+		finish_arch.reset()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if ui:
 		ui.victory_panel.visible = false
 		ui.hide_spectator_banner()
+		ui.reset_round_ui()
 		ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, 2, false)
 
 func reset_round() -> void:
 	puzzle_data = CaesarCipherScript.generate_puzzle(GRID_ROWS, GRID_COLS)
 	setup_grid_from_puzzle(puzzle_data)
 	reset_player_positions()
+	players_at_finish.clear()
+	is_waiting_for_coop_partner = false
+	coop_finish_countdown = 0.0
+	game_active = true
+	round_timer = ROUND_TIME
+	if finish_arch and finish_arch.has_method("reset"):
+		finish_arch.reset()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if ui:
 		ui.victory_panel.visible = false
 		ui.hide_spectator_banner()
+		ui.reset_round_ui()
 		var role = 1
 		ui.update_cipher_display_split(puzzle_data.cipher_word, puzzle_data.shift, puzzle_data.plain_word, role, is_solo_mode)
 
@@ -519,20 +690,6 @@ func reset_player_positions() -> void:
 				child.stop_spectating()
 
 
-
-func trigger_catapult_strike() -> void:
-	if not game_active:
-		return
-	var target_row = randi_range(1, GRID_ROWS - 1)
-	var target_col = randi() % GRID_COLS
-	var offset_x = -((GRID_COLS - 1) * TILE_SPACING_X) / 2.0
-	var start_z = 6.0
-	var target_pos = Vector3(offset_x + (target_col * TILE_SPACING_X), 0.0, start_z + (target_row * TILE_SPACING_Z))
-	
-	var strike = CatapultStrikeScene.new()
-	strike.name = "CatapultStrike"
-	strike.target_position = target_pos
-	add_child(strike)
 
 func update_sunset_sky(ratio: float) -> void:
 	var t = clampf(1.0 - ratio, 0.0, 1.0) # 0.0 at 15s (afternoon), 1.0 at 0s (dramatic dusk)
@@ -564,3 +721,26 @@ func reset_sky_to_afternoon() -> void:
 		sun.light_color = Color(1.0, 0.92, 0.82)
 		sun.light_energy = 1.7
 		sun.rotation_degrees = initial_sun_rotation
+
+
+
+
+func trigger_catapult_strike() -> void:
+	if not game_active:
+		return
+	var target_row = randi_range(1, GRID_ROWS - 1)
+	var target_col = randi() % GRID_COLS
+	var offset_x = -((GRID_COLS - 1) * TILE_SPACING_X) / 2.0
+	var start_z = 6.0
+	var target_pos = Vector3(offset_x + (target_col * TILE_SPACING_X), 0.0, start_z + (target_row * TILE_SPACING_Z))
+	
+	var strike = CatapultStrikeScene.new()
+	strike.name = "CatapultStrike"
+	strike.target_position = target_pos
+	add_child(strike)
+
+func _disable_shadows_recursive(node: Node) -> void:
+	if node is GeometryInstance3D:
+		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	for child in node.get_children():
+		_disable_shadows_recursive(child)
