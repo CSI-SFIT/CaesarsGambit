@@ -1,0 +1,152 @@
+[gd_scene format=3 uid="uid://clvagtgjercry"]
+
+[ext_resource type="Script" uid="uid://dmuqwkdh7oa0f" path="res://scripts/caesar_pillar.gd" id="1_pillar"]
+[ext_resource type="PackedScene" path="res://scenes/roman_brazier.tscn" id="2_brazier"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pedestal"]
+size = Vector3(4, 0.7, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_travertine"]
+albedo_color = Color(0.85, 0.81, 0.74, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="BoxMesh_tablet"]
+size = Vector3(3.2, 3.4, 0.45)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_column"]
+top_radius = 0.38
+bottom_radius = 0.44
+height = 3.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_capital"]
+size = Vector3(0.9, 0.4, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold"]
+albedo_color = Color(0.95, 0.8, 0.22, 1)
+metallic = 0.9
+roughness = 0.25
+emission_enabled = true
+emission = Color(0.9, 0.75, 0.15, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="PrismMesh" id="PrismMesh_pediment"]
+size = Vector3(3.4, 0.9, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_eagle_body"]
+size = Vector3(0.4, 0.7, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_eagle_wing"]
+size = Vector3(0.8, 0.35, 0.08)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pedestal_col"]
+size = Vector3(4.4, 0.8, 2.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tablet_col"]
+size = Vector3(3.6, 4.4, 0.8)
+
+[node name="CaesarPillar" type="Node3D" unique_id=1202654535]
+script = ExtResource("1_pillar")
+
+[node name="Pedestal" type="MeshInstance3D" parent="." unique_id=1726377965]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+mesh = SubResource("BoxMesh_pedestal")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="Tablet" type="MeshInstance3D" parent="." unique_id=557887494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35, 0)
+mesh = SubResource("BoxMesh_tablet")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="HeaderLabel" type="Label3D" parent="Tablet" unique_id=83879423]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0.25)
+modulate = Color(0.95, 0.82, 0.25, 1)
+text = "IMPERATOR CAESAR"
+outline_size = 6
+
+[node name="TitleLabel" type="Label3D" parent="Tablet" unique_id=295725805]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0.25)
+modulate = Color(0.95, 0.8, 0.2, 1)
+text = "TABULA CAESARIS"
+font_size = 46
+outline_size = 8
+
+[node name="CipherLabel" type="Label3D" parent="Tablet" unique_id=2092899606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.25)
+modulate = Color(0.95, 0.3, 0.25, 1)
+text = "ENCRYPTED: ROMA"
+font_size = 40
+outline_size = 8
+
+[node name="ShiftLabel" type="Label3D" parent="Tablet" unique_id=1229946088]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, 0.25)
+modulate = Color(0.3, 0.65, 1, 1)
+text = "CAESAR SHIFT: -3"
+font_size = 36
+outline_size = 6
+
+[node name="HintLabel" type="Label3D" parent="Tablet" unique_id=2117332815]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0.25)
+modulate = Color(0.3, 0.85, 0.4, 1)
+text = "SECRET WORD: ????"
+font_size = 34
+outline_size = 6
+
+[node name="ColLeft" type="MeshInstance3D" parent="." unique_id=948932698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 1.8, 0)
+mesh = SubResource("CylinderMesh_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="CapLeft" type="MeshInstance3D" parent="ColLeft" unique_id=1634629456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+mesh = SubResource("BoxMesh_capital")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="ColRight" type="MeshInstance3D" parent="." unique_id=2139230629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 1.8, 0)
+mesh = SubResource("CylinderMesh_column")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="CapRight" type="MeshInstance3D" parent="ColRight" unique_id=366818018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+mesh = SubResource("BoxMesh_capital")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="Pediment" type="MeshInstance3D" parent="." unique_id=599813132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0)
+mesh = SubResource("PrismMesh_pediment")
+surface_material_override/0 = SubResource("StandardMaterial3D_travertine")
+
+[node name="PillarTop" type="Node3D" parent="." unique_id=651958592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+
+[node name="Eagle" type="Node3D" parent="PillarTop" unique_id=1356435051]
+
+[node name="Body" type="MeshInstance3D" parent="PillarTop/Eagle" unique_id=1064468103]
+mesh = SubResource("BoxMesh_eagle_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="WingLeft" type="MeshInstance3D" parent="PillarTop/Eagle" unique_id=1469451052]
+transform = Transform3D(0.92388, 0.382683, 0, -0.382683, 0.92388, 0, 0, 0, 1, -0.45, 0.2, 0)
+mesh = SubResource("BoxMesh_eagle_wing")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="WingRight" type="MeshInstance3D" parent="PillarTop/Eagle" unique_id=580087189]
+transform = Transform3D(0.92388, -0.382683, 0, 0.382683, 0.92388, 0, 0, 0, 1, 0.45, 0.2, 0)
+mesh = SubResource("BoxMesh_eagle_wing")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")
+
+[node name="BrazierLeft" parent="." unique_id=1265412178 instance=ExtResource("2_brazier")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0, 0.5)
+
+[node name="BrazierRight" parent="." unique_id=1792608391 instance=ExtResource("2_brazier")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0, 0.5)
+
+[node name="MonumentCollider" type="StaticBody3D" parent="."]
+
+[node name="PedestalShape" type="CollisionShape3D" parent="MonumentCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+shape = SubResource("BoxShape3D_pedestal_col")
+
+[node name="TabletShape" type="CollisionShape3D" parent="MonumentCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+shape = SubResource("BoxShape3D_tablet_col")
