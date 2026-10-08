@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://bons4mscsshi8"]
+
+[ext_resource type="Script" uid="uid://nqddb6awlb4w" path="res://Scripts/Logic Level/logic_game_manager.gd" id="1_3lx2b"]
+[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="1_igttw"]
+[ext_resource type="PackedScene" uid="uid://4sypgx8thdnf" path="res://Scenes/Logic Game/boulder.tscn" id="2_3lx2b"]
+[ext_resource type="Script" uid="uid://b5t0drd7emo72" path="res://Scripts/Logic Level/smashable_door.gd" id="3_g70r1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_igttw"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_3lx2b"]
+sky_material = SubResource("ProceduralSkyMaterial_igttw")
+
+[sub_resource type="Environment" id="Environment_g70r1"]
+background_mode = 2
+sky = SubResource("Sky_3lx2b")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r8t2a"]
+size = Vector3(10, 5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y8wm3"]
+size = Vector3(15, 8, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_suv43"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kwdjp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2la5y"]
+
+[node name="Logic Game" type="Node3D" unique_id=448762608 node_paths=PackedStringArray("gates")]
+script = ExtResource("1_3lx2b")
+gates = [NodePath("Boulder Walls/Gate1"), NodePath("Boulder Walls/Gate2"), NodePath("Boulder Walls/Gate3")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1186514134]
+environment = SubResource("Environment_g70r1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=549879758]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+
+[node name="Floor" type="CSGBox3D" parent="." unique_id=1127103274]
+use_collision = true
+size = Vector3(50, 1, 50)
+
+[node name="Ramp" type="CSGBox3D" parent="." unique_id=1331658140]
+transform = Transform3D(-1.9807985e-08, -1.8473234e-08, -1, -0.21130916, 0.90630776, -2.1696831e-16, 0.45315388, 0.42261833, -4.371139e-08, 14, 8.670581, -5.288883)
+use_collision = true
+size = Vector3(93, 1, 20)
+
+[node name="Boulder" parent="." unique_id=337084927 groups=["boulder"] instance=ExtResource("2_3lx2b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 19.1, -20.1)
+mass = 100.0
+
+[node name="Door" type="RigidBody3D" parent="." unique_id=2005556558]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 10.9, 8.499998, 23.900002)
+mass = 10.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("3_g70r1")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Door" unique_id=1492407881]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.800002, -2.8999996, 0)
+size = Vector3(10, 5, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door" unique_id=2008893741]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8000016, -3, 0)
+shape = SubResource("BoxShape3D_r8t2a")
+
+[node name="Boulder Walls" type="Node3D" parent="." unique_id=522268546]
+
+[node name="Gate1" type="AnimatableBody3D" parent="Boulder Walls" unique_id=1413276684]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boulder Walls/Gate1" unique_id=98052652]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.900001, 16.9, -11.700002)
+shape = SubResource("BoxShape3D_y8wm3")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Boulder Walls/Gate1" unique_id=1927692157]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.9, 16.8, -11.6)
+size = Vector3(15, 8, 1)
+
+[node name="Gate2" type="AnimatableBody3D" parent="Boulder Walls" unique_id=1042121839]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.9, 11.099998, 0.09999943)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Boulder Walls/Gate2" unique_id=1159367379]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.536743e-07, 9.536743e-07, -9.536743e-07)
+shape = SubResource("BoxShape3D_y8wm3")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Boulder Walls/Gate2" unique_id=1973347018]
+size = Vector3(15, 8, 1)
+
+[node name="Gate3" type="AnimatableBody3D" parent="Boulder Walls" unique_id=216033243]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.9, 6.0999985, 10.5)
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Boulder Walls/Gate3" unique_id=1214499401]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.536743e-07, 0.10000086, -9.536743e-07)
+shape = SubResource("BoxShape3D_y8wm3")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Boulder Walls/Gate3" unique_id=2117718490]
+size = Vector3(15, 8, 1)
+
+[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("1_igttw")]
+transform = Transform3D(-6.556708e-08, 0, -1.5, 0, 1.5, 0, 1.5, 0, -6.556708e-08, -22, 0.9999995, -2.8999996)
+
+[node name="Three Puzzle" type="Node3D" parent="." unique_id=123320930 groups=["boulder"]]
+
+[node name="Switch1" type="Area3D" parent="Three Puzzle" unique_id=1712794060]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Three Puzzle/Switch1" unique_id=1270590939]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.7, 1.1, 6.4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Three Puzzle/Switch1" unique_id=1241519993]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.699999, 1.1, 6.3999996)
+shape = SubResource("BoxShape3D_suv43")
+
+[node name="Switch2" type="Area3D" parent="Three Puzzle" unique_id=1453387273]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Three Puzzle/Switch2" unique_id=1355698937]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.7, 1.1, 8.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Three Puzzle/Switch2" unique_id=1646110043]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.800001, 1.1, 8.500001)
+shape = SubResource("BoxShape3D_kwdjp")
+
+[node name="Switch3" type="Area3D" parent="Three Puzzle" unique_id=402122805]
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Three Puzzle/Switch3" unique_id=315714001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.7, 1.1, 10.6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Three Puzzle/Switch3" unique_id=1764336767]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.699999, 1.1, 10.6)
+shape = SubResource("BoxShape3D_2la5y")
+
+[connection signal="body_entered" from="Door" to="Door" method="_on_body_entered"]
+[connection signal="body_entered" from="Three Puzzle/Switch1" to="." method="_on_switch_1_body_entered"]
+[connection signal="body_entered" from="Three Puzzle/Switch2" to="." method="_on_switch_2_body_entered"]
+[connection signal="body_entered" from="Three Puzzle/Switch3" to="." method="_on_switch_3_body_entered"]

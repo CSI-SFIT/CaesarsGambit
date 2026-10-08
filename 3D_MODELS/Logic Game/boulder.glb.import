@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cualpwv00af1p"
-path="res://.godot/imported/old_chest.glb-3b4f49757ee544c37a6916a0f52156c6.scn"
+uid="uid://dn731fp8qgqcs"
+path="res://.godot/imported/boulder.glb-3d22531241be2dd689ace60e82ac8fcd.scn"
 
 [deps]
 
-source_file="res://3D_MODELS/Arch Kit/old_chest.glb"
-dest_files=["res://.godot/imported/old_chest.glb-3b4f49757ee544c37a6916a0f52156c6.scn"]
+source_file="res://3D_MODELS/Logic Game/boulder.glb"
+dest_files=["res://.godot/imported/boulder.glb-3d22531241be2dd689ace60e82ac8fcd.scn"]
 
 [params]
 
@@ -19,7 +19,7 @@ nodes/root_script=null
 mesh_library/use_node_names_as_mesh_names=false
 array_mesh/deduplicate_surfaces=true
 nodes/apply_root_scale=true
-nodes/root_scale=0.03
+nodes/root_scale=3.0
 nodes/import_as_skeleton_bones=false
 nodes/use_name_suffixes=true
 nodes/use_node_type_suffixes=true
