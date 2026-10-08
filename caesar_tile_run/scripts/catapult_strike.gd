@@ -15,8 +15,7 @@ var blast_ring: MeshInstance3D
 var sound_fx: Node
 
 func _ready() -> void:
-	sound_fx = get_node_or_null("/root/Main/SoundEffects")
-	if not sound_fx:
+	if is_inside_tree() and get_tree().root:
 		var main = get_tree().root.get_node_or_null("Main")
 		if main and "sound_fx" in main:
 			sound_fx = main.sound_fx
@@ -119,6 +118,9 @@ func detonate() -> void:
 						var blast_dir = (player.global_position - global_position).normalized()
 						blast_dir.y = 0.7
 						player.velocity += blast_dir * knockback_power
+						if player.has_method("add_screen_shake"):
+							var intensity = 0.8 * clampf(1.0 - (dist / blast_radius), 0.2, 1.0)
+							player.add_screen_shake(intensity)
 						
 
 						

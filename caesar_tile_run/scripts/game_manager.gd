@@ -13,8 +13,8 @@ const CatapultStrikeScene = preload("res://scripts/catapult_strike.gd")
 const PORT: int = 7777
 const GRID_ROWS: int = 8
 const GRID_COLS: int = 5
-const TILE_SPACING_X: float = 2.6
-const TILE_SPACING_Z: float = 2.6
+const TILE_SPACING_X: float = 3.2
+const TILE_SPACING_Z: float = 3.4
 
 @export var tile_scene: PackedScene = preload("res://scenes/tile.tscn")
 @export var player_scene: PackedScene = preload("res://scenes/player.tscn")
@@ -332,7 +332,7 @@ func setup_grid_from_puzzle(data: Dictionary) -> void:
 		var roman_nums = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"]
 		for r in range(min(GRID_ROWS, roman_nums.size())):
 			var z_pos = start_z + (r * TILE_SPACING_Z)
-			for x_pos in [-5.6, 5.6]:
+			for x_pos in [-8.6, 8.6]:
 				var marker = Node3D.new()
 				marker.position = Vector3(x_pos, 0.0, z_pos)
 				
@@ -685,9 +685,11 @@ func reset_round() -> void:
 func reset_player_positions() -> void:
 	for child in players_container.get_children():
 		if child is RomanPlayer:
-			child.respawn()
+			if child.has_method("set_triumph"):
+				child.set_triumph(false)
 			if child.has_method("stop_spectating"):
 				child.stop_spectating()
+			child.respawn()
 
 
 

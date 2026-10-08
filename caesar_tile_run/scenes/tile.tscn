@@ -1,32 +1,33 @@
 [gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/tile.gd" id="1_tile"]
+[ext_resource type="FontFile" path="res://assets/fonts/Cinzel.ttf" id="2_cinzel"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tile"]
-size = Vector3(2.2, 0.4, 2.2)
+size = Vector3(2.0, 0.4, 2.0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_tile"]
-size = Vector3(2.2, 0.4, 2.2)
+size = Vector3(2.0, 0.4, 2.0)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_trigger"]
-size = Vector3(2.1, 0.8, 2.1)
+size = Vector3(1.9, 0.8, 1.9)
 
 [sub_resource type="BoxMesh" id="BoxMesh_corner"]
-size = Vector3(0.25, 0.42, 0.25)
+size = Vector3(0.24, 0.42, 0.24)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bronze"]
-albedo_color = Color(0.75, 0.58, 0.22, 1)
-metallic = 0.85
-roughness = 0.35
+albedo_color = Color(0.68, 0.52, 0.24, 1)
+metallic = 0.88
+roughness = 0.32
 
 [sub_resource type="TorusMesh" id="TorusMesh_ring"]
-inner_radius = 0.72
-outer_radius = 0.82
+inner_radius = 0.85
+outer_radius = 0.98
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring"]
-albedo_color = Color(0.65, 0.52, 0.25, 1)
-metallic = 0.7
-roughness = 0.5
+albedo_color = Color(0.62, 0.48, 0.22, 1)
+metallic = 0.75
+roughness = 0.45
 
 [node name="Tile" type="StaticBody3D"]
 script = ExtResource("1_tile")
@@ -43,22 +44,22 @@ mesh = SubResource("TorusMesh_ring")
 surface_material_override/0 = SubResource("StandardMaterial3D_ring")
 
 [node name="Corner1" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0, -1.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.18, 0, -1.18)
 mesh = SubResource("BoxMesh_corner")
 surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
 
 [node name="Corner2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 0, -1.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18, 0, -1.18)
 mesh = SubResource("BoxMesh_corner")
 surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
 
 [node name="Corner3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0, 1.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.18, 0, 1.18)
 mesh = SubResource("BoxMesh_corner")
 surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
 
 [node name="Corner4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 0, 1.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18, 0, 1.18)
 mesh = SubResource("BoxMesh_corner")
 surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
 
@@ -66,8 +67,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_bronze")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.22, 0)
 pixel_size = 0.02
 text = "A"
+font = ExtResource("2_cinzel")
 font_size = 96
-outline_size = 14
+outline_size = 12
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)

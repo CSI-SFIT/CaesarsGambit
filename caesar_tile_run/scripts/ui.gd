@@ -261,13 +261,15 @@ func hide_spectator_banner() -> void:
 
 func update_player_badges(p1_active: bool, p2_active: bool) -> void:
 	if p1_badge:
-		p1_badge.text = "Caesar (P1): " + ("READY" if p1_active else "WAITING...")
+		p1_badge.text = "⚔️ Caesar (P1): " + ("READY" if p1_active else "WAITING...")
+		p1_badge.modulate = Color(0.45, 0.95, 0.55) if p1_active else Color(0.8, 0.75, 0.65)
 	if p2_badge:
-		p2_badge.text = "Centurion (P2): " + ("READY" if p2_active else "WAITING...")
+		p2_badge.text = "🛡️ Centurion (P2): " + ("READY" if p2_active else "WAITING...")
+		p2_badge.modulate = Color(0.45, 0.95, 0.55) if p2_active else Color(0.8, 0.75, 0.65)
 
 func update_timer(seconds: int) -> void:
 	if timer_label:
-		timer_label.text = "HOURGLASS: %ds" % seconds
+		timer_label.text = "⏳ TIME: %ds" % seconds
 		if seconds <= 15:
 			timer_label.modulate = Color(1.0, 0.2, 0.15)
 			# 15s Adrenaline Vignette pulsation

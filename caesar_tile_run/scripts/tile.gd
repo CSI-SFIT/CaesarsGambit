@@ -51,13 +51,13 @@ func configure(r: int, c: int, l: String, safe: bool) -> void:
 	
 	if letter_label:
 		letter_label.text = letter
-		letter_label.modulate = Color(1.0, 1.0, 1.0)
+		letter_label.modulate = Color(0.24, 0.20, 0.16)
 		letter_label.position = Vector3(0, 0.22, 0)
 	
 	if mesh_instance:
 		var mat = StandardMaterial3D.new()
-		mat.albedo_color = Color(0.85, 0.82, 0.75)
-		mat.roughness = 0.7
+		mat.albedo_color = Color(0.58, 0.52, 0.44)
+		mat.roughness = 0.82
 		mesh_instance.material_override = mat
 		mesh_instance.position = Vector3.ZERO
 		

@@ -23,7 +23,11 @@ const DIVE_FORWARD_BOOST: float = 13.0
 const DIVE_UP_BOOST: float = 3.2
 const MOUSE_SENSITIVITY: float = 0.004
 
-var spawn_position: Vector3 = Vector3(0, 2, 0)
+const ANIM_IDLE: String = "idle_anim/mixamo_com"
+const ANIM_RUN: String = "run_anim/mixamo_com"
+const ANIM_JUMP: String = "jump_anim/mixamo_com"
+
+var spawn_position: Vector3 = Vector3(0, 1.5, 0)
 var is_diving: bool = false
 var was_airborne_dive: bool = false
 var dive_cooldown: float = 0.0
@@ -40,8 +44,6 @@ var spectator_target: Node3D = null
 # Victory celebration state
 var is_triumph: bool = false
 
-# Procedural limb animation variables
-var foot_anim_time: float = 0.0
 var footstep_cooldown: float = 0.0
 var was_on_floor: bool = true
 
@@ -49,15 +51,13 @@ var was_on_floor: bool = true
 @onready var spring_arm: SpringArm3D = $CameraPivot/SpringArm3D
 @onready var camera: Camera3D = $CameraPivot/SpringArm3D/Camera3D
 @onready var visual_mesh: Node3D = $Visuals
-@onready var tunic_mesh: MeshInstance3D = $Visuals/Tunic
-@onready var cape_mesh: MeshInstance3D = $Visuals/Cape
-@onready var shield_mesh: MeshInstance3D = $Visuals/Shield
-@onready var helmet_crest: MeshInstance3D = $Visuals/Helmet/Crest
-@onready var foot_left: MeshInstance3D = $Visuals/FootLeft
-@onready var foot_right: MeshInstance3D = $Visuals/FootRight
-@onready var arm_right: MeshInstance3D = $Visuals/ArmRight
+@onready var soldier_model: Node3D = $Visuals/Model
+@onready var anim_player: AnimationPlayer = $Visuals/Model/AnimationPlayer2
+@onready var ground_aura: MeshInstance3D = $Visuals/GroundAura
 @onready var name_label: Label3D = $NameLabel
 
+var trauma: float = 0.0
+var intro_cinematic_timer: float = 2.2
 var sound_fx: Node
 
 # Synchronized properties for multiplayer
@@ -65,10 +65,12 @@ var sound_fx: Node
 @export var sync_rot_y: float = 0.0
 
 func _ready() -> void:
+	add_to_group("player")
 	update_player_appearance()
+	if visual_mesh:
+		visual_mesh.rotation.y = 0.0
 	
-	sound_fx = get_node_or_null("/root/Main/SoundEffects")
-	if not sound_fx:
+	if is_inside_tree() and get_tree().root:
 		var m = get_tree().root.get_node_or_null("Main")
 		if m and "sound_fx" in m:
 			sound_fx = m.sound_fx
@@ -77,74 +79,58 @@ func _ready() -> void:
 	if camera:
 		camera.current = is_local
 
+func add_screen_shake(amount: float) -> void:
+	trauma = clampf(trauma + amount, 0.0, 1.0)
+
+func add_trauma(amount: float) -> void:
+	add_screen_shake(amount)
+
 func update_player_appearance() -> void:
-	if not tunic_mesh or not visual_mesh:
+	if not is_inside_tree():
 		return
-		
-	var mat_tunic = StandardMaterial3D.new()
-	var mat_fabric = StandardMaterial3D.new()
-	var mat_crest = StandardMaterial3D.new()
-	var mat_armor = StandardMaterial3D.new()
+
+	var is_caesar = (player_id == 1 or player_id <= 1)
 	
-	if player_id == 1 or player_id <= 1:
-		# Player 1: Royal Crimson & Gold Imperial Caesar
-		mat_tunic.albedo_color = Color(0.78, 0.12, 0.12)
-		mat_fabric.albedo_color = Color(0.72, 0.10, 0.10)
-		mat_crest.albedo_color = Color(0.92, 0.12, 0.12)
-		mat_crest.emission_enabled = true
-		mat_crest.emission = Color(0.95, 0.2, 0.1)
-		mat_crest.emission_energy_multiplier = 2.5
-		
-		mat_armor.albedo_color = Color(0.92, 0.75, 0.22)
-		mat_armor.metallic = 0.88
-		mat_armor.roughness = 0.25
-		
-		if name_label:
+	# Name label & colors
+	if name_label:
+		if is_caesar:
 			name_label.text = "Caesar (Player 1)"
 			name_label.modulate = Color(1.0, 0.85, 0.2)
-	else:
-		# Player 2: Cobalt Blue & Silver Steel Centurion
-		mat_tunic.albedo_color = Color(0.12, 0.35, 0.82)
-		mat_fabric.albedo_color = Color(0.10, 0.30, 0.78)
-		mat_crest.albedo_color = Color(0.15, 0.45, 0.95)
-		mat_crest.emission_enabled = true
-		mat_crest.emission = Color(0.2, 0.5, 0.98)
-		mat_crest.emission_energy_multiplier = 2.5
-		
-		mat_armor.albedo_color = Color(0.85, 0.88, 0.92)
-		mat_armor.metallic = 0.95
-		mat_armor.roughness = 0.20
-		
-		if name_label:
+		else:
 			name_label.text = "Centurion (Player 2)"
 			name_label.modulate = Color(0.4, 0.8, 1.0)
 			
-	tunic_mesh.material_override = mat_tunic
-	if cape_mesh:
-		cape_mesh.material_override = mat_fabric
-	if shield_mesh:
-		shield_mesh.material_override = mat_fabric
-	if helmet_crest:
-		helmet_crest.material_override = mat_crest
-		if player_id == 1 or player_id <= 1:
-			helmet_crest.rotation_degrees = Vector3(0, 90.0, 0)
-			helmet_crest.scale = Vector3(1.15, 1.05, 1.3)
+	# Ground aura styling
+	if ground_aura:
+		var aura_mat = StandardMaterial3D.new()
+		aura_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		if is_caesar:
+			aura_mat.albedo_color = Color(0.95, 0.8, 0.2, 0.5)
+			aura_mat.emission_enabled = true
+			aura_mat.emission = Color(0.95, 0.8, 0.2)
+			aura_mat.emission_energy_multiplier = 1.3
 		else:
-			helmet_crest.rotation_degrees = Vector3(0, 0, 0)
-			helmet_crest.scale = Vector3(0.9, 1.3, 1.05)
-		
-	var cuirass = visual_mesh.get_node_or_null("Cuirass")
-	if cuirass is MeshInstance3D:
-		cuirass.material_override = mat_armor
-	var dome = visual_mesh.get_node_or_null("Helmet/Dome")
-	if dome is MeshInstance3D:
-		dome.material_override = mat_armor
-	var s_left = visual_mesh.get_node_or_null("ShoulderLeft")
-	if s_left is MeshInstance3D:
-		s_left.material_override = mat_armor
-	var s_right = visual_mesh.get_node_or_null("ShoulderRight")
-	if s_right is MeshInstance3D:
-		s_right.material_override = mat_armor
+			aura_mat.albedo_color = Color(0.2, 0.6, 1.0, 0.5)
+			aura_mat.emission_enabled = true
+			aura_mat.emission = Color(0.2, 0.6, 1.0)
+			aura_mat.emission_energy_multiplier = 1.3
+		ground_aura.material_override = aura_mat
+
+	# Tint soldier meshes to reflect Roman faction
+	if soldier_model:
+		var tint_color = Color(1.0, 0.88, 0.75) if is_caesar else Color(0.85, 0.92, 1.0)
+		_apply_team_tint(soldier_model, tint_color)
+
+func _apply_team_tint(node: Node, tint: Color) -> void:
+	if node is MeshInstance3D:
+		for i in range(node.get_surface_override_material_count()):
+			var mat = node.get_active_material(i)
+			if mat is StandardMaterial3D:
+				var new_mat = mat.duplicate()
+				new_mat.albedo_color = new_mat.albedo_color * tint
+				node.set_surface_override_material(i, new_mat)
+	for child in node.get_children():
+		_apply_team_tint(child, tint)
 
 func start_spectating(target: Node3D) -> void:
 	is_spectating = true
@@ -159,8 +145,15 @@ func stop_spectating() -> void:
 
 func set_triumph(active: bool) -> void:
 	is_triumph = active
-	if is_triumph and arm_right:
-		arm_right.rotation.x = deg_to_rad(-145.0)
+	if visual_mesh:
+		visual_mesh.position = Vector3.ZERO
+		visual_mesh.rotation.x = 0.0
+	if is_triumph:
+		if anim_player:
+			anim_player.play(ANIM_JUMP, 0.2, 0.8)
+	else:
+		if anim_player:
+			anim_player.play(ANIM_IDLE, 0.2)
 
 func _unhandled_input(event: InputEvent) -> void:
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
@@ -169,23 +162,40 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if is_spectating:
 			return
-		var ui = get_tree().root.get_node_or_null("Main/UI")
-		if ui and ui.has_method("is_any_modal_open") and ui.is_any_modal_open():
-			return
-		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-func _input(event: InputEvent) -> void:
-	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
-	if not is_local:
-		return
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	elif event.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-	var can_rotate = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED or is_spectating
-	if event is InputEventMouseMotion and can_rotate and camera_pivot and spring_arm:
-		camera_pivot.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
-		spring_arm.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
-		spring_arm.rotation.x = clampf(spring_arm.rotation.x, deg_to_rad(-60.0), deg_to_rad(30.0))
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event is InputEventMouseMotion:
+		if camera_pivot:
+			camera_pivot.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
+		if spring_arm:
+			spring_arm.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
+			spring_arm.rotation.x = clamp(spring_arm.rotation.x, deg_to_rad(-65.0), deg_to_rad(25.0))
 
 func _physics_process(delta: float) -> void:
+	# Intro Cinematic Camera Sweep
+	if intro_cinematic_timer > 0.0:
+		intro_cinematic_timer -= delta
+		var t = clampf(1.0 - (intro_cinematic_timer / 2.2), 0.0, 1.0)
+		var ease_t = 1.0 - pow(1.0 - t, 3.0)
+		if spring_arm:
+			spring_arm.spring_length = lerpf(9.5, 4.6, ease_t)
+			spring_arm.rotation.x = lerpf(deg_to_rad(-45.0), deg_to_rad(-12.0), ease_t)
+
+	# Dynamic Camera Trauma & FOV Punch
+	if trauma > 0.0:
+		trauma = maxf(0.0, trauma - delta * 1.6)
+		var shake = trauma * trauma
+		if camera:
+			camera.h_offset = randf_range(-0.16, 0.16) * shake
+			camera.v_offset = randf_range(-0.16, 0.16) * shake
+			camera.fov = 75.0 + (shake * 8.0)
+	elif camera and camera.fov != 75.0:
+		camera.h_offset = 0.0
+		camera.v_offset = 0.0
+		camera.fov = move_toward(camera.fov, 75.0, delta * 30.0)
+
 	# Detect dive floor impact
 	if is_diving and not is_on_floor():
 		was_airborne_dive = true
@@ -194,6 +204,7 @@ func _physics_process(delta: float) -> void:
 		spawn_dive_impact_dust()
 	elif not is_diving:
 		was_airborne_dive = false
+
 	var is_local = (multiplayer.multiplayer_peer == null) or is_multiplayer_authority()
 	
 	if not is_local:
@@ -211,12 +222,16 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
-	# Triumph Celebration Spin
+	# Triumph Celebration State
 	if is_triumph:
-		velocity = Vector3.ZERO
+		velocity.x = move_toward(velocity.x, 0.0, FRICTION * delta)
+		velocity.z = move_toward(velocity.z, 0.0, FRICTION * delta)
+		if not is_on_floor():
+			velocity.y -= FALL_GRAVITY * delta
+		else:
+			velocity.y = 0.0
 		if visual_mesh:
-			visual_mesh.rotation.y += delta * 2.5
-			visual_mesh.position.y = abs(sin(Time.get_ticks_msec() * 0.008)) * 0.18
+			visual_mesh.position.y = 0.0
 		move_and_slide()
 		return
 
@@ -262,6 +277,8 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		jump_buffer_timer = 0.0
 		coyote_timer = 0.0
+		if sound_fx and sound_fx.has_method("play_jump"):
+			sound_fx.play_jump()
 
 	# Fall Guys Belly-Flop Dive
 	if Input.is_action_just_pressed("dive") and not is_diving and dive_cooldown <= 0.0:
@@ -275,7 +292,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = forward_dir.z * DIVE_FORWARD_BOOST
 		velocity.y = DIVE_UP_BOOST
 		if visual_mesh:
-			visual_mesh.rotation.x = deg_to_rad(-60.0)
+			visual_mesh.rotation.x = deg_to_rad(-45.0)
 
 	# Movement direction
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -307,119 +324,78 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, current_friction * delta)
 		velocity.z = move_toward(velocity.z, 0.0, current_friction * delta)
 
-	# Procedural Limb & Character Animation
+	# Soldier Animation Playback
 	var horiz_speed = Vector2(velocity.x, velocity.z).length()
-	if is_diving:
-		if foot_left:
-			foot_left.position = Vector3(-0.22, 0.28, -0.32)
-		if foot_right:
-			foot_right.position = Vector3(0.22, 0.28, -0.32)
-		if arm_right:
-			arm_right.rotation.x = deg_to_rad(-75.0)
-		if cape_mesh:
-			cape_mesh.rotation.x = deg_to_rad(45.0)
-	elif horiz_speed > 0.5 and is_on_floor():
-		foot_anim_time += delta * horiz_speed * 1.7
-		var step_l = sin(foot_anim_time)
-		var step_r = -step_l
-		
-		if foot_left:
-			foot_left.position.z = step_l * 0.24
-			foot_left.position.y = 0.12 + maxf(0.0, step_l * 0.14)
-		if foot_right:
-			foot_right.position.z = step_r * 0.24
-			foot_right.position.y = 0.12 + maxf(0.0, step_r * 0.14)
-		if arm_right:
-			arm_right.rotation.x = -step_l * 0.48
-		if cape_mesh:
-			cape_mesh.rotation.x = deg_to_rad(12.0 + (horiz_speed / RUN_SPEED) * 26.0 + sin(foot_anim_time * 2.0) * 4.0)
+	if anim_player:
+		if not is_on_floor():
+			if anim_player.current_animation != ANIM_JUMP:
+				anim_player.play(ANIM_JUMP, 0.12, 1.3)
+		elif is_diving:
+			if anim_player.current_animation != ANIM_JUMP:
+				anim_player.play(ANIM_JUMP, 0.1, 1.6)
+		elif horiz_speed > 0.5:
+			var speed_factor = clampf(horiz_speed / RUN_SPEED, 0.65, 1.25)
+			if anim_player.current_animation != ANIM_RUN:
+				anim_player.play(ANIM_RUN, 0.15, speed_factor)
+			else:
+				anim_player.speed_scale = speed_factor
 			
-		if step_l > 0.85 and footstep_cooldown <= 0.0:
-			if sound_fx and sound_fx.has_method("play_footstep"):
-				sound_fx.play_footstep()
-			footstep_cooldown = 0.24
-	else:
-		var idle_t = Time.get_ticks_msec() * 0.003
-		if visual_mesh:
-			visual_mesh.position.y = sin(idle_t) * 0.025
-		if foot_left:
-			foot_left.position = Vector3(-0.22, 0.12, 0.05)
-		if foot_right:
-			foot_right.position = Vector3(0.22, 0.12, 0.05)
-		if arm_right:
-			arm_right.rotation.x = lerp_angle(arm_right.rotation.x, 0.0, 10.0 * delta)
-		if cape_mesh:
-			cape_mesh.rotation.x = deg_to_rad(10.0 + sin(idle_t * 1.5) * 2.5)
+			if footstep_cooldown <= 0.0:
+				if sound_fx and sound_fx.has_method("play_footstep"):
+					sound_fx.play_footstep()
+				footstep_cooldown = 0.32
+		else:
+			if anim_player.current_animation != ANIM_IDLE:
+				anim_player.play(ANIM_IDLE, 0.2, 1.0)
 
 	move_and_slide()
 
-	# Void fall respawn
-	if global_position.y < -8.0:
+	# Subterranean pit fall respawn
+	if global_position.y < -2.8:
 		respawn()
 
 	# Multiplayer sync
-	if multiplayer.multiplayer_peer != null:
-		sync_pos = global_position
-		if visual_mesh:
-			sync_rot_y = visual_mesh.rotation.y
+	sync_pos = global_position
+	if visual_mesh:
+		sync_rot_y = visual_mesh.rotation.y
 
 func respawn() -> void:
-	global_position = spawn_position
 	velocity = Vector3.ZERO
+	global_position = spawn_position
 	is_diving = false
 	is_triumph = false
 	if visual_mesh:
-		visual_mesh.rotation.x = 0.0
+		visual_mesh.position = Vector3.ZERO
+		visual_mesh.rotation = Vector3.ZERO
+	add_screen_shake(0.35)
+	if sound_fx and sound_fx.has_method("play_tile_crumble"):
+		sound_fx.play_tile_crumble()
+	spawn_dive_impact_dust()
 
 func spawn_dive_impact_dust() -> void:
-	# Athletic bronze shockwave ground ring
-	var ripple = MeshInstance3D.new()
-	var cylinder = CylinderMesh.new()
-	cylinder.top_radius = 0.4
-	cylinder.bottom_radius = 0.4
-	cylinder.height = 0.02
-	ripple.mesh = cylinder
-	var rmat = StandardMaterial3D.new()
-	rmat.albedo_color = Color(0.85, 0.68, 0.42, 0.8)
-	rmat.emission_enabled = true
-	rmat.emission = Color(0.9, 0.65, 0.3)
-	rmat.emission_energy_multiplier = 1.2
-	rmat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	ripple.material_override = rmat
-	ripple.global_position = global_position + Vector3(0, 0.04, 0)
-	get_parent().add_child(ripple)
-	var tw = create_tween()
-	tw.tween_property(ripple, "scale", Vector3(2.6, 1.0, 2.6), 0.32).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tw.parallel().tween_property(rmat, "albedo_color:a", 0.0, 0.32)
-	tw.tween_callback(ripple.queue_free)
-
-	var p = CPUParticles3D.new()
-	p.name = "DiveImpactDust"
-	p.amount = 18
-	p.lifetime = 0.42
-	p.one_shot = true
-	p.explosiveness = 0.95
-	p.emission_shape = CPUParticles3D.EMISSION_SHAPE_RING
-	p.emission_ring_radius = 0.7
-	p.emission_ring_inner_radius = 0.25
-	p.direction = Vector3(0, 0.35, 0)
-	p.spread = 65.0
-	p.gravity = Vector3(0, -2.5, 0)
-	p.initial_velocity_min = 1.5
-	p.initial_velocity_max = 3.2
+	var particles = CPUParticles3D.new()
+	particles.emitting = false
+	particles.one_shot = true
+	particles.explosiveness = 0.95
+	particles.amount = 18
+	particles.lifetime = 0.45
+	particles.direction = Vector3(0, 1, 0)
+	particles.spread = 75.0
+	particles.initial_velocity_min = 2.5
+	particles.initial_velocity_max = 4.5
 	
-	var m = SphereMesh.new()
-	m.radius = 0.08
-	m.height = 0.16
-	p.mesh = m
+	var mesh = SphereMesh.new()
+	mesh.radius = 0.08
+	mesh.height = 0.16
+	particles.mesh = mesh
 	
 	var mat = StandardMaterial3D.new()
-	mat.albedo_color = Color(0.85, 0.78, 0.62, 0.75)
+	mat.albedo_color = Color(0.85, 0.75, 0.60, 0.7)
 	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	p.material_override = mat
+	particles.material_override = mat
 	
-	p.global_position = global_position + Vector3(0, 0.12, 0)
-	get_parent().add_child(p)
+	get_parent().add_child(particles)
+	particles.global_position = global_position + Vector3(0, 0.15, 0)
+	particles.emitting = true
 	
-	if sound_fx and sound_fx.has_method("play_landing"):
-		sound_fx.play_landing()
+	get_tree().create_timer(0.6).timeout.connect(particles.queue_free)

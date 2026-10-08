@@ -1,76 +1,182 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_ui"]
+[ext_resource type="FontFile" path="res://assets/fonts/Cinzel.ttf" id="2_cinzel"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_spectator"]
-bg_color = Color(0.12, 0.08, 0.16, 0.92)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_roman_panel"]
+bg_color = Color(0.08, 0.06, 0.10, 0.95)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.95, 0.82, 0.25, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(0.92, 0.78, 0.32, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.75)
+shadow_size = 20
+shadow_offset = Vector2(0, 6)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_roman_panel"]
-bg_color = Color(0.12, 0.08, 0.08, 0.92)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_imperial_normal"]
+bg_color = Color(0.48, 0.10, 0.12, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.82, 0.35, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_imperial_hover"]
+bg_color = Color(0.64, 0.14, 0.16, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.92, 0.75, 0.22, 1)
+border_color = Color(1, 0.94, 0.55, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+shadow_color = Color(0.95, 0.8, 0.25, 0.5)
 shadow_size = 12
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_imperial_pressed"]
+bg_color = Color(0.32, 0.06, 0.08, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.7, 0.25, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 2
+shadow_offset = Vector2(0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_gold"]
-bg_color = Color(0.7, 0.15, 0.15, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_stone_normal"]
+bg_color = Color(0.18, 0.15, 0.17, 0.95)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.95, 0.8, 0.25, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(0.78, 0.68, 0.48, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_stone"]
-bg_color = Color(0.2, 0.16, 0.14, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_stone_hover"]
+bg_color = Color(0.28, 0.23, 0.25, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.8, 0.7, 0.5, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(0.98, 0.88, 0.6, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.9, 0.8, 0.5, 0.3)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_stone_pressed"]
+bg_color = Color(0.12, 0.10, 0.11, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.55, 0.38, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 2
+shadow_offset = Vector2(0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_topbar"]
-bg_color = Color(0.15, 0.1, 0.08, 0.85)
+bg_color = Color(0.08, 0.06, 0.10, 0.94)
 border_width_bottom = 3
-border_color = Color(0.92, 0.75, 0.22, 1)
+border_color = Color(0.95, 0.82, 0.35, 1)
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint"]
-bg_color = Color(0.08, 0.12, 0.1, 0.92)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
+bg_color = Color(0.05, 0.04, 0.06, 0.95)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.3, 0.8, 0.4, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.65, 0.55, 0.38, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12
+content_margin_top = 6
+content_margin_right = 12
+content_margin_bottom = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input_focus"]
+bg_color = Color(0.07, 0.05, 0.09, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.88, 0.45, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12
+content_margin_top = 6
+content_margin_right = 12
+content_margin_bottom = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint"]
+bg_color = Color(0.06, 0.08, 0.07, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.85, 0.45, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0.1, 0.3, 0.15, 0.4)
+shadow_size = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alphabet_strip"]
-bg_color = Color(0.1, 0.07, 0.06, 0.94)
+bg_color = Color(0.08, 0.06, 0.05, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.82, 0.35, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_spectator"]
+bg_color = Color(0.12, 0.08, 0.16, 0.95)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -80,14 +186,38 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+shadow_color = Color(0.95, 0.82, 0.25, 0.35)
+shadow_size = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vignette"]
-bg_color = Color(0.85, 0.05, 0.05, 0)
-border_width_left = 24
-border_width_top = 24
-border_width_right = 24
-border_width_bottom = 24
-border_color = Color(0.85, 0.1, 0.1, 0.85)
+bg_color = Color(0.8, 0.08, 0.08, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.9, 0.15, 0.15, 0.35)
+shadow_color = Color(0.75, 0.05, 0.05, 0.5)
+shadow_size = 36
+
+[sub_resource type="Theme" id="Theme_roman"]
+default_font = ExtResource("2_cinzel")
+default_font_size = 14
+Button/colors/font_color = Color(1, 0.95, 0.85, 1)
+Button/colors/font_hover_color = Color(1, 1, 0.95, 1)
+Button/colors/font_pressed_color = Color(0.9, 0.8, 0.6, 1)
+Button/font_sizes/font_size = 14
+Button/fonts/font = ExtResource("2_cinzel")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_imperial_hover")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_imperial_hover")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_imperial_normal")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_imperial_pressed")
+Label/colors/font_color = Color(0.96, 0.93, 0.87, 1)
+Label/fonts/font = ExtResource("2_cinzel")
+LineEdit/colors/font_color = Color(1, 0.95, 0.85, 1)
+LineEdit/fonts/font = ExtResource("2_cinzel")
+LineEdit/styles/focus = SubResource("StyleBoxFlat_input_focus")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_input")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_roman_panel")
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -97,6 +227,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = SubResource("Theme_roman")
 script = ExtResource("1_ui")
 
 [node name="LobbyPanel" type="PanelContainer" parent="."]
@@ -106,73 +237,73 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -260.0
-offset_right = 280.0
-offset_bottom = 260.0
+offset_left = -300.0
+offset_top = -280.0
+offset_right = 300.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_roman_panel")
 
 [node name="Margin" type="MarginContainer" parent="LobbyPanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 28
 
 [node name="VBox" type="VBoxContainer" parent="LobbyPanel/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="LobbyPanel/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
 theme_override_font_sizes/font_size = 28
-text = "CAESAR'S GAMBIT"
+text = "✦ CAESAR'S GAMBIT ✦"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="LobbyPanel/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.85, 0.8, 0.75, 1)
-theme_override_font_sizes/font_size = 14
-text = "Via Caesaris: 2-Gladiator Meeting Point"
+theme_override_colors/font_color = Color(0.85, 0.72, 0.5, 1)
+theme_override_font_sizes/font_size = 12
+text = "ROMA INVICTA • CO-OP CHECKPOINT RUNNER"
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="LobbyPanel/Margin/VBox"]
 layout_mode = 2
 
 [node name="HostBtn" type="Button" parent="LobbyPanel/Margin/VBox"]
-custom_minimum_size = Vector2(0, 46)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
-text = "HOST LAN GAME (PLAYER 1 - CAESAR)"
+theme_override_font_sizes/font_size = 16
+text = "⚔️ HOST LAN GAME (P1 CAESAR)"
 
 [node name="IPRow" type="HBoxContainer" parent="LobbyPanel/Margin/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+alignment = 1
 
 [node name="HostIPLabel" type="Label" parent="LobbyPanel/Margin/VBox/IPRow"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-theme_override_font_sizes/font_size = 12
-text = "LAN IP: 127.0.0.1 (Port: 7777)"
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.9, 0.85, 0.7, 1)
+theme_override_font_sizes/font_size = 13
+text = "YOUR LAN IP: 127.0.0.1"
 
 [node name="CopyIPBtn" type="Button" parent="LobbyPanel/Margin/VBox/IPRow"]
-custom_minimum_size = Vector2(75, 28)
+custom_minimum_size = Vector2(80, 28)
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_stone_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone_normal")
 text = "COPY IP"
 
 [node name="CopiedNotice" type="Label" parent="LobbyPanel/Margin/VBox"]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_colors/font_color = Color(0.4, 0.95, 0.5, 1)
 theme_override_font_sizes/font_size = 12
 text = "✓ IP Copied to Clipboard!"
 horizontal_alignment = 1
@@ -182,21 +313,22 @@ layout_mode = 2
 
 [node name="JoinBox" type="HBoxContainer" parent="LobbyPanel/Margin/VBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 
 [node name="IPEdit" type="LineEdit" parent="LobbyPanel/Margin/VBox/JoinBox"]
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Host LAN IP (e.g. 192.168.1.15)"
+placeholder_text = "ENTER HOST IP (E.G. 192.168.1.5)"
+alignment = 1
 
 [node name="JoinBtn" type="Button" parent="LobbyPanel/Margin/VBox/JoinBox"]
 custom_minimum_size = Vector2(130, 42)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
-text = "JOIN GAME"
+theme_override_font_sizes/font_size = 14
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_stone_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone_normal")
+text = "🛡️ JOIN GAME"
 
 [node name="HSeparator3" type="HSeparator" parent="LobbyPanel/Margin/VBox"]
 layout_mode = 2
@@ -204,25 +336,26 @@ layout_mode = 2
 [node name="SoloBtn" type="Button" parent="LobbyPanel/Margin/VBox"]
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
 theme_override_font_sizes/font_size = 14
-text = "SOLO PRACTICE / TEST MODE"
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_stone_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone_normal")
+text = "SOLO PRACTICE ARENA"
 
 [node name="RulesBtnLobby" type="Button" parent="LobbyPanel/Margin/VBox"]
-custom_minimum_size = Vector2(0, 38)
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.85, 0.35, 1)
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone")
-text = "📜 FESTIVAL RULES & CONTROLS [F2]"
+theme_override_font_sizes/font_size = 13
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_stone_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone_normal")
+text = "📜 HOW TO PLAY (RULES & CIPHER)"
 
 [node name="LeaderboardBtnLobby" type="Button" parent="LobbyPanel/Margin/VBox"]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 13
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone")
-text = "🏆 VIEW TOP FEST RUNS"
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_stone_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone_normal")
+text = "🏆 HALL OF CHAMPIONS"
 
 [node name="HUD" type="Control" parent="."]
 visible = false
@@ -249,78 +382,81 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vignette")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 56.0
+offset_bottom = 60.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_topbar")
 
 [node name="Margin" type="MarginContainer" parent="HUD/TopBar"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 8
 
 [node name="HBox" type="HBoxContainer" parent="HUD/TopBar/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 22
+theme_override_constants/separation = 24
+alignment = 1
 
 [node name="SPQR" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
-theme_override_font_sizes/font_size = 17
-text = "SPQR | CAESAR'S GAMBIT"
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_font_sizes/font_size = 16
+text = "⚜ S • P • Q • R ⚜"
 
 [node name="CipherLabel" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.35, 0.3, 1)
+theme_override_colors/font_color = Color(1, 0.75, 0.3, 1)
 theme_override_font_sizes/font_size = 15
-text = "CIPHER: VENI"
+text = "📜 CIPHER: -----"
 
 [node name="ShiftLabel" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
 theme_override_font_sizes/font_size = 15
-text = "SHIFT: +3"
+text = "⚡ SHIFT: ?"
 
 [node name="WordTracker" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.3, 0.9, 0.45, 1)
-theme_override_font_sizes/font_size = 15
-text = "DECODED: [ _ _ _ _ ]"
+theme_override_colors/font_color = Color(0.45, 0.95, 0.55, 1)
+theme_override_font_sizes/font_size = 16
+text = "DECODED: [ _  _  _  _ ]"
 
 [node name="TimerLabel" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_font_sizes/font_size = 16
-text = "HOURGLASS: 45s"
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 17
+text = "⏳ 45s"
 
 [node name="TabGuideLabel" type="Label" parent="HUD/TopBar/Margin/HBox"]
 layout_mode = 2
-size_flags_horizontal = 10
-theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
-theme_override_font_sizes/font_size = 13
-text = "[TAB] Alphabet Ruler  |  [H] Hint  |  [F2] Rules"
+theme_override_colors/font_color = Color(0.75, 0.7, 0.65, 1)
+theme_override_font_sizes/font_size = 12
+text = "[TAB] RULER  |  [H] HINT  |  [ESC] MENU"
 
 [node name="PlayersBox" type="VBoxContainer" parent="HUD"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = -90.0
-offset_right = 280.0
+offset_left = 20.0
+offset_top = -80.0
+offset_right = 260.0
 offset_bottom = -20.0
 grow_vertical = 0
+theme_override_constants/separation = 6
 
 [node name="P1Badge" type="Label" parent="HUD/PlayersBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
-theme_override_font_sizes/font_size = 15
-text = "Player 1 (Caesar): READY"
+theme_override_colors/font_color = Color(0.45, 0.95, 0.55, 1)
+theme_override_font_sizes/font_size = 13
+text = "⚔️ Caesar (P1): WAITING..."
 
 [node name="P2Badge" type="Label" parent="HUD/PlayersBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.75, 1, 1)
-theme_override_font_sizes/font_size = 15
-text = "Player 2 (Centurion): WAITING..."
+theme_override_colors/font_color = Color(0.7, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "🛡️ Centurion (P2): WAITING..."
 
 [node name="AlphabetStrip" type="PanelContainer" parent="HUD"]
 visible = false
@@ -330,20 +466,20 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -380.0
-offset_top = -115.0
-offset_right = 380.0
-offset_bottom = -25.0
+offset_left = -440.0
+offset_top = -140.0
+offset_right = 440.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_alphabet_strip")
 
 [node name="Margin" type="MarginContainer" parent="HUD/AlphabetStrip"]
 layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 12
 
 [node name="VBox" type="VBoxContainer" parent="HUD/AlphabetStrip/Margin"]
 layout_mode = 2
@@ -351,57 +487,58 @@ theme_override_constants/separation = 6
 
 [node name="AlphabetChars" type="Label" parent="HUD/AlphabetStrip/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.92, 0.45, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(1, 0.88, 0.45, 1)
+theme_override_font_sizes/font_size = 16
 text = "A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z"
 horizontal_alignment = 1
 
 [node name="ShiftHelperLabel" type="Label" parent="HUD/AlphabetStrip/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.85, 0.95, 1)
+theme_override_colors/font_color = Color(0.85, 0.8, 0.7, 1)
 theme_override_font_sizes/font_size = 12
-text = "CAESAR DECODER: Count backward by Shift to find the Safe Tile! (Press TAB to hide)"
+text = "Shift Helper: Plain Letter = (Cipher Letter - Shift). Press [TAB] to close."
 horizontal_alignment = 1
 
 [node name="HintCard" type="PanelContainer" parent="HUD"]
 visible = false
 layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -360.0
-offset_top = -120.0
-offset_right = -30.0
+offset_left = -260.0
+offset_top = -80.0
+offset_right = 260.0
 offset_bottom = 80.0
-grow_horizontal = 0
+grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hint")
 
 [node name="Margin" type="MarginContainer" parent="HUD/HintCard"]
 layout_mode = 2
-theme_override_constants/margin_left = 18
-theme_override_constants/margin_top = 18
-theme_override_constants/margin_right = 18
-theme_override_constants/margin_bottom = 18
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 16
 
 [node name="VBox" type="VBoxContainer" parent="HUD/HintCard/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
 
 [node name="Header" type="Label" parent="HUD/HintCard/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
-theme_override_font_sizes/font_size = 16
-text = "CAESAR'S DECODED PATH"
+theme_override_colors/font_color = Color(0.4, 0.95, 0.5, 1)
+theme_override_font_sizes/font_size = 15
+text = "✦ CAESAR'S ORACLE HINT ✦"
+horizontal_alignment = 1
 
 [node name="SolutionLabel" type="Label" parent="HUD/HintCard/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
 theme_override_font_sizes/font_size = 14
-text = "DECODED WORD: ROMA\n(Jump on matching letters!)"
-autowrap_mode = 2
+text = "HINT LOCKED: 20s remaining..."
+horizontal_alignment = 1
 
 [node name="SpectatorBanner" type="PanelContainer" parent="HUD"]
 visible = false
@@ -410,117 +547,28 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -300.0
-offset_top = 68.0
+offset_top = 70.0
 offset_right = 300.0
-offset_bottom = 114.0
+offset_bottom = 115.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_spectator")
 
 [node name="Margin" type="MarginContainer" parent="HUD/SpectatorBanner"]
 layout_mode = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_right = 12
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
 
 [node name="Label" type="Label" parent="HUD/SpectatorBanner/Margin"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
-theme_override_font_sizes/font_size = 15
-text = "FINISHED! SPECTATING PARTNER"
+theme_override_colors/font_color = Color(1, 0.92, 0.45, 1)
+theme_override_font_sizes/font_size = 14
+text = "WAITING FOR PARTNER..."
 horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="Crosshair" type="CenterContainer" parent="HUD"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 4.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Dot" type="ColorRect" parent="HUD/Crosshair"]
-custom_minimum_size = Vector2(4, 4)
-layout_mode = 2
-color = Color(1, 1, 1, 0.6)
 
 [node name="VictoryPanel" type="PanelContainer" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -340.0
-offset_top = -220.0
-offset_right = 340.0
-offset_bottom = 220.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_roman_panel")
-
-[node name="Margin" type="MarginContainer" parent="VictoryPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 26
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 26
-
-[node name="VBox" type="VBoxContainer" parent="VictoryPanel/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 14
-
-[node name="VictoryTitle" type="Label" parent="VictoryPanel/Margin/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
-theme_override_font_sizes/font_size = 30
-text = "AVE CAESAR! TRIAL CONQUERED!"
-horizontal_alignment = 1
-
-[node name="VictoryDesc" type="Label" parent="VictoryPanel/Margin/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.85, 0.8, 1)
-theme_override_font_sizes/font_size = 15
-text = "Both Gladiators have navigated the treacherous Roman tiles!\nThe Portal to the 4-Player Final Chamber is now OPEN!"
-horizontal_alignment = 1
-autowrap_mode = 2
-
-[node name="StatsLabel" type="Label" parent="VictoryPanel/Margin/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.88, 0.3, 1)
-theme_override_font_sizes/font_size = 16
-text = "TIME: 35.0s   |   ACCURACY: 100%   |   RANK: S - IMPERATOR"
-horizontal_alignment = 1
-
-[node name="LogNotice" type="Label" parent="VictoryPanel/Margin/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.65, 0.9, 0.65, 1)
-theme_override_font_sizes/font_size = 13
-text = "Tournament run recorded to tournament_results.json"
-horizontal_alignment = 1
-
-[node name="PlayAgainBtn" type="Button" parent="VictoryPanel/Margin/VBox"]
-custom_minimum_size = Vector2(0, 42)
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
-text = "NEXT PAIR / PLAY AGAIN"
-
-[node name="LeaderboardBtnVic" type="Button" parent="VictoryPanel/Margin/VBox"]
-custom_minimum_size = Vector2(0, 36)
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
-theme_override_font_sizes/font_size = 13
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone")
-text = "🏆 VIEW TOURNAMENT LEADERBOARD"
-
-[node name="LeaderboardModal" type="PanelContainer" parent="."]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -532,6 +580,85 @@ offset_left = -320.0
 offset_top = -220.0
 offset_right = 320.0
 offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_roman_panel")
+
+[node name="Margin" type="MarginContainer" parent="VictoryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="VictoryPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="VictoryTitle" type="Label" parent="VictoryPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 32
+text = "✦ VICTORIA TANDEM ✦"
+horizontal_alignment = 1
+
+[node name="VictoryDesc" type="Label" parent="VictoryPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.85, 0.75, 1)
+theme_override_font_sizes/font_size = 14
+text = "Both Gladiators reached the Arch of Constantine!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="DecryptedWordBanner" type="Label" parent="VictoryPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.95, 0.55, 1)
+theme_override_font_sizes/font_size = 16
+text = "DECRYPTED WORD: ROMA"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="VictoryPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.5, 1)
+theme_override_font_sizes/font_size = 15
+text = "TIME: 35.0s   |   ACCURACY: 100%   |   RANK: S - IMPERATOR"
+horizontal_alignment = 1
+
+[node name="LogNotice" type="Label" parent="VictoryPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.7, 0.65, 1)
+theme_override_font_sizes/font_size = 12
+text = "Tournament run recorded to tournament_results.json"
+horizontal_alignment = 1
+
+[node name="PlayAgainBtn" type="Button" parent="VictoryPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "✦ PLAY AGAIN [ENTER] ✦"
+
+[node name="LeaderboardBtnVic" type="Button" parent="VictoryPanel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_stone_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone_normal")
+text = "🏆 VIEW TOURNAMENT LEADERBOARD"
+
+[node name="LeaderboardModal" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -240.0
+offset_right = 300.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_roman_panel")
@@ -549,16 +676,16 @@ theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="LeaderboardModal/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
 theme_override_font_sizes/font_size = 22
-text = "🏆 TOP FEST TOURNAMENT RUNS"
+text = "🏆 HALL OF CHAMPIONS 🏆"
 horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="LeaderboardModal/Margin/VBox"]
 layout_mode = 2
 
 [node name="Scroll" type="ScrollContainer" parent="LeaderboardModal/Margin/VBox"]
-custom_minimum_size = Vector2(0, 220)
+custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -570,19 +697,9 @@ theme_override_constants/separation = 8
 [node name="CloseLeaderboardBtn" type="Button" parent="LeaderboardModal/Margin/VBox"]
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
-text = "CLOSE LEADERBOARD"[node name="DecryptedWordBanner" type="Label" parent="VictoryPanel/Margin/VBox"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
-theme_override_colors/font_outline_color = Color(0.45, 0.2, 0.05, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 26
-text = "DECRYPTED WORD: [ ROMA ]"
-horizontal_alignment = 1
-
-
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_stone_hover")
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_stone_normal")
+text = "CLOSE LEADERBOARD [ESC]"
 
 [node name="RulesModal" type="PanelContainer" parent="."]
 visible = false
@@ -592,37 +709,37 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -340.0
-offset_top = -250.0
-offset_right = 340.0
-offset_bottom = 250.0
+offset_left = -360.0
+offset_top = -260.0
+offset_right = 360.0
+offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_roman_panel")
 
 [node name="Margin" type="MarginContainer" parent="RulesModal"]
 layout_mode = 2
-theme_override_constants/margin_left = 26
+theme_override_constants/margin_left = 28
 theme_override_constants/margin_top = 22
-theme_override_constants/margin_right = 26
+theme_override_constants/margin_right = 28
 theme_override_constants/margin_bottom = 22
 
 [node name="VBox" type="VBoxContainer" parent="RulesModal/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="RulesModal/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.8, 0.25, 1)
-theme_override_font_sizes/font_size = 22
-text = "🏛️ CAESAR'S GAMBIT — FESTIVAL RULES"
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_font_sizes/font_size = 24
+text = "📜 IMPERIAL RULES & ORDERS"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="RulesModal/Margin/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.85, 0.8, 0.75, 1)
-theme_override_font_sizes/font_size = 13
-text = "2-Player Co-op Latin Cipher Rush (45-Second Round)"
+theme_override_colors/font_color = Color(0.85, 0.75, 0.55, 1)
+theme_override_font_sizes/font_size = 12
+text = "CAESAR'S GAMBIT: COOPERATIVE CHECKPOINT TOURNAMENT"
 horizontal_alignment = 1
 
 [node name="HSep1" type="HSeparator" parent="RulesModal/Margin/VBox"]
@@ -631,7 +748,7 @@ layout_mode = 2
 [node name="ContentHBox" type="HBoxContainer" parent="RulesModal/Margin/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 16
+theme_override_constants/separation = 20
 
 [node name="CoopRulesBox" type="VBoxContainer" parent="RulesModal/Margin/VBox/ContentHBox"]
 layout_mode = 2
@@ -642,13 +759,13 @@ theme_override_constants/separation = 6
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 14
-text = "👑 TEAMWORK ESSENTIALS"
+text = "🛡️ CO-OP PROTOCOL"
 
 [node name="Rule1" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
 theme_override_font_sizes/font_size = 12
-text = "• Caesar (P1): Sees the Encrypted Word clue."
+text = "• Caesar (P1): Sees the Encrypted Word."
 autowrap_mode = 2
 
 [node name="Rule2" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
@@ -660,23 +777,23 @@ autowrap_mode = 2
 
 [node name="Rule3" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_colors/font_color = Color(0.45, 0.95, 0.55, 1)
 theme_override_font_sizes/font_size = 12
-text = "• COMMUNICATE! Talk to decode the secret word & find the safe tiles."
+text = "• COMMUNICATE! Decipher the plain word together to pick the solid tiles."
 autowrap_mode = 2
 
 [node name="Rule4" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.45, 0.35, 1)
+theme_override_colors/font_color = Color(1, 0.5, 0.4, 1)
 theme_override_font_sizes/font_size = 12
 text = "• 15s Adrenaline: Heartbeat & panic vignette begin under 15 seconds!"
 autowrap_mode = 2
 
 [node name="Rule5" type="Label" parent="RulesModal/Margin/VBox/ContentHBox/CoopRulesBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.8, 1, 1)
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
 theme_override_font_sizes/font_size = 12
-text = "• Both must cross the Arch of Constantine to win!"
+text = "• Cross the Arch of Constantine to unlock the final 4-player gate!"
 autowrap_mode = 2
 
 [node name="ControlsBox" type="VBoxContainer" parent="RulesModal/Margin/VBox/ContentHBox"]
@@ -724,15 +841,13 @@ text = "[H] : Caesar's Hint (Unlocks at 20s)"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
 theme_override_font_sizes/font_size = 12
-text = "[ESC] : Release / Recapture Mouse"
+text = "[ESC] : Pause / Resume Game"
 
 [node name="HSep2" type="HSeparator" parent="RulesModal/Margin/VBox"]
 layout_mode = 2
 
 [node name="CloseRulesBtn" type="Button" parent="RulesModal/Margin/VBox"]
-custom_minimum_size = Vector2(0, 36)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
-text = "CLOSE RULES (ESC / F2)"
+text = "RESUME GAME [ESC]"
