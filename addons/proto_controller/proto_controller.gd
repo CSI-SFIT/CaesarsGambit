@@ -72,18 +72,35 @@ var head_local_offset : Vector3  # head's original position relative to the body
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $head
 @onready var collider: CollisionShape3D = $Collider
-
+@onready var camera: Camera3D = $head/Camera3D
 func _ready() -> void:
+	# Convert node name to peer ID safely
+	var peer_id := str(name).to_int()
+	if peer_id > 0:
+		set_multiplayer_authority(peer_id)
+	
+	# Only enable camera and auto-capture mouse for the local player
+	if is_multiplayer_authority():
+		if camera:
+			camera.current = true
+		capture_mouse()
+	else:
+		if camera:
+			camera.current = false
+	
 	check_input_mappings()
-	# Start the camera's yaw matching the body's current facing.
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
-	head_local_offset = head.position  # remember its height BEFORE going top_level
-	head.top_level = true  # camera pivot ignores the body's rotation entirely
+	head_local_offset = head.position
+	head.top_level = true
 	head.global_transform.origin = global_transform.origin + head_local_offset
 	base_speed = on_ground_speed
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not is_multiplayer_authority():
+		return
+		
+		
 	# Mouse capturing
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		capture_mouse()
@@ -102,6 +119,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			disable_freefly()
 
 func _physics_process(delta: float) -> void:
+	if not is_multiplayer_authority():
+		return
+	
 	# Keep the (top_level) camera pivot following the body's position each frame,
 	# since top_level means it no longer inherits position automatically.
 	head.global_transform.origin = global_transform.origin + head_local_offset
@@ -164,6 +184,9 @@ func _physics_process(delta: float) -> void:
 ## Orbit the camera pivot (head) around the player, in world space.
 ## This is fully independent of the body's own rotation.
 func rotate_look(rot_input : Vector2):
+	if not is_multiplayer_authority():
+		return
+		
 	look_rotation.x -= rot_input.y * look_speed
 	look_rotation.x = clamp(look_rotation.x, deg_to_rad(min_pitch_deg), deg_to_rad(max_pitch_deg))
 	look_rotation.y -= rot_input.x * look_speed
@@ -181,11 +204,17 @@ func disable_freefly():
 
 
 func capture_mouse():
+	if not is_multiplayer_authority():
+		return
+		
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	mouse_captured = true
 
 
 func release_mouse():
+	if not is_multiplayer_authority():
+		return
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	mouse_captured = false
 
@@ -193,6 +222,9 @@ func release_mouse():
 ## Checks if some Input Actions haven't been created.
 ## Disables functionality accordingly.
 func check_input_mappings():
+	if not is_multiplayer_authority():
+		return
+	
 	if can_move and not InputMap.has_action(input_left):
 		push_error("Movement disabled. No InputAction found for input_left: " + input_left)
 		can_move = false

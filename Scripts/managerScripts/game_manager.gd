@@ -1,5 +1,7 @@
 extends Node
 
+signal pointsReady
+
 enum SpawnPointNames {
 	Church,
 	one,
@@ -8,11 +10,9 @@ enum SpawnPointNames {
 }
 
 var spawn_points: Array[Area3D] = []
+#@onready var gm = $"."
 
-func _ready() -> void:
-	# Wait for the level scene to finish loading its nodes
-	await get_tree().process_frame
-	
+func refreshSpawnPoints() -> void:	
 	# Automatically find and collect all spawn points in the scene
 	var nodes = get_tree().get_nodes_in_group("spawn_points")
 	for node in nodes:
@@ -20,6 +20,7 @@ func _ready() -> void:
 			spawn_points.append(node)
 	
 	print("Registered spawn points count: ", spawn_points.size())
+	#print(len(GameManager.spawn_points))
 
 func getSpawnPointPosition(point_type: SpawnPointNames) -> Vector3:
 	var index: int = point_type as int

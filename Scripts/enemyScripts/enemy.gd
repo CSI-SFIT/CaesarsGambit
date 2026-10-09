@@ -40,8 +40,8 @@ func _process(delta: float) -> void:
 	if(timer >= maxChaseTime or !is_playerDetected):
 		timer=0
 		#print(str(GameManager.SpawnPointNames.Church))
-		if(Player!=null):
-			Player.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.Church)
+		#if(Player!=null):
+			#Player.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.Church)
 
 func _physics_process(delta: float) -> void:
 	# If paused between patrol points, just apply gravity
@@ -97,7 +97,7 @@ func _on_eyesight_body_entered(body: Object) -> void:
 		is_playerDetected=true
 		startTimer=true
 		Player=body
-		print("hello")
+		#print("hello")
 
 
 func _on_eyesight_body_exited(body: Object) -> void:
@@ -105,7 +105,7 @@ func _on_eyesight_body_exited(body: Object) -> void:
 		is_playerDetected=false
 		startTimer=false
 		Player=null
-		print("bye")
+		#print("bye")
 
 
 func isPlayerDetected()->bool:

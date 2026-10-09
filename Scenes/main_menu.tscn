@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://bpv8vaclnf38i"]
 
-[ext_resource type="Script" uid="uid://dhi53qd26givc" path="res://Scripts/EventBus.gd" id="1_28flt"]
+[ext_resource type="Script" uid="uid://i7cu88snv4k5" path="res://Scripts/CanvasScript_MainMenu.gd" id="1_28flt"]
 
 [node name="MainMenu" type="Node3D" unique_id=70712535]
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=612990263]
+script = ExtResource("1_28flt")
 
 [node name="Control" type="Control" parent="CanvasGroup" unique_id=1670692843]
 layout_mode = 3
@@ -44,8 +45,5 @@ theme_override_font_sizes/font_size = 33
 text = "join
 "
 
-[node name="EventBus" type="Node3D" parent="." unique_id=327668367]
-script = ExtResource("1_28flt")
-
-[connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/hostButton" to="EventBus" method="_on_host_button_pressed"]
-[connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/joinButton" to="EventBus" method="_on_join_button_pressed"]
+[connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/hostButton" to="CanvasGroup" method="_on_host_button_pressed"]
+[connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/joinButton" to="CanvasGroup" method="_on_join_button_pressed"]

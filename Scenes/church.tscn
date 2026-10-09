@@ -208,6 +208,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.303444, -5.8379517, 0.9294
 shape = SubResource("BoxShape3D_0eud2")
 
 [node name="Enemies" type="Node3D" parent="." unique_id=1000804422]
+visible = false
 
 [node name="Enemy" parent="Enemies" unique_id=1056083897 instance=ExtResource("2_38qbd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.8498535)
