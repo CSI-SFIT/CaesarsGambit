@@ -26,23 +26,28 @@ func _ready() -> void:
 	
 
 func _onForwardKeyPressed():
+	if not is_multiplayer_authority(): return
 	isForwardPressed=true
 	playerAnimationPlayer.play(RUN_ANIMATION, 0 ,.8)
 	isAnyKeyPressed=true
 func _onForwardKeyReleased():
+	if not is_multiplayer_authority(): return
 	isAnyKeyPressed=false
 	isForwardPressed=false
 	#playerAnimationPlayer.stop()
 
 func _onBackwardKeyPressed():
+	if not is_multiplayer_authority(): return
 	isAnyKeyPressed=true
 	playerAnimationPlayer.play(WALK_ANIMATION, 0 ,-.8)
 	pass
 func _onBackwardKeyReleased():
+	if not is_multiplayer_authority(): return
 	isAnyKeyPressed=false
 	#playerAnimationPlayer.stop()
 	
 func _onJumpKeyPressed():
+	if not is_multiplayer_authority(): return
 	isAnyKeyPressed=true
 	playerAnimationPlayer.play(JUMP_ANIMATION,-1,1.5)
 	await playerAnimationPlayer.animation_finished
@@ -50,6 +55,7 @@ func _onJumpKeyPressed():
 	if(isForwardPressed):_onForwardKeyPressed()
 
 func _onLeftKeyPressed():
+	if not is_multiplayer_authority(): return
 	isAnyKeyPressed=true
 	playerAnimationPlayer.play(RUN_ANIMATION, 0 ,.8)
 func _onLeftKeyReleased():
@@ -57,15 +63,19 @@ func _onLeftKeyReleased():
 	if(isForwardPressed):_onForwardKeyPressed()
 
 func _onRightKeyPressed():
+	if not is_multiplayer_authority(): return
 	isAnyKeyPressed=true
 	playerAnimationPlayer.play(RUN_ANIMATION, 0 ,.8)
 func _onRightKeyReleased():
+	if not is_multiplayer_authority(): return
 	isAnyKeyPressed=false
 	if(isForwardPressed):_onForwardKeyPressed()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if not is_multiplayer_authority(): return
+	
 	if(!isAnyKeyPressed):
 		playerAnimationPlayer.play(IDLE_ANIMATION)
 	pass
