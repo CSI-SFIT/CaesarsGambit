@@ -246,3 +246,9 @@ func check_input_mappings():
 	if can_freefly and not InputMap.has_action(input_freefly):
 		push_error("Freefly disabled. No InputAction found for input_freefly: " + input_freefly)
 		can_freefly = false
+
+func teleport_to(target_pos: Vector3) -> void:
+	global_position = target_pos
+	velocity = Vector3.ZERO
+	if is_instance_valid(head):
+		head.global_transform.origin = global_position + head_local_offset
