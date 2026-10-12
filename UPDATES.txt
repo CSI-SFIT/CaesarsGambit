@@ -6,3 +6,10 @@ SARVESH:
 	Added Church Model
 	PlayerController done
 	
+
+KAVYA:
+	Added Fall Guys based Caesar Cipher Tile Runner Mini-Game (2-player cooperative checkpoint)
+	Added 360-degree Roman Colosseum Arena Base, Roman Temple & Triumphal Arch
+	Added Dynamic Obstacles: Swinging Pendulum Scythes & Rotating Sweeper
+	Added Caesar Inscription Tablet with Caesar Cipher decoding & shift hints
+	Added LAN 2-Player Multiplayer & Solo Practice Mode

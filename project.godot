@@ -11,18 +11,25 @@ config_version=5
 [application]
 
 config/name="Caesars Gambit"
-run/main_scene="uid://bh1qaunbo6076"
+run/main_scene="uid://tiwr8xiyw4bb"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 InputManager="*uid://bfr2n5nmf8g2m"
+GameManager="*uid://cpjthyy7e8nyg"
+EventBus="*uid://dhi53qd26givc"
 
 [display]
 
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[global_group]
+
+PlayerGroup=""
+spawn_points=""
 
 [input]
 
