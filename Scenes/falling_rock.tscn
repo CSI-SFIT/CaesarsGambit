@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cni08y7tqx06w"]
+
+[ext_resource type="Script" uid="uid://boix7y41n2l5u" path="res://Scripts/falling_rock.gd" id="1_dxkgo"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_2ruxo"]
+
+[node name="FallingRock" type="Node3D" unique_id=460918013]
+script = ExtResource("1_dxkgo")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1390453344]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1557051586]
+shape = SubResource("SphereShape3D_2ruxo")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="RigidBody3D/CollisionShape3D" unique_id=1345973103]
+rings = 10

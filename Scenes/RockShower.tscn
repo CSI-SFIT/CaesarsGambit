@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cejd6bgfvveg5"]
+
+[ext_resource type="Script" uid="uid://ba78sn1hvsrsg" path="res://Scripts/rock_shower_script.gd" id="1_uo33i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2ruxo"]
+
+[node name="rockShower" type="Node3D" unique_id=1346582214]
+script = ExtResource("1_uo33i")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1584103623]
+transform = Transform3D(12.455, 0, 0, 0, 0.675, 0, 0, 0, 4.345, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1074604284]
+shape = SubResource("BoxShape3D_2ruxo")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Area3D" unique_id=72817236]
