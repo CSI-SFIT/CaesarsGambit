@@ -1,13 +1,17 @@
-[gd_scene format=3 uid="uid://tiwr8xiyw4bb"]
+[gd_scene format=3 uid="uid://j5fourv7i0u2"]
 
-[ext_resource type="Script" uid="uid://nbjdr5dycy2g" path="res://Scripts/MultiplayerScript.gd" id="1_jjvhh"]
-[ext_resource type="Script" uid="uid://bfr2n5nmf8g2m" path="res://Scripts/managerScripts/input_manager.gd" id="3_21xkr"]
+[ext_resource type="Script" path="res://Scripts/MultiplayerScript.gd" id="1_jjvhh"]
+[ext_resource type="Script" path="res://Scripts/managerScripts/game_manager.gd" id="2_kry3j"]
+[ext_resource type="Script" path="res://Scripts/managerScripts/input_manager.gd" id="3_21xkr"]
 [ext_resource type="PackedScene" uid="uid://xknwtbrpl1ef" path="res://Scenes/church.tscn" id="4_6bp64"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 
 [node name="Main2" type="Node3D" unique_id=748300147]
 script = ExtResource("1_jjvhh")
+
+[node name="GameManager" type="Node3D" parent="." unique_id=992790746]
+script = ExtResource("2_kry3j")
 
 [node name="InputManager" type="Node3D" parent="." unique_id=505010133]
 script = ExtResource("3_21xkr")
