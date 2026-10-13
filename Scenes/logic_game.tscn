@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bons4mscsshi8"]
 
 [ext_resource type="Script" uid="uid://nqddb6awlb4w" path="res://Scripts/Logic Level/logic_game_manager.gd" id="1_3lx2b"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="1_igttw"]
 [ext_resource type="Texture2D" uid="uid://c4j65gnrehktj" path="res://3D_MODELS/Logic Game/1.png" id="2_2guj4"]
 [ext_resource type="PackedScene" uid="uid://4sypgx8thdnf" path="res://Scenes/Logic Game/boulder.tscn" id="2_3lx2b"]
 [ext_resource type="Material" uid="uid://ccqrgq3avsqt3" path="res://3D_MODELS/Arch Kit/materials/plain_tile.tres" id="2_uxn6t"]
@@ -89,9 +88,6 @@ transform = Transform3D(1, 0, 0, 0, 0.9378889, -0.34693566, 0, 0.34693566, 0.937
 
 [node name="Gate3" parent="Boulder Walls" unique_id=2079082380 instance=ExtResource("7_o3y2b")]
 transform = Transform3D(1, 0, 0, 0, 0.9378889, -0.34693566, 0, 0.34693566, 0.9378889, 19.8, 2.1999998, 10.000001)
-
-[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("1_igttw")]
-transform = Transform3D(-6.556708e-08, 0, -1.5, 0, 1.5, 0, 1.5, 0, -6.556708e-08, -22, 0.9999995, -2.8999996)
 
 [node name="big_gateway" parent="." unique_id=111181489 instance=ExtResource("9_4w6er")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -0.30000007, 23.699999)

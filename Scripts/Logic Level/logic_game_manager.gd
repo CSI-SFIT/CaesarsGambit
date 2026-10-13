@@ -27,7 +27,7 @@ extends Node3D
 @onready var input_field = $PuzzleUI/TerminalBackground/InputField
 
 # The exact text answers expected for Wall 1, Wall 2, and Wall 3
-var target_answers: Array[String] = ["0", "1", "10"] 
+var target_answers: Array[String] = ["0", "1", "10","-1"] 
 
 # Tracks which puzzles have already been completed
 var solved_puzzles: Array[bool] = [false, false, false]
@@ -174,3 +174,6 @@ func open_gate(gate: Node3D) -> void:
 		
 		if boulder:
 			boulder.sleeping = false
+		await get_tree().create_timer(1).timeout
+		gate.queue_free()
+		
