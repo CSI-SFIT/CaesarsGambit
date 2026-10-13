@@ -174,10 +174,13 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, move_speed)
 			velocity.z = move_toward(velocity.z, 0, move_speed)
 	else:
-		velocity.x = 0
-		velocity.y = 0
+		velocity.x = move_toward(velocity.x, 0, current_speed)
+		velocity.z = move_toward(velocity.z, 0, current_speed)
+		
+		# ANIMATION: Idle
+		if is_on_floor():
+			play_anim(idle_anim_name)
 	
-	# Use velocity to actually move
 	move_and_slide()
 
 

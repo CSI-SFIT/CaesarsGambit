@@ -48,7 +48,7 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.86
 visible = false
 
 [node name="Model" parent="." unique_id=1352637084 node_paths=PackedStringArray("playerAnimationPlayer") instance=ExtResource("2_x3wgy")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+transform = Transform3D(-1.175, 0, -1.02721756e-07, 0, 1.175, 0, 1.02721756e-07, 0, -1.175, 0, 0, 0)
 script = ExtResource("1_fkybt")
 playerAnimationPlayer = NodePath("AnimationPlayer2")
 
@@ -66,7 +66,4 @@ shape = SubResource("CapsuleShape3D_2ruxo")
 transform = Transform3D(1, 0, -1.4210855e-14, 0, 1, 0, 1.4210855e-14, 0, 1, -6.444973e-09, 1.6008472, 0.073721886)
 
 [node name="Camera3D" type="Camera3D" parent="head" unique_id=885181495]
-transform = Transform3D(-0.4, -1.2343969e-08, -3.7220275e-08, -2.8174979e-08, 0.3545378, 0.18521051, 2.7274407e-08, 0.1852105, -0.3545378, 1.7036253e-07, 1.1938713, -2.1979234)
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=437443785]
-replication_config = SubResource("SceneReplicationConfig_3smsa")
+transform = Transform3D(0.6666667, 0, 0, 0, 0.62362945, 0.23564991, 0, -0.23564991, 0.62362945, 1.7036254e-07, 0.66585255, 1.2945446)
