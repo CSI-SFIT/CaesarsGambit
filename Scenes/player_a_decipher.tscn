@@ -18,7 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://qg2g5liw8yc5" path="res://Scenes/Decipher Game/old_chest.tscn" id="13_2guir"]
 [ext_resource type="PackedScene" uid="uid://bqpxjgpguiyou" path="res://Scenes/Decipher Game/roman_stairs.tscn" id="13_epqfo"]
 [ext_resource type="Script" uid="uid://dw1cv0b10q8k8" path="res://Scripts/Player A/Killzone.gd" id="15_epqfo"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="20_b6gue"]
 
 [sub_resource type="Environment" id="Environment_4p6xf"]
 background_mode = 1
@@ -731,9 +730,6 @@ transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.6
 
 [node name="straight_tile4" parent="Stairs" unique_id=234346993 instance=ExtResource("10_bcdqc")]
 transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -10.416549, -42.276936)
-
-[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("20_b6gue")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -1.6829727, 0.2026217, 3.7528417)
 
 [connection signal="body_entered" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_exited"]
