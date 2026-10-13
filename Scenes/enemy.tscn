@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://by0tplgsa280w"]
+
+[ext_resource type="Script" uid="uid://c3xqqugvawwco" path="res://Scripts/enemyScripts/enemy.gd" id="1_hghv2"]
+[ext_resource type="Script" uid="uid://bigq0rjnf6ng6" path="res://Scripts/playerScripts/PlayerDetectionScript.gd" id="2_1f0kj"]
+[ext_resource type="PackedScene" uid="uid://cd3ihiw65icdc" path="res://3D_MODELS/Enemy/Walking (2).fbx" id="3_afpow"]
+[ext_resource type="Script" uid="uid://p8qsycpe5cqn" path="res://Scripts/enemyScripts/EnemyAnimationController.gd" id="4_287tu"]
+[ext_resource type="AnimationLibrary" uid="uid://btsrlujxb7ap" path="res://3D_MODELS/Enemy/idle_anim.fbx" id="5_1dp5w"]
+[ext_resource type="AnimationLibrary" uid="uid://gkfbxx4dhgmm" path="res://3D_MODELS/Enemy/run_anim.fbx" id="5_ghaa6"]
+[ext_resource type="AnimationLibrary" uid="uid://ctk4d4jncon3b" path="res://3D_MODELS/Enemy/walk_anim.fbx" id="6_1dp5w"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2ruxo"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2ruxo"]
+height = 4.0
+radius = 6.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1dp5w"]
+radius = 1.5
+
+[node name="Enemy" type="CharacterBody3D" unique_id=1056083897]
+editor_description = "what enemy does:
+Roams Randomly,
+if player detected it follow him,
+if player stays detected for a 4 seconds, then player is telepostert to start point"
+collision_layer = 2
+script = ExtResource("1_hghv2")
+moveSpeed = 5.5
+chaseSpeed = 6.8
+patrol_speed = 4.5
+maxChaseTime = 5.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1813387056]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0335023, 0.016710281)
+shape = SubResource("CapsuleShape3D_2ruxo")
+
+[node name="Head" type="Node3D" parent="." unique_id=1332053581]
+script = ExtResource("2_1f0kj")
+
+[node name="eyesight" type="Area3D" parent="Head" unique_id=287080903]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Head/eyesight" unique_id=472699715]
+shape = SubResource("CylinderShape3D_2ruxo")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1663610949]
+
+[node name="Model" parent="." unique_id=887564268 instance=ExtResource("3_afpow")]
+transform = Transform3D(-200, 0, -3.019916e-05, 0, 200, 0, 3.019916e-05, 0, -200, 0, 0, 0)
+script = ExtResource("4_287tu")
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="Model" unique_id=1429362727]
+libraries/idle_anim = ExtResource("5_1dp5w")
+libraries/run_anim = ExtResource("5_ghaa6")
+libraries/walk_anim = ExtResource("6_1dp5w")
+
+[node name="LineOfSightRay" type="RayCast3D" parent="." unique_id=319187304]
+
+[node name="AttackHitbox" type="Area3D" parent="." unique_id=1840986264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9828156, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackHitbox" unique_id=212523262]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07925415, 0, 0.019104004)
+shape = SubResource("SphereShape3D_1dp5w")
+
+[connection signal="body_entered" from="Head/eyesight" to="." method="_on_eyesight_body_entered"]
+[connection signal="body_exited" from="Head/eyesight" to="." method="_on_eyesight_body_exited"]
+[connection signal="body_entered" from="AttackHitbox" to="." method="_on_attack_hitbox_body_entered"]

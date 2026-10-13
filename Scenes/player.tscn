@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dy0i40wui8vg7"]
 
-[ext_resource type="Script" uid="uid://b2v2owq7j1x8l" path="res://Scripts/PlayerAnimationScript.gd" id="1_fkybt"]
+[ext_resource type="Script" uid="uid://b2v2owq7j1x8l" path="res://Scripts/playerScripts/PlayerAnimationScript.gd" id="1_fkybt"]
 [ext_resource type="Script" uid="uid://ct02752bn5qgn" path="res://addons/proto_controller/proto_controller.gd" id="1_x3wgy"]
 [ext_resource type="AnimationLibrary" uid="uid://c11hqxho565ov" path="res://3D_MODELS/Soldier/anims/jump_anim.fbx" id="2_fkybt"]
 [ext_resource type="PackedScene" uid="uid://bknh7qkj2hxts" path="res://3D_MODELS/Soldier/anims/Running.fbx" id="2_x3wgy"]
@@ -12,13 +12,40 @@
 radius = 0.30126953
 height = 1.8964844
 
-[node name="Player" type="CharacterBody3D" unique_id=2028054972 groups=["player"]]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3smsa"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:scale")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Model/AnimationPlayer2:current_animation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("head/Camera3D:position")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("head/Camera3D:rotation")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" unique_id=2028054972 groups=["PlayerGroup"]]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
 floor_stop_on_slope = false
 script = ExtResource("1_x3wgy")
+on_ground_speed = 8.0
+jump_velocity = 8.0
+input_left = "move_right"
+input_right = "move_left"
+input_forward = "move_backward"
+input_back = "move_forward"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1271453329]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.8668542, 4.626953, -3.3243027)
+visible = false
 
 [node name="Model" parent="." unique_id=1352637084 node_paths=PackedStringArray("playerAnimationPlayer") instance=ExtResource("2_x3wgy")]
 transform = Transform3D(-1.175, 0, -1.02721756e-07, 0, 1.175, 0, 1.02721756e-07, 0, -1.175, 0, 0, 0)
@@ -31,7 +58,7 @@ libraries/jump_anim = ExtResource("2_fkybt")
 libraries/run_anim = ExtResource("3_x3wgy")
 libraries/walk_anim = ExtResource("4_3smsa")
 
-[node name="Collider" type="CollisionShape3D" parent="." unique_id=1043878287]
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1043878287 groups=["PlayerGroup"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037438273, 0.8475139, -2.7755576e-17)
 shape = SubResource("CapsuleShape3D_2ruxo")
 
