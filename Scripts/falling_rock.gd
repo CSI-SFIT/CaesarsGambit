@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 	queue_free()
 
 
-func _on_area_3d_body_entered(body: Node3D) -> void:
+#func _on_area_3d_body_entered(body: Node3D) -> void:
 	#if(body.is_in_group("PlayerGroup")):
 		#print("PLAYER COLLIDED WITH BALL")
 		#body.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.four)

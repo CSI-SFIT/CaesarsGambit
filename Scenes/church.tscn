@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://wbyfinr7es1h" path="res://3D_MODELS/Church/Church.glb" id="1_uxvc0"]
 [ext_resource type="PackedScene" uid="uid://by0tplgsa280w" path="res://Scenes/enemy.tscn" id="2_38qbd"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="3_p1f3h"]
 [ext_resource type="PackedScene" uid="uid://cejd6bgfvveg5" path="res://Scenes/RockShower.tscn" id="4_4bdyu"]
 [ext_resource type="PackedScene" uid="uid://cfjkoxbndkfhh" path="res://Scenes/church_gate_button.tscn" id="4_4ofem"]
 
@@ -229,11 +228,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93.90894, -63.695236, 20.640
 
 [node name="Enemy5" parent="Enemies" unique_id=1039448338 instance=ExtResource("2_38qbd")]
 transform = Transform3D(0.78884166, 0, -0.6145965, 0, 1, 0, 0.6145965, 0, 0.78884166, -103.83968, -63.695236, 20.523499)
-
-[node name="Player" parent="Enemies" unique_id=2028054972 instance=ExtResource("3_p1f3h")]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -89.409355, -62.457977, 2.6928563)
-input_forward = "move_backward"
-input_back = "move_forward"
 
 [node name="Lights" type="Node3D" parent="." unique_id=1865743964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.8498535)
