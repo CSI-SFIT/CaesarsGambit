@@ -34,17 +34,22 @@ func start_client():
 	# the client does not spawn or register anything, the server does
 
 func peer_added(pid: int):
-	if has_node(str(pid)):  # guard against double spawns
+	if has_node(str(pid)):
 		return
 	print("player ", pid, " joined")
+	var spawn_pos: Vector3 = GameManager.claimSpawnPoint(pid)
 	var p = player_scene.instantiate()
-	p.name = str(pid)  # must be set before add_child
-	p.position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.Church)
+	p.name = str(pid)
+	p.position = spawn_pos
 	add_child(p, true)
-	GameManager.addPlayer(str(pid), p)
+	if pid != multiplayer.get_unique_id():  # host's own player is already placed
+		p.set_spawn_position.rpc_id(pid, spawn_pos)
+	
+	add_child(p, true)
+	# no addPlayer here, the player registers itself (see player.gd)
 
 func peer_removed(pid: int):
 	var p = get_node_or_null(str(pid))
 	if p:
-		p.queue_free()
-	GameManager.removePlayer(str(pid))
+		p.queue_free()  # its _exit_tree removes it from GameManager.players
+	GameManager.releaseSpawnPoint(pid)

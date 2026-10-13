@@ -121,14 +121,26 @@ func _unhandled_input(event: InputEvent) -> void:
 			enable_freefly()
 		else:
 			disable_freefly()
-
+			
 func _enter_tree():
 	set_multiplayer_authority(name.to_int())
+	GameManager.registerPlayer(name.to_int(), self)
+	
+func _exit_tree():
+	GameManager.unregisterPlayer(name.to_int())
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func set_spawn_position(pos: Vector3) -> void:
+	if multiplayer.get_remote_sender_id() != 1:  # only accept from the server
+		return
+	global_position = pos
+	velocity = Vector3.ZERO
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
-		
+	
 		
 	
 	# Keep the (top_level) camera pivot following the body's position each frame,
