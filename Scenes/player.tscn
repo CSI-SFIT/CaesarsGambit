@@ -25,12 +25,6 @@ properties/2/replication_mode = 1
 properties/3/path = NodePath("Model/AnimationPlayer2:current_animation")
 properties/3/spawn = true
 properties/3/replication_mode = 1
-properties/4/path = NodePath("head/Camera3D:position")
-properties/4/spawn = true
-properties/4/replication_mode = 1
-properties/5/path = NodePath("head/Camera3D:rotation")
-properties/5/spawn = true
-properties/5/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" unique_id=2028054972 groups=["PlayerGroup"]]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
@@ -40,15 +34,13 @@ on_ground_speed = 8.0
 jump_velocity = 8.0
 input_left = "move_right"
 input_right = "move_left"
-input_forward = "move_backward"
-input_back = "move_forward"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1271453329]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.8668542, 4.626953, -3.3243027)
 visible = false
 
-[node name="Model" parent="." unique_id=1352637084 node_paths=PackedStringArray("playerAnimationPlayer") instance=ExtResource("2_x3wgy")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+[node name="Model" parent="." unique_id=1352637084 node_paths=PackedStringArray("playerAnimationPlayer") groups=["PlayerGroup"] instance=ExtResource("2_x3wgy")]
+transform = Transform3D(-1.5, 0, -2.2649371e-07, 0, 1.5, 0, 2.2649371e-07, 0, -1.5, 0, 0, 0)
 script = ExtResource("1_fkybt")
 playerAnimationPlayer = NodePath("AnimationPlayer2")
 
@@ -66,7 +58,7 @@ shape = SubResource("CapsuleShape3D_2ruxo")
 transform = Transform3D(1, 0, -1.4210855e-14, 0, 1, 0, 1.4210855e-14, 0, 1, -6.444973e-09, 1.6008472, 0.073721886)
 
 [node name="Camera3D" type="Camera3D" parent="head" unique_id=885181495]
-transform = Transform3D(-0.4, -1.2343969e-08, -3.7220275e-08, -2.8174979e-08, 0.3545378, 0.18521051, 2.7274407e-08, 0.1852105, -0.3545378, 1.7036253e-07, 1.1938713, -2.1979234)
+transform = Transform3D(0.6666667, 0, 0, 0, 0.62362945, 0.23564991, 0, -0.23564991, 0.62362945, 1.7036254e-07, 0.66585255, 1.2945446)
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=437443785]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1423302598]
 replication_config = SubResource("SceneReplicationConfig_3smsa")

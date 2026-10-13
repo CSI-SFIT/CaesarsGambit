@@ -68,12 +68,16 @@ var look_rotation : Vector2  # x = pitch, y = yaw (camera only, world-space)
 var move_speed : float = 0.0
 var freeflying : bool = false
 var head_local_offset : Vector3  # head's original position relative to the body (e.g. eye/chest height)
-
+var current_speed
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $head
 @onready var collider: CollisionShape3D = $Collider
 @onready var camera: Camera3D = $head/Camera3D
 func _ready() -> void:
+	
+	var mine = is_multiplayer_authority()
+	camera.current = mine  # adjust node name
+	
 	# Convert node name to peer ID safely
 	var peer_id := str(name).to_int()
 	if peer_id > 0:
@@ -117,10 +121,27 @@ func _unhandled_input(event: InputEvent) -> void:
 			enable_freefly()
 		else:
 			disable_freefly()
+			
+func _enter_tree():
+	set_multiplayer_authority(name.to_int())
+	GameManager.registerPlayer(name.to_int(), self)
+	
+func _exit_tree():
+	GameManager.unregisterPlayer(name.to_int())
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func set_spawn_position(pos: Vector3) -> void:
+	if multiplayer.get_remote_sender_id() != 1:  # only accept from the server
+		return
+	global_position = pos
+	velocity = Vector3.ZERO
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return
+	
+		
 	
 	# Keep the (top_level) camera pivot following the body's position each frame,
 	# since top_level means it no longer inherits position automatically.
@@ -166,7 +187,7 @@ func _physics_process(delta: float) -> void:
 			velocity.x = direction.x * move_speed
 			velocity.z = direction.z * move_speed
 			# Smoothly turn the body to face the direction we're moving
-			var face_dir := direction if model_faces_backwards else -direction
+			var face_dir := direction if model_faces_backwards else direction
 			var target_basis := Basis.looking_at(face_dir, Vector3.UP)
 			transform.basis = Basis(transform.basis.get_rotation_quaternion().slerp(
 				target_basis.get_rotation_quaternion(), clamp(rotation_speed * delta, 0, 1)))
@@ -174,10 +195,13 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, move_speed)
 			velocity.z = move_toward(velocity.z, 0, move_speed)
 	else:
-		velocity.x = 0
-		velocity.y = 0
+		velocity.x = move_toward(velocity.x, 0, current_speed)
+		velocity.z = move_toward(velocity.z, 0, current_speed)
+		
+		# ANIMATION: Idle
+		#if is_on_floor():
+			#play_anim(idle_anim_name)
 	
-	# Use velocity to actually move
 	move_and_slide()
 
 
@@ -246,3 +270,9 @@ func check_input_mappings():
 	if can_freefly and not InputMap.has_action(input_freefly):
 		push_error("Freefly disabled. No InputAction found for input_freefly: " + input_freefly)
 		can_freefly = false
+
+func teleport_to(target_pos: Vector3) -> void:
+	global_position = target_pos
+	velocity = Vector3.ZERO
+	if is_instance_valid(head):
+		head.global_transform.origin = global_position + head_local_offset

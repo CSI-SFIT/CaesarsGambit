@@ -1,16 +1,10 @@
 extends Node3D
 
+const PORT = 7777  # ports below 1024 are privileged
 var peer = ENetMultiplayerPeer.new()
-var port = 1000
-#@onready var gm = $GameManager
-
 var player_scene = preload("res://Scenes/player.tscn")
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#EventBus.on_Host_Pressed.connect(on_Host_Pressed_main)
-	#EventBus.on_Join_Pressed.connect(on_Join_Pressed_main)
-	
 	match EventBus.selected_role:
 		EventBus.Role.HOST:
 			start_host()
@@ -18,42 +12,44 @@ func _ready() -> void:
 			start_client()
 		_:
 			print("No multiplayer role selected")
-			
-	#print("Events connected in main Scene")
-	pass # Replace with function body.
+
 func start_host():
-	print("Hello Host")
-	var error = peer.create_server(port)
+	var error = peer.create_server(PORT)
 	if error != OK:
 		print("Failed to host: ", error)
 		return
-		
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(peer_added)
-	
+	multiplayer.peer_disconnected.connect(peer_removed)
+
 	GameManager.refreshSpawnPoints()
-	
-	peer_added(multiplayer.get_unique_id())
-	
+	peer_added(multiplayer.get_unique_id())  # host's own player
+
 func start_client():
-	print("Hello Client")
-	var error = peer.create_client("localhost", port)
+	var error = peer.create_client("localhost", PORT)
 	if error != OK:
 		print("Failed to connect: ", error)
 		return
 	multiplayer.multiplayer_peer = peer
-	#multiplayer.peer_connected.connect(peer_added)
+	# the client does not spawn or register anything, the server does
 
-func peer_added(pid):
-	#await get_tree().process_frame
-	print("player " + str(pid) +" joined")
+func peer_added(pid: int):
+	if has_node(str(pid)):
+		return
+	print("player ", pid, " joined")
+	var spawn_pos: Vector3 = GameManager.claimSpawnPoint(pid)
 	var p = player_scene.instantiate()
 	p.name = str(pid)
+	p.position = spawn_pos
+	add_child(p, true)
+	if pid != multiplayer.get_unique_id():  # host's own player is already placed
+		p.set_spawn_position.rpc_id(pid, spawn_pos)
 	
-	add_child(p)
-	p.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.Church)
-	
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-	#pass
+	add_child(p, true)
+	# no addPlayer here, the player registers itself (see player.gd)
+
+func peer_removed(pid: int):
+	var p = get_node_or_null(str(pid))
+	if p:
+		p.queue_free()  # its _exit_tree removes it from GameManager.players
+	GameManager.releaseSpawnPoint(pid)

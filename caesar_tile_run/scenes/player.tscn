@@ -1,0 +1,217 @@
+[gd_scene load_steps=26 format=3]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.48
+height = 1.85
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tunic"]
+radius = 0.42
+height = 1.05
+
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+radius = 0.28
+height = 0.56
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skin"]
+albedo_color = Color(0.92, 0.76, 0.62, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_helmet"]
+top_radius = 0.32
+bottom_radius = 0.33
+height = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bronze_armor"]
+albedo_color = Color(0.85, 0.68, 0.25, 1)
+metallic = 0.85
+roughness = 0.25
+
+[sub_resource type="BoxMesh" id="BoxMesh_cheek_guard"]
+size = Vector3(0.08, 0.25, 0.16)
+
+[sub_resource type="BoxMesh" id="BoxMesh_neck_guard"]
+size = Vector3(0.38, 0.08, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_crest"]
+size = Vector3(0.12, 0.36, 0.65)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cuirass"]
+top_radius = 0.43
+bottom_radius = 0.44
+height = 0.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_shoulder_guard"]
+size = Vector3(0.3, 0.1, 0.25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pteruges"]
+size = Vector3(0.65, 0.25, 0.65)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_leather"]
+albedo_color = Color(0.38, 0.22, 0.12, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_cape"]
+size = Vector3(0.7, 1.1, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_shield"]
+size = Vector3(0.12, 1.05, 0.62)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shield_red"]
+albedo_color = Color(0.72, 0.12, 0.12, 1)
+roughness = 0.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_shield_boss"]
+radius = 0.14
+height = 0.15
+
+[sub_resource type="BoxMesh" id="BoxMesh_gladius_scabbard"]
+size = Vector3(0.08, 0.75, 0.14)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sword_hilt"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.25
+
+[sub_resource type="BoxMesh" id="BoxMesh_boot"]
+size = Vector3(0.24, 0.22, 0.42)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_arm"]
+radius = 0.12
+height = 0.55
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_player"]
+properties/0/path = NodePath(".:sync_pos")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:sync_rot_y")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:player_id")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.92, 0)
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="NameLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35, 0)
+billboard = 1
+text = "Player 1"
+font_size = 42
+outline_size = 8
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="Tunic" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("CapsuleMesh_tunic")
+
+[node name="Cuirass" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0)
+mesh = SubResource("CylinderMesh_cuirass")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="ShoulderLeft" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, -0.42, 1.15, 0)
+mesh = SubResource("BoxMesh_shoulder_guard")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="ShoulderRight" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, 0.42, 1.15, 0)
+mesh = SubResource("BoxMesh_shoulder_guard")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="Pteruges" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+mesh = SubResource("BoxMesh_pteruges")
+surface_material_override/0 = SubResource("StandardMaterial3D_leather")
+
+[node name="Cape" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0.8, -0.38)
+mesh = SubResource("BoxMesh_cape")
+surface_material_override/0 = SubResource("StandardMaterial3D_shield_red")
+
+[node name="Head" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+mesh = SubResource("SphereMesh_head")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="Helmet" type="Node3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52, 0)
+
+[node name="Dome" type="MeshInstance3D" parent="Visuals/Helmet"]
+mesh = SubResource("CylinderMesh_helmet")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="CheekLeft" type="MeshInstance3D" parent="Visuals/Helmet"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26, -0.16, 0.12)
+mesh = SubResource("BoxMesh_cheek_guard")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="CheekRight" type="MeshInstance3D" parent="Visuals/Helmet"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, -0.16, 0.12)
+mesh = SubResource("BoxMesh_cheek_guard")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="NeckGuard" type="MeshInstance3D" parent="Visuals/Helmet"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, -0.15, -0.25)
+mesh = SubResource("BoxMesh_neck_guard")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="Crest" type="MeshInstance3D" parent="Visuals/Helmet"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28, 0)
+mesh = SubResource("BoxMesh_crest")
+
+[node name="Shield" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -0.48, 0.85, 0.05)
+mesh = SubResource("BoxMesh_shield")
+surface_material_override/0 = SubResource("StandardMaterial3D_shield_red")
+
+[node name="UmboBoss" type="MeshInstance3D" parent="Visuals/Shield"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07, 0, 0)
+mesh = SubResource("SphereMesh_shield_boss")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="GladiusScabbard" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0, 1, 0.44, 0.72, 0)
+mesh = SubResource("BoxMesh_gladius_scabbard")
+surface_material_override/0 = SubResource("StandardMaterial3D_leather")
+
+[node name="Hilt" type="MeshInstance3D" parent="Visuals/GladiusScabbard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+mesh = SubResource("CylinderMesh_sword_hilt")
+surface_material_override/0 = SubResource("StandardMaterial3D_bronze_armor")
+
+[node name="FootLeft" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0.12, 0.05)
+mesh = SubResource("BoxMesh_boot")
+surface_material_override/0 = SubResource("StandardMaterial3D_leather")
+
+[node name="FootRight" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 0.12, 0.05)
+mesh = SubResource("BoxMesh_boot")
+surface_material_override/0 = SubResource("StandardMaterial3D_leather")
+
+[node name="ArmRight" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48, 0.85, 0)
+mesh = SubResource("CapsuleMesh_arm")
+surface_material_override/0 = SubResource("StandardMaterial3D_skin")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+spring_length = 4.6
+margin = 0.35
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.6)
+current = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_player")
