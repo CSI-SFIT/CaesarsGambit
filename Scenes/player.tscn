@@ -39,8 +39,8 @@ input_right = "move_left"
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.8668542, 4.626953, -3.3243027)
 visible = false
 
-[node name="Model" parent="." unique_id=1352637084 node_paths=PackedStringArray("playerAnimationPlayer") instance=ExtResource("2_x3wgy")]
-transform = Transform3D(-1.175, 0, -1.02721756e-07, 0, 1.175, 0, 1.02721756e-07, 0, -1.175, 0, 0, 0)
+[node name="Model" parent="." unique_id=1352637084 node_paths=PackedStringArray("playerAnimationPlayer") groups=["PlayerGroup"] instance=ExtResource("2_x3wgy")]
+transform = Transform3D(-1.5, 0, -2.2649371e-07, 0, 1.5, 0, 2.2649371e-07, 0, -1.5, 0, 0, 0)
 script = ExtResource("1_fkybt")
 playerAnimationPlayer = NodePath("AnimationPlayer2")
 
