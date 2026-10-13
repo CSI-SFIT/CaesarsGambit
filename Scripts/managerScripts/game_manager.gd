@@ -2,6 +2,8 @@ extends Node
 
 signal pointsReady
 
+var players = {}
+
 enum SpawnPointNames {
 	Church,
 	one,
@@ -30,3 +32,13 @@ func getSpawnPointPosition(point_type: SpawnPointNames) -> Vector3:
 	
 	print("Spawn point index %d out of bounds! Array size is %d" % [index, spawn_points.size()])
 	return Vector3.ZERO
+	
+func addPlayer(player_name,obj):
+	if player_name not in players.keys():
+		players[player_name]=obj
+	else:
+		print("PLAYER ALREADY EXISTS")
+	EventBus.player_count+=1
+	print(players)
+		
+		

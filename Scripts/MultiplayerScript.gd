@@ -33,7 +33,10 @@ func start_host():
 	
 	GameManager.refreshSpawnPoints()
 	
-	peer_added(multiplayer.get_unique_id())
+	var host = peer_added(multiplayer.get_unique_id())
+	GameManager.addPlayer("HOST",host)
+	#EventBus.player_count+=1
+	
 	
 func start_client():
 	print("Hello Client")
@@ -42,6 +45,8 @@ func start_client():
 		print("Failed to connect: ", error)
 		return
 	multiplayer.multiplayer_peer = peer
+	var peer_name:= "peer_" + str(EventBus.player_count) 
+	GameManager.addPlayer(peer_name,peer)
 	#multiplayer.peer_connected.connect(peer_added)
 
 func peer_added(pid):
@@ -52,7 +57,7 @@ func peer_added(pid):
 	
 	add_child(p)
 	p.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.Church)
-	
+	return p
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
