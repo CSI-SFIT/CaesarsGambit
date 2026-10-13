@@ -232,6 +232,8 @@ transform = Transform3D(0.78884166, 0, -0.6145965, 0, 1, 0, 0.6145965, 0, 0.7888
 
 [node name="Player" parent="Enemies" unique_id=2028054972 instance=ExtResource("3_p1f3h")]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -89.409355, -62.457977, 2.6928563)
+input_forward = "move_backward"
+input_back = "move_forward"
 
 [node name="Lights" type="Node3D" parent="." unique_id=1865743964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.8498535)

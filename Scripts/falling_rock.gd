@@ -14,6 +14,6 @@ func _process(delta: float) -> void:
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	if(body.is_in_group("PlayerGroup")):
-		print("PLAYER COLLIDED WITH BALL")
-		body.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.four)
+	#if(body.is_in_group("PlayerGroup")):
+		#print("PLAYER COLLIDED WITH BALL")
+		#body.global_position = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.four)
