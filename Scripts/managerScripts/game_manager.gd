@@ -7,6 +7,7 @@ enum SpawnPointNames {
 	one,
 	two,
 	three,
+	four,
 }
 
 var spawn_points: Array[Area3D] = []
