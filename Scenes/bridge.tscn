@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://dme05k5bn0uqi"]
+
+[ext_resource type="Material" uid="uid://cjnsxxexh6uoi" path="res://3D_MODELS/Arch Kit/materials/roman_stone.tres" id="1_jy1u5"]
+[ext_resource type="Texture2D" uid="uid://dxb77s70pwuic" path="res://3D_MODELS/Arch Kit/materials/modular_fort_01_wall_diff_4k.png" id="2_o6a5g"]
+[ext_resource type="Texture2D" uid="uid://bjx07hn8w0lbx" path="res://3D_MODELS/Environment/pngs/low_poly_pillar_0.png" id="3_wsor3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iaiv0"]
+albedo_texture = ExtResource("2_o6a5g")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h1rw7"]
+albedo_texture = ExtResource("3_wsor3")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3mp33"]
+albedo_texture = ExtResource("2_o6a5g")
+
+[node name="Bridge" type="Node3D" unique_id=1971865391]
+
+[node name="bridge" type="CSGCombiner3D" parent="." unique_id=644348134]
+use_collision = true
+
+[node name="footWay" type="CSGBox3D" parent="bridge" unique_id=862985547]
+material_override = ExtResource("1_jy1u5")
+size = Vector3(6.810013, 1.7949219, 54.201958)
+material = SubResource("StandardMaterial3D_iaiv0")
+
+[node name="SideWall" type="CSGBox3D" parent="bridge" unique_id=959615500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.86279, 1.4105959, 0)
+size = Vector3(1, 4.5, 54.202)
+material = SubResource("StandardMaterial3D_h1rw7")
+
+[node name="SideWall2" type="CSGBox3D" parent="bridge" unique_id=489897471]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8431034, 1.4105959, 0)
+size = Vector3(1, 4.5, 54.202)
+material = SubResource("StandardMaterial3D_h1rw7")
+
+[node name="cut" type="CSGBox3D" parent="bridge" unique_id=128704017]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.682497, 2.5287895, 18.354807)
+operation = 2
+size = Vector3(1.4161377, 3.249, 2.8779297)
+
+[node name="cut4" type="CSGBox3D" parent="bridge" unique_id=1481445648]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.682497, 2.5283551, -12.450382)
+operation = 2
+size = Vector3(1.4161377, 3.249, 2.8779297)
+
+[node name="cut2" type="CSGBox3D" parent="bridge" unique_id=1867216711]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.860714, 2.5283551, 8.291102)
+operation = 2
+size = Vector3(1.4161377, 3.249, 2.8779297)
+
+[node name="cut3" type="CSGBox3D" parent="bridge" unique_id=2095620095]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.860714, 2.5283551, -2.706376)
+operation = 2
+size = Vector3(1.4161377, 3.249, 2.8779297)
+
+[node name="cut5" type="CSGBox3D" parent="bridge" unique_id=1407596971]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.860714, 2.5283551, -21.287003)
+operation = 2
+size = Vector3(1.4161377, 3.249, 2.8779297)
+
+[node name="sidePlatform" type="CSGCombiner3D" parent="bridge" unique_id=991493718]
+
+[node name="floor" type="CSGBox3D" parent="bridge/sidePlatform" unique_id=1828403126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.907461, 1.7780166, 18.359585)
+size = Vector3(3.7329102, 3.7755737, 4.0746026)
+material = SubResource("StandardMaterial3D_3mp33")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="bridge/sidePlatform" unique_id=1181164565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.220018, 2.70714, 18.361378)
+operation = 2
+size = Vector3(3.733, 3.5803955, 2.8789794)
+
+[node name="sidePlatform2" type="CSGCombiner3D" parent="bridge" unique_id=259268853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30.8381)
+
+[node name="floor" type="CSGBox3D" parent="bridge/sidePlatform2" unique_id=479815592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.907461, 1.778, 18.359585)
+size = Vector3(3.7329102, 3.776, 4.0746026)
+material = SubResource("StandardMaterial3D_3mp33")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="bridge/sidePlatform2" unique_id=580067300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.220018, 2.7475452, 18.361378)
+operation = 2
+size = Vector3(3.733, 3.661206, 2.8789794)
+
+[node name="sidePlatform3" type="CSGCombiner3D" parent="bridge" unique_id=1857696066]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, -2.923256)
+
+[node name="floor" type="CSGBox3D" parent="bridge/sidePlatform3" unique_id=579961037]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.907461, 1.778, 18.359585)
+size = Vector3(3.7329102, 3.776, 4.0746026)
+material = SubResource("StandardMaterial3D_3mp33")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="bridge/sidePlatform3" unique_id=853499625]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.220018, 2.7411976, 18.361378)
+operation = 2
+size = Vector3(3.733, 3.6485107, 2.8789794)
+
+[node name="sidePlatform4" type="CSGCombiner3D" parent="bridge" unique_id=92088768]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 15.701056)
+
+[node name="floor" type="CSGBox3D" parent="bridge/sidePlatform4" unique_id=282502090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.907461, 1.778, 18.359585)
+size = Vector3(3.7329102, 3.776, 4.0746026)
+material = SubResource("StandardMaterial3D_3mp33")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="bridge/sidePlatform4" unique_id=40201695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.220018, 2.5220814, 18.361378)
+operation = 2
+size = Vector3(3.733, 3.2102783, 2.8789794)
+
+[node name="sidePlatform5" type="CSGCombiner3D" parent="bridge" unique_id=438818337]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 26.690647)
+
+[node name="floor" type="CSGBox3D" parent="bridge/sidePlatform5" unique_id=1822522875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.907461, 1.778, 18.359585)
+size = Vector3(3.7329102, 3.776, 4.0746026)
+material = SubResource("StandardMaterial3D_3mp33")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="bridge/sidePlatform5" unique_id=382702102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.220018, 2.6592884, 18.361378)
+operation = 2
+size = Vector3(3.733, 3.4846923, 2.8789794)
