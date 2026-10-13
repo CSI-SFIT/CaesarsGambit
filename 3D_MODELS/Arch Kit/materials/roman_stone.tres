@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cjnsxxexh6uoi"]
+
+[ext_resource type="Texture2D" uid="uid://dxb77s70pwuic" path="res://3D_MODELS/Arch Kit/materials/modular_fort_01_wall_diff_4k.png" id="1_qll4m"]
+[ext_resource type="Texture2D" uid="uid://bppr81mxexsok" path="res://3D_MODELS/Arch Kit/materials/modular_fort_01_wall_nor_gl_4k.png" id="2_tiwqs"]
+
+[resource]
+albedo_texture = ExtResource("1_qll4m")
+normal_enabled = true
+normal_texture = ExtResource("2_tiwqs")

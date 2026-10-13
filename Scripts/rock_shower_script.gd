@@ -14,7 +14,7 @@ func _process(delta: float) -> void:
 	if(timer >= rockFallInterval):
 		timer=0.0
 		spawnRock()
-		print("Spawned")
+		#print("Spawned")
 		
 
 func spawnRock():

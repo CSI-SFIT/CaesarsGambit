@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ccqrgq3avsqt3"]
+
+[ext_resource type="Texture2D" uid="uid://buhc6rdl6ra17" path="res://3D_MODELS/Arch Kit/materials/modular_fort_01_plaster_diff_4k.png" id="1_mrka6"]
+
+[resource]
+albedo_texture = ExtResource("1_mrka6")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
