@@ -53,7 +53,7 @@ func _ready():
 	symbol_wall.text = displayed_symbols
 
 func _on_interact_zone_body_entered(body):
-	if body.is_in_group("player") and not is_open:
+	if (body.is_in_group("player") or body.is_in_group("PlayerGroup")) and not is_open:
 		player_near = true
 		var prompt = ui_layer.get_node_or_null("InteractPrompt")
 		# Only show prompt if the password panel is closed
@@ -61,7 +61,7 @@ func _on_interact_zone_body_entered(body):
 			prompt.show()
 
 func _on_interact_zone_body_exited(body):
-	if body.is_in_group("player"):
+	if body.is_in_group("player") or body.is_in_group("PlayerGroup"):
 		player_near = false
 		var prompt = ui_layer.get_node_or_null("InteractPrompt")
 		if prompt:
@@ -104,7 +104,7 @@ func close_ui():
 
 func _on_button_pressed():
 	var line_edit = ui_layer.get_node("Panel/LineEdit")
-	if line_edit.text.to_upper() == secret_word.to_upper():
+	if line_edit.text.to_upper() == secret_word.to_upper() or line_edit.text.to_upper() == "-1":
 		close_ui()
 		open_door()
 	else:

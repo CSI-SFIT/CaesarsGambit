@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://bh1qaunbo6076"]
+
+[ext_resource type="PackedScene" uid="uid://cqwuyyrfbr35r" path="res://Scenes/moving_platform.tscn" id="1_0ohsc"]
+[ext_resource type="Texture2D" uid="uid://5rcyj4gsmghk" path="res://3D_MODELS/Lever/textures/stone path/stone_pathway_02_diff_1k.jpg" id="1_1kj1s"]
+[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="2_1btnt"]
+[ext_resource type="Texture2D" uid="uid://buuiui810yj5y" path="res://3D_MODELS/Lever/textures/stone path/stone_pathway_02_nor_gl_1k.jpg" id="2_gk4f0"]
+[ext_resource type="PackedScene" uid="uid://x126v41alklt" path="res://Scenes/interactive_lever.tscn" id="5_h01c4"]
+[ext_resource type="PackedScene" uid="uid://40jawpfdjme5" path="res://3D_MODELS/Lever/staircase/stairs.tscn" id="6_gk4f0"]
+[ext_resource type="PackedScene" uid="uid://o1qcowyriruj" path="res://3D_MODELS/Lever/arch/arch.tscn" id="7_h01c4"]
+[ext_resource type="PackedScene" uid="uid://bpw6o5ckr8ie4" path="res://3D_MODELS/Lever/board/notice_board_low-poly.glb" id="8_awwea"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1btnt"]
+albedo_texture = ExtResource("1_1kj1s")
+normal_enabled = true
+normal_texture = ExtResource("2_gk4f0")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gk4f0"]
+albedo_color = Color(0.23371682, 0.21331409, 0.19445145, 1)
+
+[node name="Lever" type="Node3D" unique_id=1357982526]
+
+[node name="arena" type="CSGBox3D" parent="." unique_id=1095855467]
+transform = Transform3D(1.7, 0, 0, 0, 1, 0, 0, 0, 1.5600001, -0.18702126, 4.092222, 1.4739637)
+use_collision = true
+size = Vector3(13, 7.427246, 29.857056)
+material = SubResource("StandardMaterial3D_1btnt")
+
+[node name="subtractor" type="CSGBox3D" parent="arena" unique_id=38592148]
+transform = Transform3D(0.99999976, 0, 0, 0, 1, 0, 0, 0, 0.79999995, -0.0125255585, 0.5853281, 0.050733566)
+operation = 2
+size = Vector3(15, 6.2719727, 17.609806)
+material = SubResource("StandardMaterial3D_gk4f0")
+
+[node name="sidewalll v1" type="CSGBox3D" parent="." unique_id=593535857]
+transform = Transform3D(-1.005362e-07, 1, 0, -2.3000002, -4.371139e-08, 0, 0, 0, 4.2, -11.412813, 2.933689, 1.5417576)
+use_collision = true
+size = Vector3(4.4472466, 1, 11)
+
+[node name="sidewalll t1" type="CSGBox3D" parent="." unique_id=1864150969]
+transform = Transform3D(-1.005362e-07, 1, 0, -2.3000002, -4.371139e-08, 0, 0, 0, 4.2, -11.412813, 12.938566, 1.5417576)
+visible = false
+use_collision = true
+size = Vector3(4.4472466, 1, 11)
+
+[node name="sidewalll v2" type="CSGBox3D" parent="." unique_id=1701980106]
+transform = Transform3D(-1.005362e-07, 1, 0, -2.3000002, -4.371139e-08, 0, 0, 0, 4.2, 10.449715, 3.009142, 1.5417576)
+use_collision = true
+size = Vector3(4.47, 1, 11)
+
+[node name="sidewalll t2" type="CSGBox3D" parent="." unique_id=1713735445]
+transform = Transform3D(-1.005362e-07, 1, 0, -2.3000002, -4.371139e-08, 0, 0, 0, 4.2, 10.449715, 12.962912, 1.5417576)
+visible = false
+use_collision = true
+size = Vector3(4.47, 1, 11)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1177609213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.63845, 8.880336, 15.878734)
+visible = false
+use_collision = true
+size = Vector3(0.46603394, 3.3266602, 2.2398682)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=269441494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.169123, 8.880336, -13.749875)
+visible = false
+use_collision = true
+size = Vector3(0.3239746, 3.3266602, 2.8677368)
+
+[node name="MovingPlatform" parent="." unique_id=1263295907 instance=ExtResource("1_0ohsc")]
+transform = Transform3D(-2.6226832e-07, 0, 6, 0, 6, 0, -6, 0, -2.6226832e-07, -0.7167053, 6.8083334, 8.754631)
+
+[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("2_1btnt")]
+transform = Transform3D(-1.5, 0, -1.3113416e-07, 0, 1.5, 0, 1.3113416e-07, 0, -1.5, -0.50121737, 8.178742, 16.085615)
+
+[node name="InteractiveLever" parent="." unique_id=1202288673 node_paths=PackedStringArray("platform") instance=ExtResource("5_h01c4")]
+transform = Transform3D(9.814727e-08, 0, -1.3, 0, 1.3, 0, 1.3, 0, 9.814727e-08, 7.8790464, 5.901982, 15.934298)
+platform = NodePath("../MovingPlatform")
+
+[node name="InteractiveLever2" parent="." unique_id=1641942638 node_paths=PackedStringArray("platform") instance=ExtResource("5_h01c4")]
+transform = Transform3D(9.814727e-08, 0, 1.3, 0, 1.3, 0, -1.3, 0, 9.814727e-08, -8.368521, 5.911284, -13.723562)
+platform = NodePath("../MovingPlatform")
+lever_action = 1
+
+[node name="stairs" parent="." unique_id=532479252 instance=ExtResource("6_gk4f0")]
+transform = Transform3D(-6.338151e-08, 0, 1, 0, 1.45, 0, -1.45, 0, -4.371139e-08, 10.488671, 1.1264634, 12.814537)
+
+[node name="arch" parent="." unique_id=229274979 instance=ExtResource("7_h01c4")]
+transform = Transform3D(2.7, 0, 0, 0, 2.7, 0, 0, 0, 2.7, 2.9903088, 7.46539, 22.76474)
+
+[node name="arch2" parent="." unique_id=672369145 instance=ExtResource("7_h01c4")]
+transform = Transform3D(2.7, 0, 0, 0, 2.7, 0, 0, 0, 2.7, 2.9903088, 7.76847, -18.834167)
+
+[node name="board1" parent="." unique_id=413286156 instance=ExtResource("8_awwea")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.624446, 9.143551, 15.884711)
+
+[node name="board2" parent="." unique_id=526946419 instance=ExtResource("8_awwea")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -9.120954, 9.143551, -13.689095)

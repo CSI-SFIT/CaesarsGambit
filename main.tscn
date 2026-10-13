@@ -1,6 +1,5 @@
-[gd_scene format=3 uid="uid://tiwr8xiyw4bb"]
+[gd_scene format=3 uid="uid://cje11q3rjlatw"]
 
-[ext_resource type="Script" uid="uid://bfr2n5nmf8g2m" path="res://input_manager.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://xknwtbrpl1ef" path="res://Scenes/church.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="3_1bvp3"]
 
@@ -9,12 +8,12 @@
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1107549383]
 
 [node name="InputManager" type="Node3D" parent="." unique_id=505010133]
-script = ExtResource("1_ig7tw")
 
 [node name="Church" parent="." unique_id=1049898661 instance=ExtResource("2_h2yge")]
 
 [node name="Player" parent="." unique_id=973415603 instance=ExtResource("3_1bvp3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.97571, -61.287098, -4.5957284)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.00511, -61.24494, -4.5461597)
+jump_velocity = 4.5
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1193764458]
 transform = Transform3D(0.7982278, 0, 0.60235566, 0, 1, 0, -0.60235566, 0, 0.7982278, -69.82778, -61.289623, 0)
