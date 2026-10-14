@@ -337,9 +337,12 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -14,
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 [node name="paper_clue" parent="TopFloor" unique_id=104830580 instance=ExtResource("11_h5e4j")]
 transform = Transform3D(0.9591004, 0, -0.28306603, 0, 1, 0, 0.28306603, 0, 0.9591004, -28.197414, 1.0119529, -0.37831655)
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -448,6 +451,9 @@ script = ExtResource("2_1bvp3")
 transform = Transform3D(1.1509205, 0, -0.33967924, 0, 1.2, 0, 0.33967924, 0, 1.1509205, -26.906311, 1.6406565, 1.1545142)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
