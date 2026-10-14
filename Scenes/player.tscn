@@ -36,8 +36,7 @@ input_left = "move_right"
 input_right = "move_left"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1271453329]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.8668542, 4.626953, -3.3243027)
-visible = false
+transform = Transform3D(-1, -7.642742e-15, 8.742278e-08, 0, -1, -8.742278e-08, 8.742278e-08, -8.742278e-08, 1, 0.8668542, 4.626953, 2.7148018)
 
 [node name="Model" parent="." unique_id=1352637084 node_paths=PackedStringArray("playerAnimationPlayer") groups=["PlayerGroup"] instance=ExtResource("2_x3wgy")]
 transform = Transform3D(-1.5, 0, -2.2649371e-07, 0, 1.5, 0, 2.2649371e-07, 0, -1.5, 0, 0, 0)

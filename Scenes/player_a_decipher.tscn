@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://qg2g5liw8yc5" path="res://Scenes/Decipher Game/old_chest.tscn" id="13_2guir"]
 [ext_resource type="PackedScene" uid="uid://bqpxjgpguiyou" path="res://Scenes/Decipher Game/roman_stairs.tscn" id="13_epqfo"]
 [ext_resource type="Script" uid="uid://dw1cv0b10q8k8" path="res://Scripts/Player A/Killzone.gd" id="15_epqfo"]
+[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="20_b6gue"]
 [ext_resource type="PackedScene" uid="uid://d0obbjwaufdcx" path="res://Scenes/Logic Game/barrel.tscn" id="20_sue60"]
 [ext_resource type="PackedScene" uid="uid://ddrrxtpryrwqk" path="res://Scenes/Logic Game/water_barrel.tscn" id="21_sue60"]
 [ext_resource type="PackedScene" uid="uid://b17ewwjhg0t10" path="res://Scenes/Logic Game/shield.tscn" id="22_ulb5w"]
@@ -37,9 +38,6 @@ fog_density = 0.05
 [sub_resource type="BoxShape3D" id="BoxShape3D_y8wm3"]
 size = Vector3(1, 1, 2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xwue4"]
-size = Vector3(3, 3, 3)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kcnam"]
 transparency = 1
 albedo_color = Color(0.36078432, 1, 1, 0.32941177)
@@ -47,6 +45,9 @@ albedo_color = Color(0.36078432, 1, 1, 0.32941177)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8wm3"]
 transparency = 1
 albedo_color = Color(0.34901962, 1, 1, 0.23137255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xwue4"]
+size = Vector3(3, 3, 3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdfb5"]
 albedo_texture = ExtResource("2_f8vpv")
@@ -170,45 +171,22 @@ offset_bottom = 69.0
 text = "Unlock"
 
 [node name="InteractPrompt" type="Label" parent="TopFloor/UI" unique_id=854726103]
-offset_left = 500.0
-offset_top = 400.0
-offset_right = 648.0
-offset_bottom = 423.0
-text = "Press 'E' to interact"
-
-[node name="Pedestal" type="CSGCylinder3D" parent="TopFloor" unique_id=411120541 node_paths=PackedStringArray("clue_ui", "interact_prompt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.1, 0.5, -0.3)
-use_collision = true
-height = 1.0
-script = ExtResource("4_bcdqc")
-clue_ui = NodePath("PaperUI/ClueImage")
-interact_prompt = NodePath("PaperUI/InteractPrompt")
-
-[node name="PaperInteractZone" type="Area3D" parent="TopFloor/Pedestal" unique_id=1605010687]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TopFloor/Pedestal/PaperInteractZone" unique_id=616248141]
-shape = SubResource("BoxShape3D_xwue4")
-
-[node name="PaperUI" type="CanvasLayer" parent="TopFloor/Pedestal" unique_id=1864956474]
-
-[node name="ClueImage" type="TextureRect" parent="TopFloor/Pedestal/PaperUI" unique_id=946285513]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -400.0
-offset_right = 400.0
-offset_bottom = 400.0
+offset_left = -166.0
+offset_top = 76.0
+offset_right = 166.0
+offset_bottom = 126.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("5_4p6xf")
-
-[node name="InteractPrompt" type="Label" parent="TopFloor/Pedestal/PaperUI" unique_id=117743639]
-offset_right = 500.0
-offset_bottom = 400.0
-text = "Press 'E' to read."
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 36
+text = "Press 'E' to interact"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Walls" type="CSGCombiner3D" parent="TopFloor" unique_id=259802256]
 visible = false
@@ -341,7 +319,7 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -12.
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -14, 6, 5.7999997)
 
 [node name="paper_clue" parent="TopFloor" unique_id=104830580 instance=ExtResource("11_h5e4j")]
-transform = Transform3D(0.9591004, 0, -0.28306603, 0, 1, 0, 0.28306603, 0, 0.9591004, -28.197414, 1.0119529, -0.37831655)
+transform = Transform3D(1.1509205, 0, -0.33967924, 0, 1.2, 0, 0.33967924, 0, 1.1509205, -26.906311, 1.6406565, 1.1545142)
 
 [node name="Torches" type="Node3D" parent="TopFloor" unique_id=292857630]
 
@@ -352,15 +330,17 @@ transform = Transform3D(0.111825995, 0, 0.9937278, 0, 1, 0, -0.9937278, 0, 0.111
 transform = Transform3D(-0.988268, 0, -0.15272927, 0, 1, 0, 0.15272927, 0, -0.988268, -18.881393, 2.6314926, 2.7025888)
 
 [node name="Torch3" parent="TopFloor/Torches" unique_id=868737371 instance=ExtResource("12_y3nkj")]
-transform = Transform3D(-0.14134517, 0, -0.98996013, 0, 1, 0, 0.98996013, 0, -0.14134517, 2.582694, 1.5814252, -11.654507)
+transform = Transform3D(-0.14134517, 0, -0.98996013, 0, 1, 0, 0.98996013, 0, -0.14134517, 2.582694, 1.5502813, -11.654507)
 
 [node name="Torch4" parent="TopFloor/Torches" unique_id=855152397 instance=ExtResource("12_y3nkj")]
 transform = Transform3D(-0.26921794, 0, -0.9630793, 0, 1, 0, 0.9630793, 0, -0.26921794, 8.35972, 2.9547806, 7.8896437)
 
-[node name="Old Chest" parent="TopFloor" unique_id=1225424341 instance=ExtResource("13_2guir")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 7.82942, -4.7683716e-07, -6.42493)
+[node name="props" type="Node3D" parent="TopFloor" unique_id=849488357]
 
-[node name="Old Chest2" parent="TopFloor" unique_id=289764641 instance=ExtResource("13_2guir")]
+[node name="Old Chest" parent="TopFloor/props" unique_id=1225424341 instance=ExtResource("13_2guir")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 7.6884203, -4.7683716e-07, 4.486919)
+
+[node name="Old Chest2" parent="TopFloor/props" unique_id=289764641 instance=ExtResource("13_2guir")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.080608, -4.7683716e-07, -2.7059045)
 
 [node name="round_table" parent="TopFloor/props" unique_id=1705173577 node_paths=PackedStringArray("clue_ui", "interact_prompt") instance=ExtResource("24_p8mot")]
@@ -409,6 +389,9 @@ theme_override_font_sizes/font_size = 36
 text = "Press 'E' to read."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Player" parent="TopFloor/props" unique_id=2028054972 instance=ExtResource("20_b6gue")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -1.6829727, 0.2026217, 3.7528417)
 
 [node name="barrel4" parent="TopFloor/props" unique_id=1940533345 instance=ExtResource("20_sue60")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -8.00032, 1.3166232, -4.562265)
@@ -560,12 +543,23 @@ offset_bottom = 69.0
 text = "Unlock"
 
 [node name="InteractPrompt" type="Label" parent="BottomFloor/UI" unique_id=63151958]
-offset_left = 500.0
-offset_top = 400.0
-offset_right = 648.0
-offset_bottom = 449.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = 76.0
+offset_right = 74.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 36
 text = "Press 'E' to interact
 "
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Walls" type="CSGCombiner3D" parent="BottomFloor" unique_id=587245973]
 visible = false
@@ -628,40 +622,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.75, 0, 0)
 use_collision = true
 size = Vector3(20, 0.1, 10)
 material = ExtResource("1_bcdqc")
-
-[node name="Pedestal2" type="CSGCylinder3D" parent="BottomFloor" unique_id=402566356 node_paths=PackedStringArray("clue_ui", "interact_prompt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.5, 0)
-use_collision = true
-height = 1.0
-script = ExtResource("4_bcdqc")
-clue_ui = NodePath("PaperUI/ClueImage")
-interact_prompt = NodePath("PaperUI/InteractPrompt")
-
-[node name="PaperInteractZone" type="Area3D" parent="BottomFloor/Pedestal2" unique_id=1160608487]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BottomFloor/Pedestal2/PaperInteractZone" unique_id=1513703597]
-shape = SubResource("BoxShape3D_xwue4")
-
-[node name="PaperUI" type="CanvasLayer" parent="BottomFloor/Pedestal2" unique_id=1317942990]
-
-[node name="ClueImage" type="TextureRect" parent="BottomFloor/Pedestal2/PaperUI" unique_id=116551234]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -400.0
-offset_right = 400.0
-offset_bottom = 400.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("5_4p6xf")
-
-[node name="InteractPrompt" type="Label" parent="BottomFloor/Pedestal2/PaperUI" unique_id=687677383]
-offset_right = 500.0
-offset_bottom = 400.0
-text = "Press 'E' to read."
 
 [node name="FillLight" type="OmniLight3D" parent="BottomFloor" unique_id=1819032668]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
@@ -730,7 +690,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.537424, 6.7941585, 5.47379
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32.853424, 5.9405336, -0.95754623)
 
 [node name="paper_clue" parent="BottomFloor" unique_id=261055931 instance=ExtResource("11_h5e4j")]
-transform = Transform3D(0.9595905, 0, 0.2814002, 0, 1, 0, -0.2814002, 0, 0.9595905, 27.88913, 1.0224495, -0.004917145)
+transform = Transform3D(1.4393858, 0, 0.4221003, 0, 1.5, 0, -0.4221003, 0, 1.4393858, 24.23968, 2.5523477, -1.6964073)
 
 [node name="Torches" type="Node3D" parent="BottomFloor" unique_id=89491627]
 
@@ -752,11 +712,97 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.839283, 3.1857347, -7.37662
 [node name="Torch7" parent="BottomFloor/Torches" unique_id=742166009 instance=ExtResource("12_y3nkj")]
 transform = Transform3D(-0.025420235, 0, -0.9996769, 0, 1, 0, 0.9996769, 0, -0.025420235, 9.310307, 2.7042184, 5.759693)
 
-[node name="Old Chest3" parent="BottomFloor" unique_id=749808963 instance=ExtResource("13_2guir")]
+[node name="Props" type="Node3D" parent="BottomFloor" unique_id=1078235470]
+
+[node name="Old Chest3" parent="BottomFloor/Props" unique_id=749808963 instance=ExtResource("13_2guir")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.22841, -0.0017824173, -7.458542)
 
-[node name="Old Chest4" parent="BottomFloor" unique_id=2016842963 instance=ExtResource("13_2guir")]
+[node name="Old Chest4" parent="BottomFloor/Props" unique_id=2016842963 instance=ExtResource("13_2guir")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 14.874554, 0.09739399, 2.710575)
+
+[node name="barrel" parent="BottomFloor/Props" unique_id=217958375 instance=ExtResource("20_sue60")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -8.044273, 1.5552902, -4.9899406)
+
+[node name="barrel2" parent="BottomFloor/Props" unique_id=331367750 instance=ExtResource("20_sue60")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 6.3531575, 1.5552902, 7.476635)
+
+[node name="barrel3" parent="BottomFloor/Props" unique_id=1399795733 instance=ExtResource("20_sue60")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 25.794813, 1.3299484, 3.971138)
+
+[node name="water_barrel2" parent="BottomFloor/Props" unique_id=1720328824 instance=ExtResource("21_sue60")]
+transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, -7.846372, 0.68243027, 0.6175041)
+
+[node name="cat_statue2" parent="BottomFloor/Props" unique_id=507528604 instance=ExtResource("23_8wa6b")]
+transform = Transform3D(-12, 0, -1.0490733e-06, 0, 12, 0, 1.0490733e-06, 0, -12, -2.9038496, 1.1673412, 6.648739)
+
+[node name="round_table" parent="BottomFloor/Props" unique_id=822302008 node_paths=PackedStringArray("clue_ui", "interact_prompt") instance=ExtResource("24_p8mot")]
+transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 25.276855, 0.34432316, -1.7623634)
+script = ExtResource("4_bcdqc")
+clue_ui = NodePath("PaperUI/ClueImage")
+interact_prompt = NodePath("PaperUI/InteractPrompt")
+
+[node name="PaperInteractZone" type="Area3D" parent="BottomFloor/Props/round_table" unique_id=1160608487]
+transform = Transform3D(33.333336, 0, 0, 0, 33.333336, 0, 0, 0, 33.333336, 33.575195, 5.1892395, 51.242554)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BottomFloor/Props/round_table/PaperInteractZone" unique_id=1513703597]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8265858, 0.78335, -1.8006668)
+shape = SubResource("BoxShape3D_xwue4")
+
+[node name="PaperUI" type="CanvasLayer" parent="BottomFloor/Props/round_table" unique_id=1317942990]
+
+[node name="ClueImage" type="TextureRect" parent="BottomFloor/Props/round_table/PaperUI" unique_id=116551234]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -400.0
+offset_right = 400.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_4p6xf")
+
+[node name="InteractPrompt" type="Label" parent="BottomFloor/Props/round_table/PaperUI" unique_id=687677383]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = 76.0
+offset_right = 250.0
+offset_bottom = 476.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 36
+text = "Press 'E' to read."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="shield3" parent="BottomFloor/Props" unique_id=1271814311 instance=ExtResource("22_ulb5w")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -7.919998, 4.3766165, 8.852478)
+
+[node name="TorchLight8" type="OmniLight3D" parent="BottomFloor/Props/shield3" unique_id=1566675391]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3512926, 0.035072803, -0.032482147)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="shield4" parent="BottomFloor/Props" unique_id=616062557 instance=ExtResource("22_ulb5w")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 21.648903, 4.3766165, -3.5173073)
+
+[node name="TorchLight8" type="OmniLight3D" parent="BottomFloor/Props/shield4" unique_id=480905090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3512926, 0.035072803, -0.032482147)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
 
 [node name="MeetingPoint" type="CSGBox3D" parent="." unique_id=1125147446]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -85)
@@ -816,10 +862,10 @@ transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.6
 
 [connection signal="body_entered" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_exited"]
-[connection signal="body_entered" from="TopFloor/Pedestal/PaperInteractZone" to="TopFloor/Pedestal" method="_on_paper_interact_zone_body_entered"]
-[connection signal="body_exited" from="TopFloor/Pedestal/PaperInteractZone" to="TopFloor/Pedestal" method="_on_paper_interact_zone_body_exited"]
+[connection signal="body_entered" from="TopFloor/props/round_table/PaperInteractZone" to="TopFloor/props/round_table" method="_on_paper_interact_zone_body_entered"]
+[connection signal="body_exited" from="TopFloor/props/round_table/PaperInteractZone" to="TopFloor/props/round_table" method="_on_paper_interact_zone_body_exited"]
 [connection signal="body_entered" from="BottomFloor/Door/InteractZone" to="BottomFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="BottomFloor/Door/InteractZone" to="BottomFloor/Door" method="_on_interact_zone_body_exited"]
-[connection signal="body_entered" from="BottomFloor/Pedestal2/PaperInteractZone" to="BottomFloor/Pedestal2" method="_on_paper_interact_zone_body_entered"]
-[connection signal="body_exited" from="BottomFloor/Pedestal2/PaperInteractZone" to="BottomFloor/Pedestal2" method="_on_paper_interact_zone_body_exited"]
+[connection signal="body_entered" from="BottomFloor/Props/round_table/PaperInteractZone" to="BottomFloor/Props/round_table" method="_on_paper_interact_zone_body_entered"]
+[connection signal="body_exited" from="BottomFloor/Props/round_table/PaperInteractZone" to="BottomFloor/Props/round_table" method="_on_paper_interact_zone_body_exited"]
 [connection signal="body_entered" from="Killzone" to="Killzone" method="_on_body_entered"]
