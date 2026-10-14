@@ -69,29 +69,43 @@ var move_speed : float = 0.0
 var freeflying : bool = false
 var head_local_offset : Vector3  # head's original position relative to the body (e.g. eye/chest height)
 var current_speed
+
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $head
 @onready var collider: CollisionShape3D = $Collider
 @onready var camera: Camera3D = $head/Camera3D
-func _ready() -> void:
-	
-	var mine = is_multiplayer_authority()
-	camera.current = mine  # adjust node name
-	
-	# Convert node name to peer ID safely
+
+func is_local_authoritative() -> bool:
+	if not multiplayer.has_multiplayer_peer():
+		return true
+	return is_multiplayer_authority()
+
+func _enter_tree() -> void:
 	var peer_id := str(name).to_int()
 	if peer_id > 0:
 		set_multiplayer_authority(peer_id)
-	
-	# Only enable camera and auto-capture mouse for the local player
-	if is_multiplayer_authority():
-		if camera:
-			camera.current = true
+		if Engine.has_singleton("GameManager") or get_node_or_null("/root/GameManager"):
+			get_node("/root/GameManager").registerPlayer(peer_id, self)
+
+func _exit_tree() -> void:
+	var peer_id := str(name).to_int()
+	if peer_id > 0:
+		if Engine.has_singleton("GameManager") or get_node_or_null("/root/GameManager"):
+			get_node("/root/GameManager").unregisterPlayer(peer_id)
+
+func _ready() -> void:
+	var peer_id := str(name).to_int()
+	if peer_id > 0:
+		set_multiplayer_authority(peer_id)
+
+	var local := is_local_authoritative()
+
+	if camera:
+		camera.current = local
+
+	if local:
 		capture_mouse()
-	else:
-		if camera:
-			camera.current = false
-	
+
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
@@ -101,50 +115,38 @@ func _ready() -> void:
 	base_speed = on_ground_speed
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not is_multiplayer_authority():
+	if not is_local_authoritative():
 		return
-		
-		
+
 	# Mouse capturing
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		capture_mouse()
 	if Input.is_key_pressed(KEY_ESCAPE):
 		release_mouse()
-	
+
 	# Look around (mouse orbits the camera, independent of body facing)
 	if mouse_captured and event is InputEventMouseMotion:
 		rotate_look(event.relative)
-	
+
 	# Toggle freefly mode
 	if can_freefly and Input.is_action_just_pressed(input_freefly):
 		if not freeflying:
 			enable_freefly()
 		else:
 			disable_freefly()
-			
-func _enter_tree():
-	set_multiplayer_authority(name.to_int())
-	GameManager.registerPlayer(name.to_int(), self)
-	
-func _exit_tree():
-	GameManager.unregisterPlayer(name.to_int())
-
 
 @rpc("any_peer", "call_remote", "reliable")
 func set_spawn_position(pos: Vector3) -> void:
-	if multiplayer.get_remote_sender_id() != 1:  # only accept from the server
+	if multiplayer.has_multiplayer_peer() and multiplayer.get_remote_sender_id() != 1:
 		return
 	global_position = pos
 	velocity = Vector3.ZERO
 
 func _physics_process(delta: float) -> void:
-	if not is_multiplayer_authority():
+	if not is_local_authoritative():
 		return
-	
-		
-	
-	# Keep the (top_level) camera pivot following the body's position each frame,
-	# since top_level means it no longer inherits position automatically.
+
+	# Keep the (top_level) camera pivot following the body's position each frame
 	head.global_transform.origin = global_transform.origin + head_local_offset
 
 	# If freeflying, handle freefly and nothing else
@@ -154,7 +156,7 @@ func _physics_process(delta: float) -> void:
 		motion *= freefly_speed * delta
 		move_and_collide(motion)
 		return
-	
+
 	# Apply gravity to velocity
 	if has_gravity:
 		if not is_on_floor():
@@ -164,7 +166,7 @@ func _physics_process(delta: float) -> void:
 	if can_jump:
 		if Input.is_action_just_pressed(input_jump) and is_on_floor():
 			velocity.y = jump_velocity
-			
+
 	# Modifying Base Speed
 	if !is_on_floor():
 		base_speed = in_air_speed
@@ -186,7 +188,6 @@ func _physics_process(delta: float) -> void:
 			direction = direction.normalized()
 			velocity.x = direction.x * move_speed
 			velocity.z = direction.z * move_speed
-			# Smoothly turn the body to face the direction we're moving
 			var face_dir := direction if model_faces_backwards else direction
 			var target_basis := Basis.looking_at(face_dir, Vector3.UP)
 			transform.basis = Basis(transform.basis.get_rotation_quaternion().slerp(
@@ -197,25 +198,18 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, current_speed)
 		velocity.z = move_toward(velocity.z, 0, current_speed)
-		
-		# ANIMATION: Idle
-		#if is_on_floor():
-			#play_anim(idle_anim_name)
-	
+
 	move_and_slide()
 
-
 ## Orbit the camera pivot (head) around the player, in world space.
-## This is fully independent of the body's own rotation.
 func rotate_look(rot_input : Vector2):
-	if not is_multiplayer_authority():
+	if not is_local_authoritative():
 		return
-		
+
 	look_rotation.x -= rot_input.y * look_speed
 	look_rotation.x = clamp(look_rotation.x, deg_to_rad(min_pitch_deg), deg_to_rad(max_pitch_deg))
 	look_rotation.y -= rot_input.x * look_speed
 	head.global_rotation = Vector3(look_rotation.x, look_rotation.y, 0)
-
 
 func enable_freefly():
 	collider.disabled = true
@@ -226,29 +220,25 @@ func disable_freefly():
 	collider.disabled = false
 	freeflying = false
 
-
 func capture_mouse():
-	if not is_multiplayer_authority():
+	if not is_local_authoritative():
 		return
-		
+
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	mouse_captured = true
 
-
 func release_mouse():
-	if not is_multiplayer_authority():
+	if not is_local_authoritative():
 		return
-	
+
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	mouse_captured = false
 
-
 ## Checks if some Input Actions haven't been created.
-## Disables functionality accordingly.
 func check_input_mappings():
-	if not is_multiplayer_authority():
+	if not is_local_authoritative():
 		return
-	
+
 	if can_move and not InputMap.has_action(input_left):
 		push_error("Movement disabled. No InputAction found for input_left: " + input_left)
 		can_move = false
