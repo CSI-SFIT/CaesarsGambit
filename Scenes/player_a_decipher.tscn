@@ -59,7 +59,7 @@ size = Vector3(100, 2, 100)
 font_size = 72
 font_color = Color(0.88601404, 0.15845767, 4.813075e-07, 1)
 
-[node name="Main" type="Node3D" unique_id=1190309061]
+[node name="Decipher" type="Node3D" unique_id=1190309061]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=382672486]
 environment = SubResource("Environment_4p6xf")

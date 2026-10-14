@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b1xhxqtq6nss7"]
+
+[ext_resource type="PackedScene" uid="uid://bons4mscsshi8" path="res://Scenes/logic_game.tscn" id="1_myvm1"]
+[ext_resource type="PackedScene" uid="uid://xknwtbrpl1ef" path="res://Scenes/church.tscn" id="2_q0mm3"]
+[ext_resource type="PackedScene" uid="uid://b0imsajbud2bb" path="res://Scenes/player_a_decipher.tscn" id="3_np2xp"]
+[ext_resource type="PackedScene" uid="uid://dgxwjfvameiu7" path="res://maze.tscn" id="4_w7jjh"]
+
+[node name="Map" type="Node3D" unique_id=1100865031]
+
+[node name="Logic Game" parent="." unique_id=448762608 instance=ExtResource("1_myvm1")]
+
+[node name="Church" parent="." unique_id=1049898661 instance=ExtResource("2_q0mm3")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -84.4917, 67.899994, -51.465714)
+
+[node name="Decipher" parent="." unique_id=1190309061 instance=ExtResource("3_np2xp")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 125, 30, -26)
+
+[node name="Maze" parent="." unique_id=44194881 instance=ExtResource("4_w7jjh")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 252, 29, -8)

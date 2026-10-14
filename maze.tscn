@@ -513,7 +513,7 @@ transform = Transform3D(0.8660254, 0.3535534, -0.3535534, 0, 0.7071068, 0.707106
 environment = SubResource("Environment_6jia0")
 
 [node name="Player" parent="." unique_id=2028054972 instance=ExtResource("7_mjrf4")]
-transform = Transform3D(-1.09278474e-07, 0, -2.5, 0, 2.5, 0, 2.5, 0, -1.09278474e-07, -53.93774, 1.6550732, -19.222027)
+transform = Transform3D(-1.09278474e-07, 0, -2.5, 0, 2.5, 0, 2.5, 0, -1.09278474e-07, 11.453281, 1.6550732, -19.222027)
 
 [node name="Props" type="Node3D" parent="." unique_id=449312305]
 
