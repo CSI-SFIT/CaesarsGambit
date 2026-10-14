@@ -43,6 +43,7 @@ environment = SubResource("Environment_g70r1")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=549879758]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 
+<<<<<<< Updated upstream
 [node name="Floor" type="CSGBox3D" parent="." unique_id=1127103274]
 use_collision = true
 size = Vector3(50, 1, 50)
@@ -136,6 +137,12 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 25.2
 
 [node name="thick_corner4" parent="." unique_id=198568088 instance=ExtResource("10_vf22q")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 7.4, 22)
+=======
+[node name="Player" parent="." unique_id=2028054972 groups=["boulder", "player"] instance=ExtResource("1_igttw")]
+transform = Transform3D(-6.556708e-08, 0, -1.5, 0, 1.5, 0, 1.5, 0, -6.556708e-08, -21.977566, 1.0778174, -2.9108238)
+input_left = "move_left"
+input_right = "move_right"
+>>>>>>> Stashed changes
 
 [node name="straight_wall" parent="." unique_id=1005344398 instance=ExtResource("11_o3y2b")]
 transform = Transform3D(3.3527613e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, 3.3527613e-08, -12, 3.5, -16.5)

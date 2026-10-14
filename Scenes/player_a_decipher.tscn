@@ -335,9 +335,12 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -12.
 [node name="straight_wall4" parent="TopFloor/Architecture/Side Room" unique_id=1389488963 instance=ExtResource("6_cqrcb")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -14, 6, 5.7999997)
 
+<<<<<<< Updated upstream
 [node name="paper_clue" parent="TopFloor" unique_id=104830580 instance=ExtResource("11_h5e4j")]
 transform = Transform3D(0.9591004, 0, -0.28306603, 0, 1, 0, 0.28306603, 0, 0.9591004, -28.197414, 1.0119529, -0.37831655)
 
+=======
+>>>>>>> Stashed changes
 [node name="Torches" type="Node3D" parent="TopFloor" unique_id=292857630]
 
 [node name="Torch" parent="TopFloor/Torches" unique_id=1332966786 instance=ExtResource("12_y3nkj")]
@@ -358,6 +361,90 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 7.82
 [node name="Old Chest2" parent="TopFloor" unique_id=289764641 instance=ExtResource("13_2guir")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.080608, -4.7683716e-07, -2.7059045)
 
+<<<<<<< Updated upstream
+=======
+[node name="round_table" parent="TopFloor/props" unique_id=1705173577 node_paths=PackedStringArray("clue_ui", "interact_prompt") instance=ExtResource("24_p8mot")]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, -27.235645, 0.16764641, 1.3553648)
+script = ExtResource("4_bcdqc")
+clue_ui = NodePath("PaperUI/ClueImage")
+interact_prompt = NodePath("PaperUI/InteractPrompt")
+
+[node name="PaperInteractZone" type="Area3D" parent="TopFloor/props/round_table" unique_id=1605010687]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 24.862305, 2.2728558, -56.434334)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TopFloor/props/round_table/PaperInteractZone" unique_id=616248141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.39404106, 0, 1.3474579)
+shape = SubResource("BoxShape3D_xwue4")
+
+[node name="PaperUI" type="CanvasLayer" parent="TopFloor/props/round_table" unique_id=1864956474]
+
+[node name="ClueImage" type="TextureRect" parent="TopFloor/props/round_table/PaperUI" unique_id=946285513]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -400.0
+offset_right = 400.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_4p6xf")
+
+[node name="InteractPrompt" type="Label" parent="TopFloor/props/round_table/PaperUI" unique_id=117743639]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = 76.0
+offset_right = 250.0
+offset_bottom = 476.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 36
+text = "Press 'E' to read."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="barrel4" parent="TopFloor/props" unique_id=1940533345 instance=ExtResource("20_sue60")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -8.00032, 1.3166232, -4.562265)
+
+[node name="water_barrel" parent="TopFloor/props" unique_id=338303984 instance=ExtResource("21_sue60")]
+transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, -8.766216, 0.7198447, 4.552197)
+
+[node name="shield" parent="TopFloor/props" unique_id=641966609 instance=ExtResource("22_ulb5w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.207515, 4.5385714, -5.1975813)
+
+[node name="TorchLight6" type="OmniLight3D" parent="TopFloor/props/shield" unique_id=149900511]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.34057713, 0.009138107, -0.003475666)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="cat_statue" parent="TopFloor/props" unique_id=1676402023 instance=ExtResource("23_8wa6b")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 4.451889, 1.4734671, -6.5485644)
+
+[node name="shield2" parent="TopFloor/props" unique_id=559519665 instance=ExtResource("22_ulb5w")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -16.372295, 4.5385714, -3.217784)
+
+[node name="TorchLight6" type="OmniLight3D" parent="TopFloor/props/shield2" unique_id=1741083038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.34057713, 0.009138107, -0.003475666)
+light_color = Color(1, 0.7058824, 0.34901962, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 15.0
+script = ExtResource("2_1bvp3")
+
+[node name="paper_clue" parent="TopFloor/props" unique_id=104830580 instance=ExtResource("11_h5e4j")]
+transform = Transform3D(1.1509205, 0, -0.33967924, 0, 1.2, 0, 0.33967924, 0, 1.1509205, -26.906311, 1.6406565, 1.1545142)
+
+>>>>>>> Stashed changes
 [node name="BottomFloor" type="Node3D" parent="." unique_id=1683980250]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -56)
 
@@ -730,6 +817,11 @@ transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.6
 
 [node name="straight_tile4" parent="Stairs" unique_id=234346993 instance=ExtResource("10_bcdqc")]
 transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -10.416549, -42.276936)
+
+[node name="Player" parent="." unique_id=2028054972 groups=["player"] instance=ExtResource("20_b6gue")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -1.6829727, 0.2026217, 3.7528417)
+input_left = "move_left"
+input_right = "move_right"
 
 [connection signal="body_entered" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_exited"]

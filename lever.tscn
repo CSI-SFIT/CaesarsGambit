@@ -8,6 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://40jawpfdjme5" path="res://3D_MODELS/Lever/staircase/stairs.tscn" id="6_gk4f0"]
 [ext_resource type="PackedScene" uid="uid://o1qcowyriruj" path="res://3D_MODELS/Lever/arch/arch.tscn" id="7_h01c4"]
 [ext_resource type="PackedScene" uid="uid://bpw6o5ckr8ie4" path="res://3D_MODELS/Lever/board/notice_board_low-poly.glb" id="8_awwea"]
+[ext_resource type="PackedScene" uid="uid://bp4moc8rj4gsd" path="res://Scenes/Lever/roman_clock.tscn" id="9_uy6es"]
+[ext_resource type="PackedScene" uid="uid://b17ewwjhg0t10" path="res://Scenes/Logic Game/shield.tscn" id="10_oyl42"]
+[ext_resource type="PackedScene" uid="uid://d0obbjwaufdcx" path="res://Scenes/Logic Game/barrel.tscn" id="11_raab4"]
+[ext_resource type="PackedScene" uid="uid://ddrrxtpryrwqk" path="res://Scenes/Logic Game/water_barrel.tscn" id="12_b8low"]
+[ext_resource type="PackedScene" uid="uid://bbl0heyjabi2q" path="res://Scenes/Decipher Game/torch.tscn" id="13_gem5v"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1btnt"]
 albedo_texture = ExtResource("1_1kj1s")
@@ -69,9 +74,6 @@ size = Vector3(0.3239746, 3.3266602, 2.8677368)
 [node name="MovingPlatform" parent="." unique_id=1263295907 instance=ExtResource("1_0ohsc")]
 transform = Transform3D(-2.6226832e-07, 0, 6, 0, 6, 0, -6, 0, -2.6226832e-07, -0.7167053, 6.8083334, 8.754631)
 
-[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("2_1btnt")]
-transform = Transform3D(-1.5, 0, -1.3113416e-07, 0, 1.5, 0, 1.3113416e-07, 0, -1.5, -0.50121737, 8.178742, 16.085615)
-
 [node name="InteractiveLever" parent="." unique_id=1202288673 node_paths=PackedStringArray("platform") instance=ExtResource("5_h01c4")]
 transform = Transform3D(9.814727e-08, 0, -1.3, 0, 1.3, 0, 1.3, 0, 9.814727e-08, 7.8790464, 5.901982, 15.934298)
 platform = NodePath("../MovingPlatform")
@@ -95,3 +97,50 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.624446, 9.143551, 15.884711
 
 [node name="board2" parent="." unique_id=526946419 instance=ExtResource("8_awwea")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -9.120954, 9.143551, -13.689095)
+
+[node name="LeverUI" type="CanvasLayer" parent="." unique_id=929770231]
+
+[node name="InteractPrompt" type="Label" parent="LeverUI" unique_id=506501756]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -161.0
+offset_top = -22.5
+offset_right = 161.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 32
+text = "Press [E] to pull lever"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("2_1btnt")]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 1.118772, 5.844612, 15.518753)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1343552710]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 35.46227, 0)
+light_energy = 5.474
+omni_range = 64.831
+
+[node name="roman_clock" parent="." unique_id=1469983867 instance=ExtResource("9_uy6es")]
+transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, -0.024678946, 24.389036, -15.718745)
+
+[node name="shield" parent="." unique_id=641966609 instance=ExtResource("10_oyl42")]
+transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -0.21999645, 22.749378, 19.860312)
+
+[node name="barrel" parent="." unique_id=217958375 instance=ExtResource("11_raab4")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -8.628705, 9.274662, 18.702684)
+
+[node name="water_barrel" parent="." unique_id=338303984 instance=ExtResource("12_b8low")]
+transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 8.127137, 8.261705, -14.543779)
+
+[node name="Torch" parent="." unique_id=1332966786 instance=ExtResource("13_gem5v")]
+transform = Transform3D(-1.9941065, 0, -0.15342532, 0, 2, 0, 0.15342532, 0, -1.9941065, -6.6417413, 15.589253, 19.841814)
+
+[node name="Torch2" parent="." unique_id=1601535440 instance=ExtResource("13_gem5v")]
+transform = Transform3D(-1.9941065, 0, -0.15342532, 0, 2, 0, 0.15342532, 0, -1.9941065, 6.66993, 15.589253, 19.841814)
