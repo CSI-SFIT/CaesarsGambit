@@ -5,6 +5,8 @@
 
 [node name="Main" type="Node3D" unique_id=748300147]
 
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1107549383]
+
 [node name="InputManager" type="Node3D" parent="." unique_id=505010133]
 
 [node name="Church" parent="." unique_id=1049898661 instance=ExtResource("2_h2yge")]
