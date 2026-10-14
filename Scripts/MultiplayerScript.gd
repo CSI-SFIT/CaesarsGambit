@@ -26,7 +26,8 @@ func start_host():
 	peer_added(multiplayer.get_unique_id())  # host's own player
 
 func start_client():
-	var error = peer.create_client("localhost", PORT)
+	var ip = EventBus.getHostIp()
+	var error = peer.create_client(ip, PORT)
 	if error != OK:
 		print("Failed to connect: ", error)
 		return

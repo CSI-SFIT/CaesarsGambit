@@ -16,6 +16,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasGroup/Control" unique_id=1281948625]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -45,5 +46,34 @@ theme_override_font_sizes/font_size = 33
 text = "join
 "
 
+[node name="VBoxContainer_inputIP" type="VBoxContainer" parent="CanvasGroup/Control" unique_id=2030480894]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 441.0
+offset_top = 279.0
+offset_right = 755.0
+offset_bottom = 418.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasGroup/Control/VBoxContainer_inputIP" unique_id=459540976]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Enter Host IP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="CanvasGroup/Control/VBoxContainer_inputIP" unique_id=969120195]
+layout_mode = 2
+
+[node name="joinIP" type="Button" parent="CanvasGroup/Control/VBoxContainer_inputIP" unique_id=161917734]
+layout_mode = 2
+text = "Join Server"
+
 [connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/hostButton" to="CanvasGroup" method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/joinButton" to="CanvasGroup" method="_on_join_button_pressed"]
+[connection signal="pressed" from="CanvasGroup/Control/VBoxContainer_inputIP/joinIP" to="CanvasGroup" method="_on_join_ip_pressed"]
