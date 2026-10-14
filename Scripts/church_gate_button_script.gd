@@ -39,8 +39,6 @@ func openDoors(delta):
 	if(door_left.global_position.z <= door_left_finalpos.z):
 		door_left.global_position += Vector3(0,0,2*delta)
 		door_right.global_position -= Vector3(0,0,2*delta)
-	else:
-		print("DOORS OPENED!")
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
