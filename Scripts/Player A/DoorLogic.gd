@@ -53,6 +53,9 @@ func _ready():
 	symbol_wall.text = displayed_symbols
 
 func _on_interact_zone_body_entered(body):
+	if not body.is_multiplayer_authority():
+		return
+		
 	if (body.is_in_group("player") or body.is_in_group("PlayerGroup")) and not is_open:
 		player_near = true
 		var prompt = ui_layer.get_node_or_null("InteractPrompt")
@@ -61,6 +64,9 @@ func _on_interact_zone_body_entered(body):
 			prompt.show()
 
 func _on_interact_zone_body_exited(body):
+	if not body.is_multiplayer_authority():
+		return
+		
 	if body.is_in_group("player") or body.is_in_group("PlayerGroup"):
 		player_near = false
 		var prompt = ui_layer.get_node_or_null("InteractPrompt")
@@ -69,6 +75,8 @@ func _on_interact_zone_body_exited(body):
 		close_ui()
 
 func _unhandled_input(event):
+	if not is_multiplayer_authority():
+		return
 	if event.is_action_pressed("interact"):
 		if player_near and not is_open:
 			if ui_layer.get_node("Panel").visible:
