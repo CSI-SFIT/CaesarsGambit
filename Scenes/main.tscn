@@ -1,17 +1,14 @@
 [gd_scene format=3 uid="uid://j5fourv7i0u2"]
 
-[ext_resource type="Script" path="res://Scripts/MultiplayerScript.gd" id="1_jjvhh"]
-[ext_resource type="Script" path="res://Scripts/managerScripts/game_manager.gd" id="2_kry3j"]
-[ext_resource type="Script" path="res://Scripts/managerScripts/input_manager.gd" id="3_21xkr"]
+[ext_resource type="Script" uid="uid://nbjdr5dycy2g" path="res://Scripts/MultiplayerScript.gd" id="1_jjvhh"]
+[ext_resource type="Script" uid="uid://bfr2n5nmf8g2m" path="res://Scripts/managerScripts/input_manager.gd" id="3_21xkr"]
 [ext_resource type="PackedScene" uid="uid://xknwtbrpl1ef" path="res://Scenes/church.tscn" id="4_6bp64"]
+[ext_resource type="PackedScene" uid="uid://dgxwjfvameiu7" path="res://maze.tscn" id="5_kry3j"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 
 [node name="Main2" type="Node3D" unique_id=748300147]
 script = ExtResource("1_jjvhh")
-
-[node name="GameManager" type="Node3D" parent="." unique_id=992790746]
-script = ExtResource("2_kry3j")
 
 [node name="InputManager" type="Node3D" parent="." unique_id=505010133]
 script = ExtResource("3_21xkr")
@@ -29,24 +26,33 @@ shape = SubResource("BoxShape3D_h2yge")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -92.72616, -32.7214, 1.5572133)
 visible = false
 
-[node name="PlayerSpawnPoint_2" type="Area3D" parent="." unique_id=1732819058 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.245167, -19.767067, -11.777344)
+[node name="PlayerSpawnPoint_Decipher" type="Area3D" parent="." unique_id=1732819058 groups=["spawn_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.644196, -26.131737, 9.238108)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_2" unique_id=146648300]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Decipher" unique_id=146648300]
 shape = SubResource("BoxShape3D_h2yge")
 
-[node name="PlayerSpawnPoint_3" type="Area3D" parent="." unique_id=1139129356 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.2808, -59.891586, 1.6151648)
+[node name="PlayerSpawnPoint_Logic" type="Area3D" parent="." unique_id=1139129356 groups=["spawn_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.230297, -26.131737, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_3" unique_id=1034669594]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Logic" unique_id=1034669594]
 shape = SubResource("BoxShape3D_h2yge")
 
-[node name="PlayerSpawnPoint_4" type="Area3D" parent="." unique_id=946165787 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.234787, -57.995934, 20.622955)
+[node name="PlayerSpawnPoint_Maze" type="Area3D" parent="." unique_id=946165787 groups=["spawn_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.644196, -17.790924, 4.711895)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_4" unique_id=1128773458]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Maze" unique_id=1128773458]
+shape = SubResource("BoxShape3D_h2yge")
+
+[node name="PlayerSpawnPoint_Final" type="Area3D" parent="." unique_id=1314996688 groups=["spawn_points"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8029175, -26.131737, 5.415208)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Final" unique_id=575246512]
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1745204795]
 _spawnable_scenes = PackedStringArray("uid://dy0i40wui8vg7")
 spawn_path = NodePath("..")
+
+[node name="Maze" parent="." unique_id=44194881 instance=ExtResource("5_kry3j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210.63011, 85.36721, -86.208954)

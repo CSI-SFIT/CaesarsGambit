@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://b460ws5bwmvug" path="res://3D_MODELS/Maze/wall_2.glb" id="2_h41xc"]
 [ext_resource type="Texture2D" uid="uid://b01ngenuvs5xo" path="res://3D_MODELS/Maze/textures/stonepath/grey_stone_path_nor_gl_1k.jpg" id="2_nw8dj"]
 [ext_resource type="Texture2D" uid="uid://cyycmyqgydt27" path="res://3D_MODELS/Maze/textures/stonepath/grey_stone_path_rough_1k.jpg" id="3_xhimc"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="4_1nuxl"]
 [ext_resource type="PackedScene" uid="uid://tv3xaa0c1p4i" path="res://3D_MODELS/Maze/wall_3.glb" id="4_ugm30"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1nuxl"]
@@ -500,9 +499,6 @@ transform = Transform3D(4, 0, 5.0858415e-07, 0, 4, 0, -5.0858415e-07, 0, 4, -24.
 
 [node name="wall_20" parent="MazelWalls" unique_id=1192806792 instance=ExtResource("4_ugm30")]
 transform = Transform3D(-6.834297e-07, 0, 4, 0, 4, 0, -4, 0, -6.834297e-07, -29.297874, 0.80349267, -37.806244)
-
-[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("4_1nuxl")]
-transform = Transform3D(-0.06875782, 0, -1.4984233, 0, 1.5, 0, 1.4984233, 0, -0.06875782, 12.268757, 6.4156723, -32.907368)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1312470643]
 transform = Transform3D(0.8660254, 0.3535534, -0.3535534, 0, 0.7071068, 0.7071068, 0.5, -0.61237246, 0.61237246, 0, 25.95208, 0)

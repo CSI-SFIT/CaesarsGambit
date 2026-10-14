@@ -71,7 +71,7 @@ func _process(delta: float) -> void:
 		is_playerDetected = false
 		
 		if is_instance_valid(Player):
-			var spawn_pos: Vector3 = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.Church)
+			var spawn_pos: Vector3 = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.PlayerSpawnPoint_Church)
 			
 			# Reset player position and cancel momentum
 			if Player.has_method("teleport_to"):

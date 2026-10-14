@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://boix7y41n2l5u" path="res://Scripts/falling_rock.gd" id="1_dxkgo"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2ruxo"]
+radius = 0.76823086
 
 [node name="FallingRock" type="Node3D" unique_id=460918013]
 script = ExtResource("1_dxkgo")
@@ -14,3 +15,10 @@ shape = SubResource("SphereShape3D_2ruxo")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="RigidBody3D/CollisionShape3D" unique_id=1345973103]
 rings = 10
+
+[node name="Area3D" type="Area3D" parent="." unique_id=797803692]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=509144067]
+shape = SubResource("SphereShape3D_2ruxo")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

@@ -14,5 +14,7 @@ func _on_body_entered(body: Node) -> void:
 			
 			# Apply the force directly to the center of the door
 			apply_central_impulse(smash_force)
-			
 		print("Door smashed by the boulder!")
+	
+	await get_tree().create_timer(3).timeout
+	queue_free()

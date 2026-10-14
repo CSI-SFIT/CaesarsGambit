@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://wbyfinr7es1h" path="res://3D_MODELS/Church/Church.glb" id="1_uxvc0"]
 [ext_resource type="PackedScene" uid="uid://by0tplgsa280w" path="res://Scenes/enemy.tscn" id="2_38qbd"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="3_p1f3h"]
+[ext_resource type="Texture2D" uid="uid://dm6ux7tyll5fq" path="res://3D_MODELS/Arch Kit/materials/modular_fort_01_trim_diff_4k.png" id="3_4bdyu"]
 [ext_resource type="PackedScene" uid="uid://cejd6bgfvveg5" path="res://Scenes/RockShower.tscn" id="4_4bdyu"]
 [ext_resource type="PackedScene" uid="uid://cfjkoxbndkfhh" path="res://Scenes/church_gate_button.tscn" id="4_4ofem"]
 
@@ -37,6 +37,12 @@ size = Vector3(2.28833, 1, 8.187271)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0eud2"]
 size = Vector3(28.686981, 1, 49.017426)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h0a4c"]
+albedo_texture = ExtResource("3_4bdyu")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5knis"]
+albedo_texture = ExtResource("3_4bdyu")
 
 [node name="Church" type="Node3D" unique_id=1049898661]
 
@@ -230,9 +236,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93.90894, -63.695236, 20.640
 [node name="Enemy5" parent="Enemies" unique_id=1039448338 instance=ExtResource("2_38qbd")]
 transform = Transform3D(0.78884166, 0, -0.6145965, 0, 1, 0, 0.6145965, 0, 0.78884166, -103.83968, -63.695236, 20.523499)
 
-[node name="Player" parent="Enemies" unique_id=2028054972 instance=ExtResource("3_p1f3h")]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -89.409355, -62.457977, 2.6928563)
-
 [node name="Lights" type="Node3D" parent="." unique_id=1865743964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.8498535)
 
@@ -255,11 +258,13 @@ sky_mode = 1
 
 [node name="CSGBox3D" type="CSGBox3D" parent="doors" unique_id=623295886]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -118, -57.15923, -1.1873245)
+material_override = SubResource("StandardMaterial3D_h0a4c")
 use_collision = true
 size = Vector3(1, 13.3307495, 5.261963)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="doors" unique_id=1079577259]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -118, -57.15923, 4.0835733)
+material_override = SubResource("StandardMaterial3D_5knis")
 use_collision = true
 size = Vector3(1, 13.3307495, 5.5355225)
 
