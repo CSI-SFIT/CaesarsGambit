@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://nbjdr5dycy2g" path="res://Scripts/MultiplayerScript.gd" id="1_jjvhh"]
 [ext_resource type="Script" uid="uid://bfr2n5nmf8g2m" path="res://Scripts/managerScripts/input_manager.gd" id="3_21xkr"]
 [ext_resource type="PackedScene" uid="uid://xknwtbrpl1ef" path="res://Scenes/church.tscn" id="4_6bp64"]
-[ext_resource type="PackedScene" uid="uid://dgxwjfvameiu7" path="res://maze.tscn" id="5_kry3j"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 
@@ -29,19 +28,19 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -92.
 visible = false
 
 [node name="PlayerSpawnPoint_Decipher" type="Area3D" parent="." unique_id=1732819058 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.644196, -26.131737, 9.238108)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -140.7277, -19.542313, 26.32422)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Decipher" unique_id=146648300]
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="PlayerSpawnPoint_Logic" type="Area3D" parent="." unique_id=1139129356 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.230297, -26.131737, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.02289, -23.881111, 51.24505)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Logic" unique_id=1034669594]
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="PlayerSpawnPoint_Maze" type="Area3D" parent="." unique_id=946165787 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205.73036, 101.89792, -80.78473)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 185.75172, -20.93386, -3.8299103)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Maze" unique_id=1128773458]
 shape = SubResource("BoxShape3D_h2yge")
@@ -58,6 +57,3 @@ shape = SubResource("BoxShape3D_h2yge")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1745204795]
 _spawnable_scenes = PackedStringArray("uid://dy0i40wui8vg7")
 spawn_path = NodePath("..")
-
-[node name="Maze" parent="." unique_id=44194881 instance=ExtResource("5_kry3j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210.63011, 85.36721, -86.208954)

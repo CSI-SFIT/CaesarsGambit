@@ -53,28 +53,30 @@ func _ready():
 	symbol_wall.text = displayed_symbols
 
 func _on_interact_zone_body_entered(body):
-	if (body.is_in_group("player") or body.is_in_group("PlayerGroup")) and not is_open:
-		player_near = true
-		var prompt = ui_layer.get_node_or_null("InteractPrompt")
-		# Only show prompt if the password panel is closed
-		if prompt and not ui_layer.get_node("Panel").visible:
-			prompt.show()
+	if body.is_multiplayer_authority():
+		if (body.is_in_group("player") or body.is_in_group("PlayerGroup")) and not is_open:
+			player_near = true
+			var prompt = ui_layer.get_node_or_null("InteractPrompt")
+			# Only show prompt if the password panel is closed
+			if prompt and not ui_layer.get_node("Panel").visible:
+				prompt.show()
 
 func _on_interact_zone_body_exited(body):
-	if body.is_in_group("player") or body.is_in_group("PlayerGroup"):
-		player_near = false
-		var prompt = ui_layer.get_node_or_null("InteractPrompt")
-		if prompt:
-			prompt.hide()
-		close_ui()
+	if body.is_multiplayer_authority():
+		if body.is_in_group("player") or body.is_in_group("PlayerGroup"):
+			player_near = false
+			var prompt = ui_layer.get_node_or_null("InteractPrompt")
+			if prompt:
+				prompt.hide()
+			close_ui()
 
 func _unhandled_input(event):
-	if event.is_action_pressed("interact"):
-		if player_near and not is_open:
-			if ui_layer.get_node("Panel").visible:
-				close_ui()
-			else:
-				open_ui()
+		if event.is_action_pressed("interact"):
+			if player_near and not is_open:
+				if ui_layer.get_node("Panel").visible:
+					close_ui()
+				else:
+					open_ui()
 
 func _input(event):
 	# If the Panel is open and we press Escape, close it!
@@ -103,6 +105,7 @@ func close_ui():
 		prompt.show()
 
 func _on_button_pressed():
+	
 	var line_edit = ui_layer.get_node("Panel/LineEdit")
 	if line_edit.text.to_upper() == secret_word.to_upper() or line_edit.text.to_upper() == "-1":
 		close_ui()
