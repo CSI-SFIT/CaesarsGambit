@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://ccpfalx308ji5"]
+
+[ext_resource type="Texture2D" uid="uid://bce7tenxldbgv" path="res://3D_MODELS/Arch Kit/round_table_Image_0.png" id="1_tbvcq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kwmuw"]
+albedo_texture = ExtResource("1_tbvcq")
+
+[node name="WoodenPlank" type="Node3D" unique_id=1045652013]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=2010090794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3720703, 0.24609375)
+material_override = SubResource("StandardMaterial3D_kwmuw")
+use_collision = true
+size = Vector3(2.7059326, 0.25585938, 0.5078125)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=426260980]
+transform = Transform3D(1, 0, 0, 0, 0.96402246, -0.26582077, 0, 0.26582077, 0.96402246, 0, 0.44493818, -0.2931565)
+material_override = SubResource("StandardMaterial3D_kwmuw")
+use_collision = true
+size = Vector3(2.7059326, 0.25585938, 0.5078125)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1306169828]
+transform = Transform3D(1, 0, 0, 0, 0.9007657, -0.43430543, 0, 0.43430543, 0.9007657, 0, 0.6214683, -0.7790619)
+material_override = SubResource("StandardMaterial3D_kwmuw")
+use_collision = true
+size = Vector3(2.7059326, 0.25585938, 0.5078125)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=862478588]
+transform = Transform3D(1, 0, 0, 0, 0.96174264, -0.2739542, 0, 0.2739542, 0.96174264, 0, 0.79919875, -1.25495)
+material_override = SubResource("StandardMaterial3D_kwmuw")
+use_collision = true
+size = Vector3(2.7059326, 0.25585938, 0.5078125)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=439978383]
+transform = Transform3D(1, -4.019959e-10, 1.1243689e-10, 4.1299394e-10, 0.991958, -0.12656665, -6.065344e-11, 0.12656665, 0.991958, 0, 0.90538204, -1.7488256)
+material_override = SubResource("StandardMaterial3D_kwmuw")
+use_collision = true
+size = Vector3(2.7059326, 0.25585938, 0.5078125)
