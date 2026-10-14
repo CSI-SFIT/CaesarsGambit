@@ -1,4 +1,4 @@
-extends CSGCylinder3D 
+extends Node3D 
 
 @export var clue_ui: TextureRect
 @export var interact_prompt: Label

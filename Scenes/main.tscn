@@ -7,6 +7,8 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_jjvhh"]
+
 [node name="Main2" type="Node3D" unique_id=748300147]
 script = ExtResource("1_jjvhh")
 
@@ -39,10 +41,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.230297, -26.131737, 0)
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="PlayerSpawnPoint_Maze" type="Area3D" parent="." unique_id=946165787 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.644196, -17.790924, 4.711895)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205.73036, 101.89792, -80.78473)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Maze" unique_id=1128773458]
 shape = SubResource("BoxShape3D_h2yge")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerSpawnPoint_Maze" unique_id=1667201541]
+mesh = SubResource("BoxMesh_jjvhh")
 
 [node name="PlayerSpawnPoint_Final" type="Area3D" parent="." unique_id=1314996688 groups=["spawn_points"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8029175, -26.131737, 5.415208)
