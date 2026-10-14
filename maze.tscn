@@ -7,6 +7,11 @@
 [ext_resource type="Texture2D" uid="uid://cyycmyqgydt27" path="res://3D_MODELS/Maze/textures/stonepath/grey_stone_path_rough_1k.jpg" id="3_xhimc"]
 [ext_resource type="PackedScene" uid="uid://tv3xaa0c1p4i" path="res://3D_MODELS/Maze/wall_3.glb" id="4_ugm30"]
 [ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="7_mjrf4"]
+[ext_resource type="PackedScene" uid="uid://d0obbjwaufdcx" path="res://Scenes/Logic Game/barrel.tscn" id="8_glv4d"]
+[ext_resource type="PackedScene" uid="uid://qg2g5liw8yc5" path="res://Scenes/Decipher Game/old_chest.tscn" id="9_dnyu5"]
+[ext_resource type="PackedScene" uid="uid://b17ewwjhg0t10" path="res://Scenes/Logic Game/shield.tscn" id="10_ifb1s"]
+[ext_resource type="PackedScene" uid="uid://ddrrxtpryrwqk" path="res://Scenes/Logic Game/water_barrel.tscn" id="11_ifb1s"]
+[ext_resource type="PackedScene" uid="uid://o2yqrpi4vvph" path="res://Scenes/Logic Game/cat_statue.tscn" id="12_cwyby"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1nuxl"]
 albedo_texture = ExtResource("1_mjrf4")
@@ -509,3 +514,44 @@ environment = SubResource("Environment_6jia0")
 
 [node name="Player" parent="." unique_id=2028054972 instance=ExtResource("7_mjrf4")]
 transform = Transform3D(-1.09278474e-07, 0, -2.5, 0, 2.5, 0, 2.5, 0, -1.09278474e-07, -53.93774, 1.6550732, -19.222027)
+
+[node name="Props" type="Node3D" parent="." unique_id=449312305]
+
+[node name="barrel" parent="Props" unique_id=217958375 instance=ExtResource("8_glv4d")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -42.143887, 2.2240992, -8.8765545)
+
+[node name="Old Chest" parent="Props" unique_id=1225424341 instance=ExtResource("9_dnyu5")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -20.639246, 0.89622414, -17.774275)
+
+[node name="shield" parent="Props" unique_id=641966609 instance=ExtResource("10_ifb1s")]
+transform = Transform3D(-6.556708e-08, 0, 1.5, 0, 1.5, 0, -1.5, 0, -6.556708e-08, -15.232206, 4.124019, -20.079775)
+
+[node name="shield2" parent="Props" unique_id=140748609 instance=ExtResource("10_ifb1s")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -11.931345, 3.987505, -32.26154)
+
+[node name="shield3" parent="Props" unique_id=290257240 instance=ExtResource("10_ifb1s")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 3.620626, 3.8286128, -48.456966)
+
+[node name="Old Chest2" parent="Props" unique_id=3058119 instance=ExtResource("9_dnyu5")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -42.26018, 0.9194039, -48.28762)
+
+[node name="Old Chest3" parent="Props" unique_id=812192456 instance=ExtResource("9_dnyu5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2722728, 0.9490775, -9.265997)
+
+[node name="water_barrel" parent="Props" unique_id=338303984 instance=ExtResource("11_ifb1s")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -40.46798, 1.8186274, -41.159847)
+
+[node name="water_barrel2" parent="Props" unique_id=1146463296 instance=ExtResource("11_ifb1s")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -17.535015, 2.122819, -39.892494)
+
+[node name="cat_statue" parent="Props" unique_id=1676402023 instance=ExtResource("12_cwyby")]
+transform = Transform3D(-3.934025e-07, 0, -9, 0, 9, 0, 9, 0, -3.934025e-07, 1.5026278, 1.8165929, -39.954494)
+
+[node name="water_barrel3" parent="Props" unique_id=322496962 instance=ExtResource("11_ifb1s")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -7.418043, 1.632237, -33.667328)
+
+[node name="cat_statue2" parent="Props" unique_id=916452757 instance=ExtResource("12_cwyby")]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -26.316193, 1.8023608, -49.65026)
+
+[node name="Old Chest4" parent="Props" unique_id=1911067870 instance=ExtResource("9_dnyu5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.371187, 0.916551, -23.754549)
