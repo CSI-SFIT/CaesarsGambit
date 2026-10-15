@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://b0bnsl255unwf" path="res://Scenes/environment/tree.tscn" id="11_dlo4w"]
 [ext_resource type="PackedScene" uid="uid://cejd6bgfvveg5" path="res://Scenes/RockShower.tscn" id="12_q6lx1"]
 [ext_resource type="Script" uid="uid://d38n40um2al7l" path="res://Scripts/final_area.gd" id="14_ie368"]
+[ext_resource type="AudioStream" uid="uid://bqen4b4vg80wi" path="res://addons/music/game_bgm.ogg" id="15_x5dfk"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dlo4w"]
 
@@ -865,5 +866,10 @@ script = ExtResource("14_ie368")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FinalArea" unique_id=338014546]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -170.71979, 7.129883, -0.572052)
 shape = SubResource("CylinderShape3D_2ruxo")
+
+[node name="GameBGM" type="AudioStreamPlayer" parent="." unique_id=559846051]
+stream = ExtResource("15_x5dfk")
+volume_db = -25.0
+autoplay = true
 
 [connection signal="body_entered" from="FinalArea" to="FinalArea" method="_on_body_entered"]

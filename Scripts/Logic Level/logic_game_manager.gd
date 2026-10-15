@@ -37,6 +37,23 @@ func _ready() -> void:
 	puzzle_ui.show()
 	_setup_runtime_labels()
 
+func _physics_process(_delta: float) -> void:
+	if not is_instance_valid(boulder):
+		return
+		
+	var roll_sound: AudioStreamPlayer3D = boulder.get_node_or_null("BoulderRollSound")
+	if not roll_sound:
+		return
+
+	# If the boulder is moving down the ramp (speed > 0.5 m/s)
+	if boulder.linear_velocity.length() > 0.5:
+		if not roll_sound.playing:
+			roll_sound.play()
+	else:
+		# If the boulder has stopped against a closed gate or door
+		if roll_sound.playing:
+			roll_sound.stop()
+
 func _setup_runtime_labels() -> void:
 	prompt_label = Label.new()
 	prompt_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -186,6 +203,7 @@ func open_gate(gate: Node3D) -> void:
 		tween.tween_property(gate, "position:y", gate.position.y - gate_lower_distance, 1.5).set_trans(Tween.TRANS_SINE)
 		
 		if boulder:
-			boulder.sleeping = false
+			boulder.sleeping = false # Waking the boulder lets it roll, which triggers the sound!
+			
 		await get_tree().create_timer(1.0).timeout
 		gate.queue_free()

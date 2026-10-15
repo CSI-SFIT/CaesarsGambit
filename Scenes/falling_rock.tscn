@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://boix7y41n2l5u" path="res://Scripts/falling_rock.gd" id="1_dxkgo"]
 [ext_resource type="Texture2D" uid="uid://b3lkp58vtjugb" path="res://3D_MODELS/Logic Game/materials/rocky_texture.jpg" id="2_cyyhn"]
+[ext_resource type="AudioStream" uid="uid://bqy1qkph1ma26" path="res://addons/music/falling_rocks.mp3" id="3_oux33"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2ruxo"]
 radius = 3.0048409
@@ -38,5 +39,10 @@ transform = Transform3D(3.8, 0, 0, 0, 3.8, 0, 0, 0, 3.8, 0, 0, 0)
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1357647334]
 root_path = NodePath("../FallingRock")
 replication_config = SubResource("SceneReplicationConfig_cyyhn")
+
+[node name="RockFallSound" type="AudioStreamPlayer3D" parent="." unique_id=1727110112]
+stream = ExtResource("3_oux33")
+autoplay = true
+max_distance = 45.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

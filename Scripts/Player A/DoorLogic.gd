@@ -137,4 +137,9 @@ func open_door():
 		door_open_sound.play()
 	
 	var tween = create_tween()
-	tween.tween_property(self, "position:y", position.y + 4.0, 1.5).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(self, "position:y", position.y + 5.0, 1.5).set_trans(Tween.TRANS_SINE)
+	
+	# Wait for the door to finish reaching the top, then stop the sound:
+	await tween.finished
+	if door_open_sound:
+		door_open_sound.stop()

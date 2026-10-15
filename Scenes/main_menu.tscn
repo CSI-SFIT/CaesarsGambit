@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://byvf28uc2wjq1" path="res://3D_MODELS/join.png" id="4_trj04"]
 [ext_resource type="Texture2D" uid="uid://infy2o07uen1" path="res://3D_MODELS/enterhostip (2).png" id="5_trj04"]
 [ext_resource type="PackedScene" uid="uid://tv3xaa0c1p4i" path="res://3D_MODELS/Maze/wall_3.glb" id="5_yhxw7"]
+[ext_resource type="AudioStream" uid="uid://cfarq0ndy3m1k" path="res://addons/music/main_menu.mp3" id="10_16hvj"]
 
 [sub_resource type="FontFile" id="FontFile_cp0ys"]
 cache/0/variation_coordinates = {}
@@ -697,6 +698,11 @@ material = SubResource("StandardMaterial3D_s8bcc")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1519040269]
 libraries/ = SubResource("AnimationLibrary_cp0ys")
+
+[node name="MainMenuBGM" type="AudioStreamPlayer" parent="." unique_id=294467631]
+stream = ExtResource("10_16hvj")
+volume_db = -8.0
+autoplay = true
 
 [connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/HostButton/hostButton" to="CanvasGroup" method="_on_host_button_pressed"]
 [connection signal="pressed" from="CanvasGroup/Control/VBoxContainer/JoinButton/joinButton" to="CanvasGroup" method="_on_join_button_pressed"]

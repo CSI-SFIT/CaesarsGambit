@@ -64,7 +64,7 @@ func request_toggle() -> void:
 func sync_reverse_direction(target_at_end: bool) -> void:
 	at_end = target_at_end
 	is_moving = true
-	
+	if has_node("PlatformMoveSound"): $PlatformMoveSound.play() # <-- 1 line
 	
 ## Called locally by levers, triggers, or keypresses
 func reverse_direction() -> void:

@@ -43,8 +43,7 @@ func _on_body_exited(body: Node3D) -> void:
 
 
 func pull_lever() -> void:
+	if has_node("LeverSound"): $LeverSound.play() # <-- 1 line
 	if platform == null:
-		push_warning("Moving platform has not been assigned!")
 		return
-
 	platform.call("reverse_direction")

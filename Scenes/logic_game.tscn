@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://i702tfwrjewn" path="res://Scenes/Logic Game/big_gateway.tscn" id="9_4w6er"]
 [ext_resource type="PackedScene" uid="uid://djqklihkm7meq" path="res://Scenes/Decipher Game/thick_corner.tscn" id="10_vf22q"]
 [ext_resource type="PackedScene" uid="uid://c7md4b1nhg56u" path="res://Scenes/Decipher Game/straight_wall.tscn" id="11_o3y2b"]
+[ext_resource type="AudioStream" uid="uid://yhco4l1jf1s0" path="res://addons/music/boulder_down.mp3" id="15_gmlty"]
 [ext_resource type="PackedScene" uid="uid://d0obbjwaufdcx" path="res://Scenes/Logic Game/barrel.tscn" id="15_l3wh2"]
 [ext_resource type="PackedScene" uid="uid://o2yqrpi4vvph" path="res://Scenes/Logic Game/cat_statue.tscn" id="16_gmlty"]
 [ext_resource type="PackedScene" uid="uid://b17ewwjhg0t10" path="res://Scenes/Logic Game/shield.tscn" id="17_uft6j"]
@@ -207,6 +208,10 @@ transform = Transform3D(-8.742278e-08, 0, -2, 0, 2, 0, 2, 0, -8.742278e-08, -14,
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 19.1, -20.1)
 mass = 20.0
 continuous_cd = true
+
+[node name="BoulderRollSound" type="AudioStreamPlayer3D" parent="Puzzle elements/Boulder" unique_id=2024941764]
+stream = ExtResource("15_gmlty")
+max_distance = 45.0
 
 [node name="Door" type="RigidBody3D" parent="Puzzle elements" unique_id=2005556558]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 11.3, 9, 20.5)
