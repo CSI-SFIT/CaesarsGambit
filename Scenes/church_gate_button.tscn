@@ -1,42 +1,26 @@
 [gd_scene format=3 uid="uid://cfjkoxbndkfhh"]
 
 [ext_resource type="Script" uid="uid://24g754ecr0au" path="res://Scripts/church_gate_button_script.gd" id="1_6kewd"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ruxo"]
-albedo_color = Color(0, 0, 0, 1)
-metallic = 0.27
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ofem"]
-albedo_color = Color(1, 0, 0, 1)
-metallic = 0.16
-emission_enabled = true
-emission = Color(1, 0, 0, 1)
+[ext_resource type="PackedScene" uid="uid://drrcbaxwtn1wh" path="res://3D_MODELS/Lever/mechanical lever/lever (1).glb" id="2_u0bp4"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2ruxo"]
-height = 3.0195313
-radius = 1.8139648
+height = 3.7045898
+radius = 4.3964844
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s8bcc"]
+albedo_color = Color(0.7682059, 0.70215154, 0.055990994, 1)
+emission_enabled = true
+emission = Color(0.59607846, 0.5921569, 0, 1)
+emission_energy_multiplier = 1.1
 
 [node name="ChurchGateButton" type="Node3D" unique_id=738248265]
 script = ExtResource("1_6kewd")
-
-[node name="buttonBase" type="CSGCylinder3D" parent="." unique_id=590908203]
-radius = 0.8
-height = 0.5
-sides = 32
-material = SubResource("StandardMaterial3D_2ruxo")
-
-[node name="buttonTop" type="CSGCylinder3D" parent="." unique_id=2046888594]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25207138, 0)
-radius = 0.6
-height = 0.5
-sides = 32
-material = SubResource("StandardMaterial3D_4ofem")
 
 [node name="Area3D" type="Area3D" parent="." unique_id=1793732029]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7505157, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1860566849]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5097656, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8522949, 0)
 shape = SubResource("CylinderShape3D_2ruxo")
 
 [node name="Label3D" type="Label3D" parent="." unique_id=1152584097]
@@ -46,6 +30,14 @@ text = "Press E
 font_size = 142
 outline_size = 55
 uppercase = true
+
+[node name="Sketchfab_Scene" parent="." unique_id=1123421025 instance=ExtResource("2_u0bp4")]
+transform = Transform3D(3.5, 0, 0, 0, -1.5298986e-07, 3.5, 0, -3.5, -1.5298986e-07, 0, 1.515686, 10.157812)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1259820867]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.21643066, 0.11849594)
+size = Vector3(1, 0.18383789, 1.8235245)
+material = SubResource("StandardMaterial3D_s8bcc")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

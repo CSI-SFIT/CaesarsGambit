@@ -10,6 +10,10 @@ var current_state: State = State.PATROL
 @export var investigate_speed: float = 4.5
 @export var lunge_speed: float = 14.0
 
+@export_group("Patrol Settings")
+@export var patrol_radius: float = 14.0
+@export var min_patrol_distance: float = 3.5
+
 @export_group("Chase & Teleport Timers")
 @export var maxChaseTime: float = 6.0
 @export var maxWaitTime: float = 1.5
@@ -37,6 +41,7 @@ var current_state: State = State.PATROL
 var Player: CharacterBody3D = null
 var player_lastPosition: Vector3 = Vector3.ZERO
 var last_seen_position: Vector3 = Vector3.ZERO
+var home_position: Vector3 = Vector3.ZERO
 
 var timer: float = 0.0
 var startTimer: bool = false
@@ -48,16 +53,21 @@ var investigate_timer: float = 0.0
 var lunge_cooldown_timer: float = 0.0
 
 func _ready() -> void:
+	randomize()
 	timer = 0.0
 	startTimer = false
 	is_playerDetected = false
+	home_position = global_position
 
 	# Setup tolerances to avoid micro-jitter at destination points
 	nav_agent.target_desired_distance = 1.2
 	nav_agent.path_desired_distance = 1.0
 
-	# NavigationServer needs one physics frame to synchronize before queries work
+	# Wait for NavigationServer synchronization
 	await get_tree().physics_frame
+	
+	# Desync the first path query so all enemies don't pathfind simultaneously on spawn
+	await get_tree().create_timer(randf_range(0.05, 0.45)).timeout
 	_set_random_patrol_target()
 
 func _process(delta: float) -> void:
@@ -73,7 +83,6 @@ func _process(delta: float) -> void:
 		if is_instance_valid(Player):
 			var spawn_pos: Vector3 = GameManager.getSpawnPointPosition(GameManager.SpawnPointNames.PlayerSpawnPoint_Church)
 			
-			# Reset player position and cancel momentum
 			if Player.has_method("teleport_to"):
 				Player.teleport_to(spawn_pos)
 			else:
@@ -215,7 +224,6 @@ func _begin_investigation(target_spot: Vector3) -> void:
 	is_waiting = false
 
 	var map_rid := nav_agent.get_navigation_map()
-	# Ground-snap the location in case the target was airborne or jumping
 	last_seen_position = NavigationServer3D.map_get_closest_point(map_rid, target_spot)
 	player_lastPosition = last_seen_position
 	nav_agent.target_position = last_seen_position
@@ -229,7 +237,7 @@ func _search_next_or_patrol() -> void:
 
 		if current_state == State.INVESTIGATE:
 			var map_rid := nav_agent.get_navigation_map()
-			var angle := randf_range(0, TAU)
+			var angle := randf_range(0.0, TAU)
 			var offset := Vector3(cos(angle), 0, sin(angle)) * randf_range(2.0, search_radius)
 			last_seen_position = NavigationServer3D.map_get_closest_point(map_rid, last_seen_position + offset)
 			nav_agent.target_position = last_seen_position
@@ -259,13 +267,25 @@ func _apply_friction(speed: float) -> void:
 
 func _set_random_patrol_target() -> void:
 	var map_rid := nav_agent.get_navigation_map()
-	var random_point := NavigationServer3D.map_get_random_point(map_rid, 1, false)
-	nav_agent.target_position = random_point
+
+	# Generate random angle and distance around the enemy's local origin
+	var random_angle := randf_range(0.0, TAU)
+	var random_dist := randf_range(min_patrol_distance, patrol_radius)
+	var offset := Vector3(cos(random_angle), 0.0, sin(random_angle)) * random_dist
+
+	# Project point onto the nearest valid NavMesh polygon
+	var candidate_pos: Vector3 = home_position + offset
+	var valid_point: Vector3 = NavigationServer3D.map_get_closest_point(map_rid, candidate_pos)
+
+	nav_agent.target_position = valid_point
 
 func _wait_and_pick_next_patrol() -> void:
 	is_waiting = true
-	await get_tree().create_timer(maxWaitTime).timeout
+	# Randomize pause between 50% and 150% of maxWaitTime to desynchronize pacing
+	var staggered_wait := randf_range(maxWaitTime * 0.5, maxWaitTime * 1.5)
+	await get_tree().create_timer(staggered_wait).timeout
 	is_waiting = false
+
 	if current_state == State.PATROL:
 		_set_random_patrol_target()
 

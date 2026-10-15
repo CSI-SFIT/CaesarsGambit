@@ -167,6 +167,8 @@ transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -8.25071, 12.262064, -1
 
 [node name="pointA" type="CSGBox3D" parent="." unique_id=1195841997]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.8, -6.1)
+visible = false
 
 [node name="pointB" type="CSGBox3D" parent="." unique_id=1375695839]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.8, 8.7)
+visible = false

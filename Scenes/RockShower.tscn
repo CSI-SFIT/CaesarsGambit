@@ -5,6 +5,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_2ruxo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oux33"]
+transparency = 1
 albedo_color = Color(0.76497996, 0.59882444, 5.7756904e-07, 0)
 
 [node name="rockShower" type="Node3D" unique_id=1346582214]
@@ -18,3 +19,7 @@ shape = SubResource("BoxShape3D_2ruxo")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Area3D" unique_id=72817236]
 material = SubResource("StandardMaterial3D_oux33")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=796997055]
+_spawnable_scenes = PackedStringArray("uid://cni08y7tqx06w")
+spawn_path = NodePath("..")

@@ -6,11 +6,23 @@
 [ext_resource type="PackedScene" uid="uid://dgxwjfvameiu7" path="res://maze.tscn" id="4_w7jjh"]
 [ext_resource type="PackedScene" uid="uid://bh1qaunbo6076" path="res://lever.tscn" id="5_q0mm3"]
 [ext_resource type="Texture2D" uid="uid://buhc6rdl6ra17" path="res://3D_MODELS/Arch Kit/materials/modular_fort_01_plaster_diff_4k.png" id="6_4c2oa"]
+[ext_resource type="PackedScene" uid="uid://bgcngl386ua2l" path="res://Scenes/fence.tscn" id="6_5qtum"]
 [ext_resource type="PackedScene" uid="uid://dme05k5bn0uqi" path="res://Scenes/bridge.tscn" id="6_np2xp"]
 [ext_resource type="PackedScene" uid="uid://cxmc7omr27o1d" path="res://Scenes/environment/old_tree.tscn" id="8_olcgw"]
 [ext_resource type="PackedScene" uid="uid://gqmvys4xhgdh" path="res://3D_MODELS/Environment/old_tree.glb" id="9_dlo4w"]
 [ext_resource type="PackedScene" uid="uid://lva2v2pou3t6" path="res://Scenes/environment/old_pillar.tscn" id="10_olcgw"]
 [ext_resource type="PackedScene" uid="uid://b0bnsl255unwf" path="res://Scenes/environment/tree.tscn" id="11_dlo4w"]
+[ext_resource type="PackedScene" uid="uid://cejd6bgfvveg5" path="res://Scenes/RockShower.tscn" id="12_q6lx1"]
+[ext_resource type="Script" uid="uid://d38n40um2al7l" path="res://Scripts/final_area.gd" id="14_ie368"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dlo4w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8wm3"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q6lx1"]
+albedo_texture = ExtResource("6_4c2oa")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dm7wl"]
 albedo_texture = ExtResource("6_4c2oa")
@@ -18,12 +30,8 @@ albedo_texture = ExtResource("6_4c2oa")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l3wh2"]
 albedo_texture = ExtResource("6_4c2oa")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q6lx1"]
-albedo_texture = ExtResource("6_4c2oa")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8wm3"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2ruxo"]
+radius = 59.989258
 
 [node name="Map" type="Node3D" unique_id=1100865031]
 
@@ -31,13 +39,20 @@ albedo_color = Color(1, 1, 1, 0)
 transform = Transform3D(-0.99998975, 0, -0.004528054, 0, 1, 0, 0.004528054, 0, -0.99998975, 286.48218, 0, 476.383)
 
 [node name="Church" parent="." unique_id=1049898661 instance=ExtResource("2_q0mm3")]
-transform = Transform3D(-0.40845305, 0, -0.91277933, 0, 1, 0, 0.91277933, 0, -0.40845305, 83.81224, 69.52841, 546.77765)
+transform = Transform3D(-0.40845305, 0, -0.91277933, 0, 1, 0, 0.91277933, 0, -0.40845305, 79.439995, 65.831245, 592.42664)
 
 [node name="Decipher" parent="." unique_id=1190309061 instance=ExtResource("3_np2xp")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 126.59296, 11.421785, -24.668312)
 
 [node name="Maze" parent="." unique_id=44194881 instance=ExtResource("4_w7jjh")]
 transform = Transform3D(0.86602545, 0, 0.5, 0, 1, 0, -0.5, 0, 0.86602545, 310.27625, 1, 47.485794)
+
+[node name="Lever" parent="." unique_id=1357982526 instance=ExtResource("5_q0mm3")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 176.34631, -5.775942, 165.38815)
+
+[node name="Lever2" parent="." unique_id=946751643 instance=ExtResource("5_q0mm3")]
+transform = Transform3D(0.9999806, 0, 0.006227628, 0, 1, 0, -0.006227628, 0, 0.9999806, 176.34631, -5.775942, 320.94186)
+opp_dir = true
 
 [node name="Maze Path" type="CSGCombiner3D" parent="." unique_id=503329567]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 311.692, -0.4509735, -2.965004)
@@ -50,71 +65,139 @@ size = Vector3(97, 1, 100)
 
 [node name="path wall" type="CSGBox3D" parent="Maze Path" unique_id=1315806515]
 transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -65.615204, 6, 68.505356)
+visible = false
 size = Vector3(1.7137451, 8, 41.831604)
 
 [node name="path wall3" type="CSGBox3D" parent="Maze Path" unique_id=774394753]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -79.49408, 6, 91.64816)
+visible = false
 size = Vector3(1, 8, 27.756836)
 
 [node name="path wall5" type="CSGBox3D" parent="Maze Path" unique_id=2139390898]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -89.27927, 6, 92.93647)
+visible = false
 size = Vector3(1, 8, 20)
 
 [node name="path wall8" type="CSGBox3D" parent="Maze Path" unique_id=1149306807]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -119.9644, 6, 105.06046)
+visible = false
 size = Vector3(1, 8, 8)
 
 [node name="path wall12" type="CSGBox3D" parent="Maze Path" unique_id=1212541587]
 transform = Transform3D(-0.032470495, 0, 0.99947274, 0, 1, 0, -0.99947274, 0, -0.032470495, -123.31781, 6, 108.27578)
+visible = false
 size = Vector3(1, 8, 9.661743)
 
 [node name="path wall17" type="CSGBox3D" parent="Maze Path" unique_id=1752185043]
 transform = Transform3D(-0.032470495, 0, 0.99947274, 0, 1, 0, -0.99947274, 0, -0.032470495, -130.64337, 6, 117.87084)
+visible = false
 size = Vector3(1, 8, 39.49414)
 
 [node name="path wall20" type="CSGBox3D" parent="Maze Path" unique_id=527682399]
 transform = Transform3D(0.6424401, 0, -0.766336, 0, 1, 0, 0.766336, 0, 0.6424401, -100.653076, 6, 125.804146)
+visible = false
 size = Vector3(1, 8, 65.94672)
 
 [node name="path wall18" type="CSGBox3D" parent="Maze Path" unique_id=1821678082]
 transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -98.747955, 6, 109.60587)
+visible = false
 size = Vector3(1, 8, 30)
 
 [node name="path wall10" type="CSGBox3D" parent="Maze Path" unique_id=437639478]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -129.36906, 6, 102.67936)
+visible = false
 size = Vector3(1, 8, 12)
 
 [node name="path wall6" type="CSGBox3D" parent="Maze Path" unique_id=1762409137]
 transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -106.651764, 6, 92.26795)
+visible = false
 size = Vector3(1, 8, 35)
 
 [node name="path wall7" type="CSGBox3D" parent="Maze Path" unique_id=1779890716]
 transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -113.69977, 6, 86.0573)
+visible = false
 size = Vector3(1, 8, 41)
 
 [node name="path wall4" type="CSGBox3D" parent="Maze Path" unique_id=2123143680]
 transform = Transform3D(-0.68377393, 0, -0.72969395, 0, 1, 0, 0.72969395, 0, -0.68377393, -101.82733, 6, 57.786522)
+visible = false
 size = Vector3(1, 8, 40.16516)
 
 [node name="path wall14" type="CSGBox3D" parent="Maze Path" unique_id=1757559650]
 transform = Transform3D(-0.7296939, 0, 0.683774, 0, 1, 0, -0.683774, 0, -0.7296939, -114.407745, 6, 41.736076)
+visible = false
 size = Vector3(1, 8, 7)
 
 [node name="path wall15" type="CSGBox3D" parent="Maze Path" unique_id=1719668287]
 transform = Transform3D(-0.7296939, 0, 0.683774, 0, 1, 0, -0.683774, 0, -0.7296939, -125.22307, 6, 38.39028)
+visible = false
 size = Vector3(1, 8, 16)
 
 [node name="path wall16" type="CSGBox3D" parent="Maze Path" unique_id=1663166089]
 transform = Transform3D(0.683774, 0, 0.7296939, 0, 1, 0, -0.7296939, 0, 0.683774, -118.73236, 6, 38.168205)
+visible = false
 size = Vector3(1, 8, 13)
 
 [node name="path wall13" type="CSGBox3D" parent="Maze Path" unique_id=1275949332]
 transform = Transform3D(-0.68377393, 0, -0.72969395, 0, 1, 0, 0.72969395, 0, -0.68377393, -113.48126, 6, 59.583733)
+visible = false
 size = Vector3(1, 8, 47)
 
 [node name="path wall2" type="CSGBox3D" parent="Maze Path" unique_id=2061377106]
 transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -69.652145, 6, 61.246105)
+visible = false
 size = Vector3(1.769043, 8, 42.098633)
+
+[node name="Fence" parent="Maze Path" unique_id=1598915878 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.0951182, 0, 0.21272664, 0, 0.18334295, 0, -0.1586743, 0, -0.1275202, -63.25049, 1.5516062, 66.158554)
+
+[node name="Fence2" parent="Maze Path" unique_id=106332738 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.09398022, 0, 0.21363378, 0, 0.18334295, 0, -0.15935095, 0, -0.12599458, -67.85095, 1.5516062, 58.077545)
+
+[node name="Fence3" parent="Maze Path" unique_id=1307776934 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.09529355, 0, 0.21258552, 0, 0.18334295, 0, -0.15856905, 0, -0.1277553, -111.91704, 1.5516062, 83.1958)
+
+[node name="Fence6" parent="Maze Path" unique_id=1079482722 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.12628739, 0, 0.2076043, 0, 0.18334295, 0, -0.1351906, 0, 0.19393209, -110.129105, 1.5516062, 60.675537)
+
+[node name="Fence7" parent="Maze Path" unique_id=1614903403 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.12628739, 0, 0.17563564, 0, 0.18334295, 0, -0.1351906, 0, 0.16406879, -98.91358, 1.5516062, 58.537468)
+
+[node name="Fence8" parent="Maze Path" unique_id=1719569146 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17780152, 0, 0.048552483, 0, 0.18334295, 0, -0.051104024, 0, 0.16892408, -76.665985, 1.5516062, 94.83217)
+
+[node name="Fence11" parent="Maze Path" unique_id=1063179276 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17780152, 0, 0.03291136, 0, 0.18334295, 0, -0.051104024, 0, 0.11450539, -87.5709, 1.5516062, 93.97206)
+
+[node name="Fence12" parent="Maze Path" unique_id=1090827569 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17780152, 0, 0.022325793, 0, 0.18334295, 0, -0.051104024, 0, 0.07767602, -127.45854, 1.5516062, 103.39327)
+
+[node name="Fence13" parent="Maze Path" unique_id=785863172 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17780152, 0, 0.01361566, 0, 0.18334295, 0, -0.051104024, 0, 0.047371678, -118.671585, 1.5516062, 104.678)
+
+[node name="Fence14" parent="Maze Path" unique_id=1280918676 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.02216954, 0, 0.067064926, 0, 0.18334295, 0, -0.18366686, 0, -0.008095096, -122.876144, 1.5516062, 106.94846)
+
+[node name="Fence15" parent="Maze Path" unique_id=1254597400 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.13642603, 0, 0.059392087, 0, 0.18334295, 0, -0.12495174, 0, -0.064846076, -126.23981, 1.5516062, 36.756588)
+
+[node name="Fence17" parent="Maze Path" unique_id=1751018582 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.13642603, 0, 0.027385106, 0, 0.18334295, 0, -0.12495174, 0, -0.029899886, -115.64429, 1.5516062, 40.204338)
+
+[node name="Fence16" parent="Maze Path" unique_id=1802797987 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.10902216, 0, 0.071042776, 0, 0.18334295, 0, -0.14946292, 0, 0.051820435, -115.139755, 1.5516062, 36.92477)
+
+[node name="Fence4" parent="Maze Path" unique_id=579933340 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.09529355, 0, 0.18088606, 0, 0.18334295, 0, -0.15856905, 0, -0.1087052, -105.29778, 1.5516062, 89.228004)
+
+[node name="Fence5" parent="Maze Path" unique_id=424056089 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.09529355, 0, 0.15097435, 0, 0.18334295, 0, -0.15856905, 0, -0.090729475, -97.33508, 1.5516062, 106.90322)
+
+[node name="Fence10" parent="Maze Path" unique_id=1850465207 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.0052399924, 0, 0.23836835, 0, 0.18334295, 0, -0.1849258, 0, -0.0067543625, -127.58849, 1.5516062, 116.00957)
+
+[node name="Fence9" parent="Maze Path" unique_id=2030638386 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.1172076, 0, 0.3043124, 0, 0.18334295, 0, -0.14313415, 0, -0.24919097, -96.88441, 1.5516062, 120.90903)
 
 [node name="Logic Path" type="CSGCombiner3D" parent="." unique_id=636734681]
 transform = Transform3D(-0.49999988, 0, -0.8660255, 0, 1, 0, 0.8660255, 0, -0.49999988, 293.692, -0.4509735, 520.9386)
@@ -127,71 +210,304 @@ size = Vector3(97, 1, 100)
 
 [node name="path wall" type="CSGBox3D" parent="Logic Path" unique_id=601965107]
 transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -65.615204, 6, 68.505356)
+visible = false
 size = Vector3(1.7137451, 8, 41.831604)
 
 [node name="path wall3" type="CSGBox3D" parent="Logic Path" unique_id=1894912237]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -79.49408, 6, 91.64816)
+visible = false
 size = Vector3(1, 8, 27.756836)
 
 [node name="path wall5" type="CSGBox3D" parent="Logic Path" unique_id=428277341]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -89.27927, 6, 92.93647)
+visible = false
 size = Vector3(1, 8, 20)
 
 [node name="path wall8" type="CSGBox3D" parent="Logic Path" unique_id=1488323308]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -119.9644, 6, 105.06046)
+visible = false
 size = Vector3(1, 8, 8)
 
 [node name="path wall12" type="CSGBox3D" parent="Logic Path" unique_id=1975893741]
 transform = Transform3D(-0.032470495, 0, 0.99947274, 0, 1, 0, -0.99947274, 0, -0.032470495, -123.31781, 6, 108.27578)
+visible = false
 size = Vector3(1, 8, 9.661743)
+
+[node name="path wall22" type="CSGBox3D" parent="Logic Path" unique_id=277776150]
+transform = Transform3D(-0.47585475, 0, 0.87952435, 0, 1, 0, -0.87952435, 0, -0.47585475, -44.67224, 6, 120.69757)
+visible = false
+size = Vector3(1, 8, 15.420441)
+
+[node name="path wall23" type="CSGBox3D" parent="Logic Path" unique_id=1787766846]
+transform = Transform3D(0.47414234, 0, 0.8804488, 0, 1, 0, -0.8804488, 0, 0.47414234, -9.544006, 6, 235.15439)
+visible = false
+size = Vector3(1, 8, 15.420441)
 
 [node name="path wall17" type="CSGBox3D" parent="Logic Path" unique_id=137562457]
 transform = Transform3D(-0.032470495, 0, 0.99947274, 0, 1, 0, -0.99947274, 0, -0.032470495, -130.64337, 6, 117.87084)
+visible = false
 size = Vector3(1, 8, 39.49414)
 
 [node name="path wall20" type="CSGBox3D" parent="Logic Path" unique_id=502930682]
-transform = Transform3D(0.6424401, 0, -0.766336, 0, 1, 0, 0.766336, 0, 0.6424401, -100.653076, 6, 125.804146)
-size = Vector3(1, 8, 65.94672)
+transform = Transform3D(0.9576831, 0, -0.2878261, 0, 1, 0, 0.2878261, 0, 0.9576831, -79.53009, 6, 119.21356)
+visible = false
+size = Vector3(1, 8, 30.394707)
 
 [node name="path wall18" type="CSGBox3D" parent="Logic Path" unique_id=181955928]
-transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -98.747955, 6, 109.60587)
+transform = Transform3D(0.9736077, 0, -0.22822842, 0, 1, 0, 0.22822842, 0, 0.9736077, -90.26085, 6, 117.29639)
+visible = false
 size = Vector3(1, 8, 30)
+
+[node name="path wall19" type="CSGBox3D" parent="Logic Path" unique_id=1045473661]
+transform = Transform3D(0.9985072, 0, -0.05466208, 0, 1, 0, 0.05466208, 0, 0.9985072, -94.73979, 6, 157.74869)
+visible = false
+size = Vector3(1, 8, 52.030914)
+
+[node name="path wall21" type="CSGBox3D" parent="Logic Path" unique_id=1795712544]
+transform = Transform3D(0.97365665, 0, 0.22802109, 0, 1, 0, -0.22802109, 0, 0.97365665, -79.24776, 6, 148.01135)
+visible = false
+size = Vector3(2.8759766, 8, 30)
 
 [node name="path wall10" type="CSGBox3D" parent="Logic Path" unique_id=1495043605]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -129.36906, 6, 102.67936)
+visible = false
 size = Vector3(1, 8, 12)
 
 [node name="path wall6" type="CSGBox3D" parent="Logic Path" unique_id=1023366691]
 transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -106.651764, 6, 92.26795)
+visible = false
 size = Vector3(1, 8, 35)
 
 [node name="path wall7" type="CSGBox3D" parent="Logic Path" unique_id=479540889]
 transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -113.69977, 6, 86.0573)
+visible = false
 size = Vector3(1, 8, 41)
 
 [node name="path wall4" type="CSGBox3D" parent="Logic Path" unique_id=904535858]
 transform = Transform3D(-0.68377393, 0, -0.72969395, 0, 1, 0, 0.72969395, 0, -0.68377393, -101.82733, 6, 57.786522)
+visible = false
 size = Vector3(1, 8, 40.16516)
 
 [node name="path wall14" type="CSGBox3D" parent="Logic Path" unique_id=1037244557]
 transform = Transform3D(-0.7296939, 0, 0.683774, 0, 1, 0, -0.683774, 0, -0.7296939, -114.407745, 6, 41.736076)
+visible = false
 size = Vector3(1, 8, 7)
 
 [node name="path wall15" type="CSGBox3D" parent="Logic Path" unique_id=245920609]
 transform = Transform3D(-0.7296939, 0, 0.683774, 0, 1, 0, -0.683774, 0, -0.7296939, -125.22307, 6, 38.39028)
+visible = false
 size = Vector3(1, 8, 16)
 
 [node name="path wall16" type="CSGBox3D" parent="Logic Path" unique_id=839151898]
 transform = Transform3D(0.683774, 0, 0.7296939, 0, 1, 0, -0.7296939, 0, 0.683774, -118.73236, 6, 38.168205)
+visible = false
 size = Vector3(1, 8, 13)
 
 [node name="path wall13" type="CSGBox3D" parent="Logic Path" unique_id=1245985538]
 transform = Transform3D(-0.68377393, 0, -0.72969395, 0, 1, 0, 0.72969395, 0, -0.68377393, -113.48126, 6, 59.583733)
+visible = false
 size = Vector3(1, 8, 47)
 
 [node name="path wall2" type="CSGBox3D" parent="Logic Path" unique_id=1472471035]
 transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -69.652145, 6, 61.246105)
+visible = false
 size = Vector3(1.769043, 8, 42.098633)
+
+[node name="Fence2" parent="Logic Path" unique_id=1946435291 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.09454296, 0, 0.22318168, 0, 0.18334295, 0, -0.15901773, 0, -0.13269122, -66.80406, 1.7892861, 56.30321)
+
+[node name="Fence8" parent="Logic Path" unique_id=154023329 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.09556627, 0, 0.2223215, 0, 0.18334295, 0, -0.15840484, 0, -0.13412744, -112.15182, 1.7892861, 83.48556)
+
+[node name="Fence9" parent="Logic Path" unique_id=1584854979 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.095566295, 0, 0.1784308, 0, 0.18334295, 0, -0.15840489, 0, -0.107648, -105.651596, 1.7892861, 89.45337)
+
+[node name="Fence10" parent="Logic Path" unique_id=1310708054 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.17464176, 0, -0.031251896, 0, 0.18334295, 0, 0.061035033, 0, -0.08942218, -131.65042, 1.7892861, 102.54333)
+
+[node name="Fence11" parent="Logic Path" unique_id=1715066451 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.17464176, 0, -0.023959488, 0, 0.18334295, 0, 0.061035033, 0, -0.06855615, -121.756874, 1.7892861, 106.21105)
+
+[node name="Fence12" parent="Logic Path" unique_id=1634291787 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.012531012, 0, -0.07245554, 0, 0.18334295, 0, 0.18457516, 0, 0.0049190875, -124.21455, 1.7892861, 110.310135)
+
+[node name="Fence13" parent="Logic Path" unique_id=184065089 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.1826444, 0, -0.011552229, 0, 0.18334295, 0, 0.02942845, 0, -0.07169762, -135.74025, 1.7892861, 58.96597)
+
+[node name="Fence4" parent="Logic Path" unique_id=1081873569 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.12718432, 0, 0.121078365, 0, 0.18334295, 0, -0.13434716, 0, 0.11462296, -94.92956, 1.7892861, 61.67015)
+
+[node name="Fence14" parent="Logic Path" unique_id=16323252 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17641395, 0, 0.050203927, 0, 0.18334295, 0, -0.0557057, 0, 0.15899044, -76.25225, 1.7892861, 94.366455)
+
+[node name="Fence16" parent="Logic Path" unique_id=1840844031 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17910117, 0, 0.03164698, 0, 0.18334295, 0, -0.046344183, 0, 0.12230255, -87.38464, 1.7892861, 94.074524)
+
+[node name="Fence15" parent="Logic Path" unique_id=2100900736 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17658383, 0, -0.05922098, 0, 0.18334295, 0, 0.055164874, 0, 0.18956748, -78.38715, 1.7892861, 121.34303)
+
+[node name="Fence17" parent="Logic Path" unique_id=1815915236 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17963919, 0, -0.047463663, 0, 0.18334295, 0, 0.044212826, 0, 0.19284749, -89.86999, 1.7892861, 121.83554)
+
+[node name="Fence18" parent="Logic Path" unique_id=106684575 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.18477607, 0, -0.015686953, 0, 0.18334295, 0, 0.00910043, 0, 0.31850928, -94.38024, 1.7892861, 163.9149)
+
+[node name="Fence7" parent="Logic Path" unique_id=678266370 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.16389021, 0, 0.09211485, 0, 0.18334295, 0, -0.17312028, 0, 0.08720367, -100.95347, 1.7892861, 68.14775)
+
+[node name="Fence5" parent="Logic Path" unique_id=1283616035 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.020257048, 0, 0.16572598, 0, 0.18334295, 0, -0.18388763, 0, -0.018256366, -118.85867, 1.7892861, 51.802208)
+
+[node name="Fence6" parent="Logic Path" unique_id=1874771610 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.018674362, 0, 0.15184028, 0, 0.18334295, 0, -0.18405509, 0, -0.015405829, -121.7649, 1.7892861, 60.834362)
+
+[node name="Fence3" parent="Logic Path" unique_id=1895520787 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.09454296, 0, 0.22318168, 0, 0.18334295, 0, -0.15901773, 0, -0.13269122, -61.37817, 1.7892861, 65.42936)
+
+[node name="Church Path" type="CSGCombiner3D" parent="." unique_id=856989359]
+transform = Transform3D(-0.49999988, 0, -0.8660255, 0, 1, 0, 0.8660255, 0, -0.49999988, 112.33951, -0.4509735, 520.9386)
+use_collision = true
+
+[node name="path wall" type="CSGBox3D" parent="Church Path" unique_id=902988576]
+transform = Transform3D(0.08629069, 0, -0.9962703, 0, 1, 0, 0.9962703, 0, 0.08629069, -56.759766, 6, 15.951416)
+visible = false
+size = Vector3(1.7137451, 8, 41.831604)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall3" type="CSGBox3D" parent="Church Path" unique_id=492082477]
+transform = Transform3D(0.9969509, 0, -0.07803628, 0, 1, 0, 0.07803628, 0, 0.9969509, -79.04605, 6, 38.513916)
+visible = false
+size = Vector3(1.7137451, 8, 41.831604)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall12" type="CSGBox3D" parent="Church Path" unique_id=1302121611]
+transform = Transform3D(0.40762508, 0, 0.9131497, 0, 1, 0, -0.9131497, 0, 0.40762508, -98.04248, 6, -6.0716553)
+visible = false
+size = Vector3(1.7137451, 8, 41.831604)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall13" type="CSGBox3D" parent="Church Path" unique_id=1939141970]
+transform = Transform3D(0.40762508, 0, 0.9131497, 0, 1, 0, -0.9131497, 0, 0.40762508, -112.15231, 6, 0.83807373)
+visible = false
+size = Vector3(1.7137451, 8, 41.831604)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall2" type="CSGBox3D" parent="Church Path" unique_id=1626129504]
+transform = Transform3D(0.08629066, 0, -0.9962704, 0, 1, 0, 0.9962704, 0, 0.08629066, -57.970154, 6, 0.8746948)
+visible = false
+size = Vector3(1.7137451, 8, 41.831604)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall5" type="CSGBox3D" parent="Church Path" unique_id=1308404449]
+transform = Transform3D(0.5880443, 0, 0.8088314, 0, 1, 0, -0.8088314, 0, 0.5880443, -153.70886, 6, 32.77292)
+visible = false
+size = Vector3(1.7137451, 8, 17.250935)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall7" type="CSGBox3D" parent="Church Path" unique_id=597524911]
+transform = Transform3D(0.96543837, 0, 0.2606403, 0, 1, 0, -0.2606403, 0, 0.96543837, -163.59464, 6, 16.720093)
+visible = false
+size = Vector3(1.7137451, 8, 23.590076)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall6" type="CSGBox3D" parent="Church Path" unique_id=2071424337]
+transform = Transform3D(0.40737396, 0.008714837, 0.91322196, 0.007958414, 0.99988264, -0.01309197, -0.91322887, 0.012601115, 0.40725687, -162.0974, 6, 45.47943)
+visible = false
+size = Vector3(1.7137451, 8, 39.722042)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall4" type="CSGBox3D" parent="Church Path" unique_id=1504366608]
+transform = Transform3D(0.8460634, 0, -0.5330837, 0, 1, 0, 0.5330837, 0, 0.8460634, -88.062805, 6, 71.76694)
+visible = false
+size = Vector3(1.7137451, 8, 30.721344)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall8" type="CSGBox3D" parent="Church Path" unique_id=1905857127]
+transform = Transform3D(0.88904744, 0, -0.45781708, 0, 1, 0, 0.45781708, 0, 0.88904744, -101.619934, 6, 64.314575)
+visible = false
+size = Vector3(1.7137451, 8, 23.911942)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall9" type="CSGBox3D" parent="Church Path" unique_id=1787504606]
+transform = Transform3D(0.99651533, 0, -0.08342382, 0, 1, 0, 0.08342382, 0, 0.99651533, -94.752625, 6, 39.866577)
+visible = false
+size = Vector3(1.7137451, 8, 28.228432)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall14" type="CSGBox3D" parent="Church Path" unique_id=237823036]
+transform = Transform3D(0.9033157, 0, 0.42897937, 0, 1, 0, -0.42897937, 0, 0.9033157, -136.07376, 6, -19.783081)
+visible = false
+size = Vector3(1.7137451, 8, 28.228432)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall15" type="CSGBox3D" parent="Church Path" unique_id=1205549699]
+transform = Transform3D(0.9033157, 0, 0.4289794, 0, 1, 0, -0.4289794, 0, 0.9033157, -123.269135, 6, -27.175842)
+visible = false
+size = Vector3(1.7137451, 8, 28.228432)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall10" type="CSGBox3D" parent="Church Path" unique_id=842656569]
+transform = Transform3D(0.47354826, 1.1093331e-09, -0.88076925, -3.7223543e-08, 1, -1.8753843e-08, 0.88076925, 4.1666137e-08, 0.47354826, -119.875885, 6, 40.83893)
+visible = false
+size = Vector3(1.7137451, 8, 58.689808)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="path wall11" type="CSGBox3D" parent="Church Path" unique_id=1005697768]
+transform = Transform3D(0.47354826, 1.1093331e-09, -0.88076925, -3.7223543e-08, 1, -1.8753843e-08, 0.88076925, 4.1666137e-08, 0.47354826, -120.418915, 6, 23.810516)
+visible = false
+size = Vector3(1.7137451, 8, 62.786232)
+material = SubResource("StandardMaterial3D_dlo4w")
+
+[node name="Fence" parent="Church Path" unique_id=1827854235 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.016509019, 0, 0.23522711, 0, 0.18334295, 0, -0.18426193, 0, -0.021075265, -53.92794, 1.5516062, 13.758258)
+
+[node name="Fence2" parent="Church Path" unique_id=857151974 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.016509019, 0, 0.23522711, 0, 0.18334295, 0, -0.18426193, 0, -0.021075265, -55.321487, 1.7892861, -0.79697454)
+
+[node name="Fence3" parent="Church Path" unique_id=828252208 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.07604955, 0, 0.22696501, 0, 0.18334295, 0, -0.16864602, 0, 0.102348045, -93.10834, 1.7892785, -5.9782104)
+
+[node name="Fence6" parent="Church Path" unique_id=557361796 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.07604955, 0, 0.22696501, 0, 0.18334295, 0, -0.16864602, 0, 0.102348045, -107.77785, 1.7892785, 1.2479908)
+
+[node name="Fence8" parent="Church Path" unique_id=772017066 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.10611184, 0, 0.09914749, 0, 0.18334295, 0, -0.15154305, 0, 0.069424, -151.51001, 1.7892785, 32.974915)
+
+[node name="Fence15" parent="Church Path" unique_id=187232370 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.08132629, 0, 0.224583, 0, 0.18334295, 0, -0.16616574, 0, 0.10991744, -159.41093, 1.7892785, 45.79643)
+
+[node name="Fence9" parent="Church Path" unique_id=526894728 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17912032, 0, 0.08057368, 0, 0.18334295, 0, -0.046270184, 0, 0.31191555, -165.8935, 1.7892785, 5.2709074)
+
+[node name="Fence7" parent="Church Path" unique_id=1638405571 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.08984075, 0, 0.31850898, 0, 0.18334295, 0, -0.1617209, 0, -0.17694116, -115.82836, 1.7892785, 20.943981)
+
+[node name="Fence10" parent="Church Path" unique_id=868986791 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.08984075, 0, 0.31850898, 0, 0.18334295, 0, -0.1617209, 0, -0.17694116, -115.12808, 1.7892785, 36.783607)
+
+[node name="Fence11" parent="Church Path" unique_id=1651178071 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.18393977, 0, 0.018911043, 0, 0.18334295, 0, -0.019777892, 0, -0.17587778, -95.65447, 1.7892785, 38.36851)
+
+[node name="Fence14" parent="Church Path" unique_id=1651595338 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.18440068, 0, 0.020210857, 0, 0.18334295, 0, -0.0148792965, 0, -0.2504751, -80.109245, 1.7892785, 34.990623)
+
+[node name="Fence12" parent="Church Path" unique_id=460380724 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.16169995, 0, 0.06721865, 0, 0.18334295, 0, -0.089878425, 0, -0.12093281, -101.715, 1.7892785, 63.046463)
+
+[node name="Fence16" parent="Church Path" unique_id=1168953853 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.08660466, 0, -0.07400729, 0, 0.18334295, 0, 0.1634767, 0, -0.039206665, -102.477425, 1.7892785, 79.83486)
+
+[node name="Fence17" parent="Church Path" unique_id=1475010145 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.093593255, 0, -0.0923698, 0, 0.18334295, 0, 0.15957852, 0, 0.05417515, -141.86148, 1.7892785, -45.760914)
+
+[node name="Fence13" parent="Church Path" unique_id=795792681 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.15833345, 0, 0.08188218, 0, 0.18334295, 0, -0.09568449, 0, -0.13549414, -87.82032, 1.7892785, 67.96729)
+
+[node name="Fence4" parent="Church Path" unique_id=1510107631 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.16617572, 0, 0.10942199, 0, 0.18334295, 0, -0.08130586, 0, 0.22364047, -122.128105, 1.7892785, -31.004673)
+
+[node name="Fence5" parent="Church Path" unique_id=240252729 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.16617572, 0, 0.10942199, 0, 0.18334295, 0, -0.08130586, 0, 0.22364047, -136.7669, 1.7892785, -23.84225)
 
 [node name="Decipher Path" type="CSGCombiner3D" parent="." unique_id=1771829199]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.34793, -0.64152145, -23.202404)
@@ -204,202 +520,136 @@ size = Vector3(97, 1, 100)
 
 [node name="path wall" type="CSGBox3D" parent="Decipher Path" unique_id=1705047541]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.8447, 6, 85.7435)
+visible = false
 size = Vector3(1, 8, 40.16516)
 
 [node name="path wall3" type="CSGBox3D" parent="Decipher Path" unique_id=1097578294]
 transform = Transform3D(0.22731847, 0, 0.97382045, 0, 1, 0, -0.97382045, 0, 0.22731847, -62.832043, 6, 109.09711)
+visible = false
 size = Vector3(1, 8, 33)
 
 [node name="path wall5" type="CSGBox3D" parent="Decipher Path" unique_id=1667684277]
 transform = Transform3D(0.22731847, 0, 0.97382045, 0, 1, 0, -0.97382045, 0, 0.22731847, -69.16188, 6, 117.61954)
+visible = false
 size = Vector3(1, 8, 20)
 
 [node name="path wall8" type="CSGBox3D" parent="Decipher Path" unique_id=1608180231]
 transform = Transform3D(0.22731847, 0, 0.97382045, 0, 1, 0, -0.97382045, 0, 0.22731847, -74.0048, 6, 150.25563)
+visible = false
 size = Vector3(1, 8, 8)
 
 [node name="path wall12" type="CSGBox3D" parent="Decipher Path" unique_id=544195342]
 transform = Transform3D(-0.881804, 0, 0.47161603, 0, 1, 0, -0.47161603, 0, -0.881804, -73.012924, 6, 154.98428)
+visible = false
 size = Vector3(1, 8, 9.277832)
 
 [node name="path wall17" type="CSGBox3D" parent="Decipher Path" unique_id=607631267]
 transform = Transform3D(-0.7824937, 0, -0.6226585, 0, 1, 0, 0.6226585, 0, -0.7824937, -51.02928, 6, 156.38618)
+visible = false
 size = Vector3(1, 8, 26.378418)
 
 [node name="path wall20" type="CSGBox3D" parent="Decipher Path" unique_id=738550141]
 transform = Transform3D(0.9994727, 0, 0.032470465, 0, 1, 0, -0.032470465, 0, 0.9994727, -48.5242, 6, 125.24678)
+visible = false
 size = Vector3(1, 8, 27.922974)
 
 [node name="path wall18" type="CSGBox3D" parent="Decipher Path" unique_id=861273373]
 transform = Transform3D(0.9994727, 0, 0.032470465, 0, 1, 0, -0.032470465, 0, 0.9994727, -59.50531, 6, 132.76324)
+visible = false
 size = Vector3(1, 8, 27.216309)
 
 [node name="path wall10" type="CSGBox3D" parent="Decipher Path" unique_id=674017934]
 transform = Transform3D(0.22731847, 0, 0.97382045, 0, 1, 0, -0.97382045, 0, 0.22731847, -81.06018, 6, 157.14183)
+visible = false
 size = Vector3(1, 8, 12.597656)
 
 [node name="path wall6" type="CSGBox3D" parent="Decipher Path" unique_id=2141383630]
 transform = Transform3D(0.9994727, 0, 0.032470495, 0, 1, 0, -0.032470495, 0, 0.9994727, -78.42711, 6, 132.33029)
+visible = false
 size = Vector3(1, 8, 35)
 
 [node name="path wall7" type="CSGBox3D" parent="Decipher Path" unique_id=2141617328]
 transform = Transform3D(0.9994727, 0, 0.032470495, 0, 1, 0, -0.032470495, 0, 0.9994727, -87.3297, 6, 135.32872)
+visible = false
 size = Vector3(1, 8, 41)
 
 [node name="path wall4" type="CSGBox3D" parent="Decipher Path" unique_id=1544472547]
 transform = Transform3D(0.29004657, 0, -0.95701253, 0, 1, 0, 0.95701253, 0, 0.29004657, -105.87669, 6, 110.9115)
+visible = false
 size = Vector3(1, 8, 40.16516)
 
 [node name="path wall14" type="CSGBox3D" parent="Decipher Path" unique_id=941239590]
 transform = Transform3D(-0.95701253, 0, -0.29004654, 0, 1, 0, 0.29004654, 0, -0.95701253, -126.06697, 6, 113.781235)
+visible = false
 size = Vector3(1, 8, 7)
 
 [node name="path wall15" type="CSGBox3D" parent="Decipher Path" unique_id=2142754793]
 transform = Transform3D(-0.95701253, 0, -0.29004654, 0, 1, 0, 0.29004654, 0, -0.95701253, -134.37218, 6, 121.474686)
+visible = false
 size = Vector3(1, 8, 16)
 
 [node name="path wall16" type="CSGBox3D" parent="Decipher Path" unique_id=968072592]
 transform = Transform3D(-0.2900465, 0, 0.95701253, 0, 1, 0, -0.95701253, 0, -0.2900465, -131.31915, 6, 115.74252)
+visible = false
 size = Vector3(1, 8, 13)
 
 [node name="path wall13" type="CSGBox3D" parent="Decipher Path" unique_id=795648646]
 transform = Transform3D(0.29004657, 0, -0.95701253, 0, 1, 0, 0.95701253, 0, 0.29004657, -110.14721, 6, 121.90271)
+visible = false
 size = Vector3(1, 8, 47)
 
 [node name="path wall2" type="CSGBox3D" parent="Decipher Path" unique_id=705294877]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -86.408485, 6, 85.82608)
+visible = false
 size = Vector3(1, 8, 40)
 
-[node name="Lever" parent="." unique_id=1357982526 instance=ExtResource("5_q0mm3")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 176.34631, -5.775942, 165.38815)
+[node name="Fence" parent="Decipher Path" unique_id=1858065760 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.18497333, 0, -0.00421265, 0, 0.18334295, 0, 0.0031422419, 0, -0.24798444, -80.31714, 1.5516062, 82.048195)
 
-[node name="Lever2" parent="." unique_id=946751643 instance=ExtResource("5_q0mm3")]
-transform = Transform3D(0.9999806, 0, 0.006227628, 0, 1, 0, -0.006227628, 0, 0.9999806, 176.34631, -5.775942, 320.94186)
-opp_dir = true
+[node name="Fence2" parent="Decipher Path" unique_id=190374477 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.18499541, 0, -0.0017496943, 0, 0.18334295, 0, 0.0013051061, 0, -0.24801406, -88.60197, 1.5516062, 82.188934)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1237623182]
-transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 62.099182)
-visible = false
-use_collision = true
-size = Vector3(63.02881, 1, 8.237152)
+[node name="Fence7" parent="Decipher Path" unique_id=598390512 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.18496402, 0, -0.0048920275, 0, 0.18334295, 0, 0.0036489943, 0, -0.24797198, -88.709175, 1.5516062, 132.2612)
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=991273088]
-transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 41.69803)
-use_collision = true
-size = Vector3(63.02881, 1, 10.277267)
-material = SubResource("StandardMaterial3D_dm7wl")
+[node name="Fence8" parent="Decipher Path" unique_id=2108338772 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.18496402, 0, -0.004086869, 0, 0.18334295, 0, 0.0036489943, 0, -0.2071593, -79.80154, 1.5516062, 129.79509)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=336102902]
-transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 483.85223)
-use_collision = true
-size = Vector3(63.02881, 1, 14.402588)
-material = SubResource("StandardMaterial3D_l3wh2")
+[node name="Fence13" parent="Decipher Path" unique_id=118747402 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.18496402, 0, -0.0032536578, 0, 0.18334295, 0, 0.0036489943, 0, -0.16492467, -49.780914, 1.5516062, 123.32006)
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="." unique_id=666232815]
-transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 243.12408)
-use_collision = true
-size = Vector3(63.02881, 1, 5.8720703)
-material = SubResource("StandardMaterial3D_q6lx1")
+[node name="Fence14" parent="Decipher Path" unique_id=49836776 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.18496402, 0, -0.0032536578, 0, 0.18334295, 0, 0.0036489943, 0, -0.16492467, -61.38553, 1.5516062, 131.14055)
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=155008767]
-transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.51556, -18.003405, 161.17584)
-use_collision = true
-size = Vector3(62.88321, 1, 2.5325928)
+[node name="Fence16" parent="Decipher Path" unique_id=550654179 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.14446221, 0, -0.10304604, 0, 0.18334295, 0, 0.11556675, 0, -0.1288109, -53.649124, 1.5516062, 156.28386)
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=483482605]
-transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.51556, -18.003405, 314.69492)
-use_collision = true
-size = Vector3(62.88321, 1, 2.5325928)
+[node name="Fence9" parent="Decipher Path" unique_id=2090068849 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.039886598, 0, -0.07350863, 0, 0.18334295, 0, 0.180649, 0, -0.01623042, -81.81941, 1.5516062, 159.09299)
 
-[node name="Bridge" parent="." unique_id=1971865391 instance=ExtResource("6_np2xp")]
-transform = Transform3D(-4.2593854e-08, 0.2246748, 0.9744338, 9.820847e-09, 0.9744338, -0.2246748, -1, 0, -4.371139e-08, 4.9454536, 7.36217, 281.10913)
+[node name="Fence10" parent="Decipher Path" unique_id=899342013 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.039886598, 0, -0.07350863, 0, 0.18334295, 0, 0.180649, 0, -0.01623042, -73.20157, 1.5516062, 152.19781)
 
-[node name="old tree" parent="." unique_id=1442711521 instance=ExtResource("8_olcgw")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 156.96101, 5.149826, 561.8458)
+[node name="Fence11" parent="Decipher Path" unique_id=1722946292 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.13374817, 0, -0.052009333, 0, 0.18334295, 0, 0.12781402, 0, 0.054424014, -69.922, 1.5516062, 157.07512)
 
-[node name="old tree2" parent="." unique_id=573331729 instance=ExtResource("8_olcgw")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 209.90593, 5.149826, 504.87244)
+[node name="Fence3" parent="Decipher Path" unique_id=1257884438 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.0536547, 0, -0.14290377, 0, 0.18334295, 0, 0.17704853, 0, 0.043307114, -99.902016, 1.5516062, 111.06029)
 
-[node name="old tree3" parent="." unique_id=1743776769 instance=ExtResource("8_olcgw")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 258.57544, 5.149826, 538.21497)
+[node name="Fence12" parent="Decipher Path" unique_id=201286982 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.040999737, 0, -0.18222204, 0, 0.18334295, 0, 0.18039964, 0, -0.041413907, -66.066734, 1.5516062, 110.084885)
 
-[node name="old tree4" parent="." unique_id=1477144378 instance=ExtResource("8_olcgw")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 332.50824, 5.149826, 465.27435)
+[node name="Fence15" parent="Decipher Path" unique_id=339558476 instance=ExtResource("6_5qtum")]
+transform = Transform3D(-0.040999737, 0, -0.11378287, 0, 0.18334295, 0, 0.18039964, 0, -0.025859622, -70.85431, 1.5516062, 119.091576)
 
-[node name="old tree5" parent="." unique_id=889531235 instance=ExtResource("8_olcgw")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 343.87506, 5.149826, 576.6438)
+[node name="Fence6" parent="Decipher Path" unique_id=1575438394 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.0536547, 0, -0.09440824, 0, 0.18334295, 0, 0.17704853, 0, 0.0286105, -96.021965, 1.5516062, 119.2066)
 
-[node name="old_tree" parent="." unique_id=103202208 instance=ExtResource("9_dlo4w")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 65.834045, 3.4638872, 72.44036)
+[node name="Fence4" parent="Decipher Path" unique_id=1902991615 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17889404, 0, -0.038046654, 0, 0.18334295, 0, 0.047137357, 0, 0.14439338, -112.237686, 1.5516062, 126.485725)
 
-[node name="old_tree2" parent="." unique_id=193012765 instance=ExtResource("9_dlo4w")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 84.51579, 3.4638872, 14.75943)
-
-[node name="old_tree3" parent="." unique_id=239783003 instance=ExtResource("9_dlo4w")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 171.53738, 3.4638872, 7.2875214)
-
-[node name="old_tree4" parent="." unique_id=1949608223 instance=ExtResource("9_dlo4w")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 211.28348, 3.4638872, -37.70169)
-
-[node name="old_tree5" parent="." unique_id=1847346019 instance=ExtResource("9_dlo4w")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 338.75424, 3.4638872, -2.5147705)
-
-[node name="old_tree6" parent="." unique_id=205356013 instance=ExtResource("9_dlo4w")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 358.57947, 3.4638872, 83.75427)
-
-[node name="old_tree7" parent="." unique_id=1740185868 instance=ExtResource("9_dlo4w")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 274.9307, 3.4638872, 114.827194)
-
-[node name="old_pillar3" parent="." unique_id=421511878 instance=ExtResource("10_olcgw")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 202.0481, 21.320435, 306.73013)
-
-[node name="old_pillar4" parent="." unique_id=405790306 instance=ExtResource("10_olcgw")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 164.23828, 21.320435, 306.73013)
-
-[node name="old_pillar5" parent="." unique_id=2098639455 instance=ExtResource("10_olcgw")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 165.39227, 21.320435, 201.43217)
-
-[node name="old_pillar6" parent="." unique_id=754206971 instance=ExtResource("10_olcgw")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 203.97949, 21.320435, 201.43217)
-
-[node name="tree" parent="." unique_id=723169408 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205.04245, 2.7683976, 438.52783)
-
-[node name="tree4" parent="." unique_id=1743852461 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111.7231, 2.7683976, 396.42285)
-
-[node name="tree5" parent="." unique_id=2075380697 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 348.2801, 2.7683976, 396.42285)
-
-[node name="tree2" parent="." unique_id=1562421650 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 221.85947, 2.7683976, 558.9914)
-
-[node name="tree6" parent="." unique_id=810613979 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116.906494, 2.7683976, 574.3635)
-
-[node name="tree3" parent="." unique_id=118906725 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 324.07928, 2.7683976, 538.9016)
-
-[node name="tree7" parent="." unique_id=599125702 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.271385, 2.76839, 119.71297)
-
-[node name="tree8" parent="." unique_id=1934273943 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.59855, 2.76839, 31.8861)
-
-[node name="tree9" parent="." unique_id=180119569 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 95.365135, 2.76839, -29.61438)
-
-[node name="tree10" parent="." unique_id=2129860946 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 178.4794, 2.76839, -49.826645)
-
-[node name="tree11" parent="." unique_id=1564801246 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 261.22772, 2.76839, -28.274231)
-
-[node name="tree12" parent="." unique_id=1190779887 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 325.89282, 2.76839, 83.85789)
-
-[node name="tree13" parent="." unique_id=889574537 instance=ExtResource("11_dlo4w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 364.10318, 2.76839, 8.160851)
+[node name="Fence5" parent="Decipher Path" unique_id=254693857 instance=ExtResource("6_5qtum")]
+transform = Transform3D(0.17889404, 0, -0.03440017, 0, 0.18334295, 0, 0.047137357, 0, 0.13055436, -105.11251, 1.5516062, 132.48811)
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="." unique_id=2113812853]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 127.98389, 6.616604, -6.421958)
@@ -424,3 +674,196 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 127.64487, 6.616604, 8.976559
 use_collision = true
 size = Vector3(0.59630954, 20, 18.521381)
 material = SubResource("StandardMaterial3D_y8wm3")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=710898682]
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D" unique_id=155008767]
+transform = Transform3D(1.8637675, 0, 0, 0, 20, 0, 0, 0, 20, 176.94724, -18.003405, 178.48866)
+use_collision = true
+size = Vector3(51.45684, 1, 3.426941)
+
+[node name="CSGBox3D6" type="CSGCylinder3D" parent="CSGCombiner3D" unique_id=1097635091]
+transform = Transform3D(19.582884, 0, 0, 0, 20, 0, 0, 0, 20, 176.97987, -17.909813, 243.69023)
+operation = 2
+use_collision = true
+radius = 2.887
+sides = 32
+material = SubResource("StandardMaterial3D_q6lx1")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D" unique_id=483482605]
+transform = Transform3D(1.8637675, 0, 0, 0, 20, 0, 0, 0, 20, 176.5497, -18.003405, 304.47702)
+use_collision = true
+size = Vector3(53.845413, 1, 3.5543823)
+
+[node name="CSGCombiner3D2" type="CSGCombiner3D" parent="." unique_id=874905085]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.7627945, 0)
+use_collision = true
+
+[node name="CSGBox3D11" type="CSGCylinder3D" parent="CSGCombiner3D2" unique_id=417564393]
+transform = Transform3D(19.582884, 0, 0, 0, 20, 0, 0, 0, 20, 21.979874, -17.909813, 243.12408)
+use_collision = true
+radius = 4.0
+sides = 32
+material = SubResource("StandardMaterial3D_q6lx1")
+
+[node name="CSGBox3D12" type="CSGCylinder3D" parent="CSGCombiner3D2" unique_id=1256687792]
+transform = Transform3D(19.582884, 0, 0, 0, 20, 0, 0, 0, 20, 144.01395, -17.909813, 242.909)
+operation = 2
+use_collision = true
+radius = 4.0
+sides = 32
+material = SubResource("StandardMaterial3D_q6lx1")
+
+[node name="RockShowers" type="Node3D" parent="." unique_id=1919958352]
+
+[node name="rockShower" parent="RockShowers" unique_id=1346582214 instance=ExtResource("12_q6lx1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.20548, 26.820805, 279.04233)
+
+[node name="rockShower2" parent="RockShowers" unique_id=1726968703 instance=ExtResource("12_q6lx1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.61292, 26.820805, 260.91083)
+
+[node name="rockShower3" parent="RockShowers" unique_id=999030717 instance=ExtResource("12_q6lx1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 71.6527, 26.820805, 216.03535)
+
+[node name="rockShower4" parent="RockShowers" unique_id=204905791 instance=ExtResource("12_q6lx1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80.71845, 26.820805, 200.28363)
+
+[node name="floors" type="Node3D" parent="." unique_id=1977429379]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="floors" unique_id=1237623182]
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 62.099182)
+visible = false
+use_collision = true
+size = Vector3(63.02881, 1, 8.237152)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="floors" unique_id=991273088]
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 41.69803)
+use_collision = true
+size = Vector3(63.02881, 1, 10.277267)
+material = SubResource("StandardMaterial3D_dm7wl")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="floors" unique_id=336102902]
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 483.85223)
+use_collision = true
+size = Vector3(63.02881, 1, 14.402588)
+material = SubResource("StandardMaterial3D_l3wh2")
+
+[node name="CSGBox3D6" type="CSGCylinder3D" parent="floors" unique_id=963160954]
+transform = Transform3D(19.582884, 0, 0, 0, 20, 0, 0, 0, 20, 176.97987, -17.909813, 243.12408)
+use_collision = true
+radius = 2.887
+sides = 32
+material = SubResource("StandardMaterial3D_q6lx1")
+
+[node name="props" type="Node3D" parent="." unique_id=721602537]
+
+[node name="old tree" parent="props" unique_id=1442711521 instance=ExtResource("8_olcgw")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 156.96101, 5.149826, 561.8458)
+
+[node name="old tree2" parent="props" unique_id=573331729 instance=ExtResource("8_olcgw")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 209.90593, 5.149826, 504.87244)
+
+[node name="old tree3" parent="props" unique_id=1743776769 instance=ExtResource("8_olcgw")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 258.57544, 5.149826, 538.21497)
+
+[node name="old tree4" parent="props" unique_id=1477144378 instance=ExtResource("8_olcgw")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 332.50824, 5.149826, 465.27435)
+
+[node name="old tree5" parent="props" unique_id=889531235 instance=ExtResource("8_olcgw")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 343.87506, 5.149826, 576.6438)
+
+[node name="old_tree" parent="props" unique_id=103202208 instance=ExtResource("9_dlo4w")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 65.834045, 3.4638872, 72.44036)
+
+[node name="old_tree2" parent="props" unique_id=193012765 instance=ExtResource("9_dlo4w")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 84.51579, 3.4638872, 14.75943)
+
+[node name="old_tree3" parent="props" unique_id=239783003 instance=ExtResource("9_dlo4w")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 171.53738, 3.4638872, 7.2875214)
+
+[node name="old_tree4" parent="props" unique_id=1949608223 instance=ExtResource("9_dlo4w")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 211.28348, 3.4638872, -37.70169)
+
+[node name="old_tree5" parent="props" unique_id=1847346019 instance=ExtResource("9_dlo4w")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 338.75424, 3.4638872, -2.5147705)
+
+[node name="old_tree6" parent="props" unique_id=205356013 instance=ExtResource("9_dlo4w")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 358.57947, 3.4638872, 83.75427)
+
+[node name="old_tree7" parent="props" unique_id=1740185868 instance=ExtResource("9_dlo4w")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 274.9307, 3.4638872, 114.827194)
+
+[node name="old_pillar3" parent="props" unique_id=421511878 instance=ExtResource("10_olcgw")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 202.0481, 21.320435, 302.4596)
+
+[node name="old_pillar4" parent="props" unique_id=405790306 instance=ExtResource("10_olcgw")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 164.23828, 21.320435, 302.4596)
+
+[node name="old_pillar5" parent="props" unique_id=2098639455 instance=ExtResource("10_olcgw")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 165.39227, 21.320435, 203.94917)
+
+[node name="old_pillar6" parent="props" unique_id=754206971 instance=ExtResource("10_olcgw")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 203.97949, 21.320435, 203.94917)
+
+[node name="tree" parent="props" unique_id=723169408 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205.04245, 2.7683976, 438.52783)
+
+[node name="tree4" parent="props" unique_id=1743852461 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 119.6942, 2.7683976, 390.95248)
+
+[node name="tree5" parent="props" unique_id=2075380697 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 348.2801, 2.7683976, 396.42285)
+
+[node name="tree2" parent="props" unique_id=1562421650 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 221.85947, 2.7683976, 558.9914)
+
+[node name="tree6" parent="props" unique_id=810613979 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116.906494, 2.7683976, 574.3635)
+
+[node name="tree3" parent="props" unique_id=118906725 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 324.07928, 2.7683976, 538.9016)
+
+[node name="tree7" parent="props" unique_id=599125702 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.271385, 2.76839, 119.71297)
+
+[node name="tree8" parent="props" unique_id=1934273943 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.59855, 2.76839, 31.8861)
+
+[node name="tree9" parent="props" unique_id=180119569 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 95.365135, 2.76839, -29.61438)
+
+[node name="tree10" parent="props" unique_id=2129860946 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 178.4794, 2.76839, -49.826645)
+
+[node name="tree11" parent="props" unique_id=1564801246 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 261.22772, 2.76839, -28.274231)
+
+[node name="tree12" parent="props" unique_id=1190779887 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 325.89282, 2.76839, 83.85789)
+
+[node name="tree13" parent="props" unique_id=889574537 instance=ExtResource("11_dlo4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 364.10318, 2.76839, 8.160851)
+
+[node name="Bridges" type="Node3D" parent="." unique_id=1261361146]
+
+[node name="Bridge" parent="Bridges" unique_id=1971865391 instance=ExtResource("6_np2xp")]
+transform = Transform3D(-0.28853336, 0.21511939, 0.93299097, 1.3450258e-08, 0.9744338, -0.2246748, -0.95746976, -0.06482616, -0.28115666, 100.1917, 7.36217, 272.01483)
+
+[node name="Bridge2" parent="Bridges" unique_id=463498369 instance=ExtResource("6_np2xp")]
+transform = Transform3D(0.36427552, 0.2092377, 0.9074817, 1.3087984e-08, 0.9744339, -0.22467484, -0.93129116, 0.081843615, 0.35496253, 101.85688, 7.36217, 208.628)
+
+[node name="Bridge3" parent="Bridges" unique_id=899675564 instance=ExtResource("6_np2xp")]
+transform = Transform3D(0.3314485, 0.21524118, 0.96941483, -7.1737816e-09, 0.98600507, -0.23669635, -0.9628488, 0.07409405, 0.33370876, 96.238495, 7.36217, 224.61067)
+
+[node name="Bridge4" parent="Bridges" unique_id=1700131876 instance=ExtResource("6_np2xp")]
+transform = Transform3D(-0.227288, 0.22200797, 1.0105608, -3.5107226e-09, 0.9892456, -0.24000823, -0.94151735, -0.05359405, -0.24395537, 94.62863, 7.36217, 255.5134)
+
+[node name="FinalArea" type="Area3D" parent="." unique_id=761652851]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 175.49533, 7, 244)
+script = ExtResource("14_ie368")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FinalArea" unique_id=338014546]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -170.71979, 7.129883, -0.572052)
+shape = SubResource("CylinderShape3D_2ruxo")
+
+[connection signal="body_entered" from="FinalArea" to="FinalArea" method="_on_body_entered"]

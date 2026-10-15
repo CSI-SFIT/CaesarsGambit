@@ -223,17 +223,40 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.849
 [node name="Enemy2" parent="Enemies" unique_id=121339317 instance=ExtResource("2_38qbd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.8498535)
 
+[node name="Enemy6" parent="Enemies" unique_id=334555775 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, -4.266882)
+
+[node name="Enemy7" parent="Enemies" unique_id=881689773 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -99.302055, -63.695236, -4.266882)
+
+[node name="Enemy9" parent="Enemies" unique_id=892797672 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -99.302055, -63.695236, 1.3130407)
+moveSpeed = 6.0
+
+[node name="Enemy10" parent="Enemies" unique_id=1604310610 instance=ExtResource("2_38qbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -83.68173, -63.695236, 1.3130407)
+
 [node name="Enemy3" parent="Enemies" unique_id=205148015 instance=ExtResource("2_38qbd")]
 transform = Transform3D(-0.30234772, 0, -0.9531977, 0, 1, 0, 0.9531977, 0, -0.30234772, -76.41214, -63.695236, -9.650539)
+moveSpeed = 7.0
 
 [node name="Enemy4" parent="Enemies" unique_id=1058549092 instance=ExtResource("2_38qbd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -72.62681, -63.695236, 10.8498535)
 
 [node name="Enemy8" parent="Enemies" unique_id=1798504058 instance=ExtResource("2_38qbd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93.90894, -63.695236, 20.64045)
+moveSpeed = 8.0
 
 [node name="Enemy5" parent="Enemies" unique_id=1039448338 instance=ExtResource("2_38qbd")]
 transform = Transform3D(0.78884166, 0, -0.6145965, 0, 1, 0, 0.6145965, 0, 0.78884166, -103.83968, -63.695236, 20.523499)
+
+[node name="Enemy11" parent="Enemies" unique_id=631350238 instance=ExtResource("2_38qbd")]
+transform = Transform3D(0.78884166, 0, -0.6145965, 0, 1, 0, 0.6145965, 0, 0.78884166, -94.59877, -63.695236, -19.939514)
+moveSpeed = 8.0
+
+[node name="Enemy12" parent="Enemies" unique_id=732843795 instance=ExtResource("2_38qbd")]
+transform = Transform3D(0.78884166, 0, -0.6145965, 0, 1, 0, 0.6145965, 0, 0.78884166, -112.22763, -63.695236, 1.6624413)
+moveSpeed = 8.0
 
 [node name="Lights" type="Node3D" parent="." unique_id=1865743964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -66.12018, -63.695236, 10.8498535)
@@ -268,4 +291,4 @@ use_collision = true
 size = Vector3(1, 13.3307495, 5.5355225)
 
 [node name="ChurchGateButton" parent="." unique_id=738248265 instance=ExtResource("4_4ofem")]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -87.963295, -59.731316, -22.627018)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -87.864655, -60.634537, -22.627018)
