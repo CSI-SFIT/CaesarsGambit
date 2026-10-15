@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b3lkp58vtjugb" path="res://3D_MODELS/Logic Game/materials/rocky_texture.jpg" id="2_cyyhn"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2ruxo"]
-radius = 3.1436338
+radius = 3.0048409
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_28flt"]
 albedo_texture = ExtResource("2_cyyhn")
@@ -28,7 +28,7 @@ shape = SubResource("SphereShape3D_2ruxo")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="CollisionShape3D" unique_id=1345973103]
 use_collision = true
-radius = 3.2
+radius = 3.05
 rings = 10
 material = SubResource("StandardMaterial3D_28flt")
 

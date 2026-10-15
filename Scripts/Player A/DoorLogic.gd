@@ -78,7 +78,7 @@ func _unhandled_input(event):
 	#if not is_multiplayer_authority():
 		#return
 	if event.is_action_pressed("interact") or Input.is_key_pressed(KEY_E):
-		print("E PRESSEDDD")
+		#print("E PRESSEDDD")
 		if player_near and not is_open:
 			if ui_layer.get_node("Panel").visible:
 				close_ui()

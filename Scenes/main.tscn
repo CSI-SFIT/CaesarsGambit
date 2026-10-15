@@ -28,15 +28,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 128.98373, 13.353421, -29.301
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PlayerSpawnPoint_Decipher" unique_id=1737068389]
+visible = false
 material = SubResource("StandardMaterial3D_2ruxo")
 
 [node name="PlayerSpawnPoint_Logic" type="Area3D" parent="." unique_id=1139129356 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 176.42084, 4.0697136, 258.35638)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 303.19525, 4.0697136, 463.6835)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Logic" unique_id=1034669594]
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PlayerSpawnPoint_Logic" unique_id=1134796167]
+visible = false
 material = SubResource("StandardMaterial3D_2ruxo")
 
 [node name="PlayerSpawnPoint_Maze" type="Area3D" parent="." unique_id=946165787 groups=["spawn_points"]]
@@ -49,6 +51,7 @@ shape = SubResource("BoxShape3D_h2yge")
 mesh = SubResource("BoxMesh_jjvhh")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PlayerSpawnPoint_Maze" unique_id=408788221]
+visible = false
 material = SubResource("StandardMaterial3D_2ruxo")
 
 [node name="PlayerSpawnPoint_Final" type="Area3D" parent="." unique_id=1314996688 groups=["spawn_points"]]
@@ -58,6 +61,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 142.88232, 4.708128, 240.4088
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PlayerSpawnPoint_Final" unique_id=1266926888]
+visible = false
 material = SubResource("StandardMaterial3D_2ruxo")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1745204795]
@@ -65,12 +69,13 @@ _spawnable_scenes = PackedStringArray("uid://dy0i40wui8vg7")
 spawn_path = NodePath("..")
 
 [node name="PlayerSpawnPoint_Church" type="Area3D" parent="." unique_id=373719730 groups=["spawn_points"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 162.59404, 19.201862, 257.99634)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96.283394, 3.7729435, 550.3853)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerSpawnPoint_Church" unique_id=1862638098]
 shape = SubResource("BoxShape3D_h2yge")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PlayerSpawnPoint_Church" unique_id=328850406]
+visible = false
 material = SubResource("StandardMaterial3D_2ruxo")
 
 [node name="Map" parent="." unique_id=1100865031 instance=ExtResource("3_8gbba")]

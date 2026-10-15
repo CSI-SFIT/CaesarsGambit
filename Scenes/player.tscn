@@ -30,10 +30,9 @@ properties/3/replication_mode = 1
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
 floor_stop_on_slope = false
 script = ExtResource("1_x3wgy")
-on_ground_speed = 15.0
+on_ground_speed = 10.0
+in_air_speed = 8.0
 jump_velocity = 8.0
-input_left = "move_right"
-input_right = "move_left"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1271453329]
 transform = Transform3D(-1, -7.642742e-15, 8.742278e-08, 0, -1, -8.742278e-08, 8.742278e-08, -8.742278e-08, 1, 0.8668542, 4.626953, 2.7148018)

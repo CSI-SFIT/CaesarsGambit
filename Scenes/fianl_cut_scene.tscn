@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cnqu0iukwskim"]
+
+[ext_resource type="VideoStream" uid="uid://bwvddw1r88rjt" path="res://TV STATIC (4K 60FPS).ogv" id="1_08t2i"]
+[ext_resource type="Script" uid="uid://d3wxjilncirue" path="res://Scripts/fianl_cut_sceneScript.gd" id="1_o5d5e"]
+
+[node name="FianlCutScene" type="Control" unique_id=965099807]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_o5d5e")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1169601524]
+position = Vector2(568, 325)
+zoom = Vector2(1.175, 1.175)
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1747385631]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+stream = ExtResource("1_08t2i")
+autoplay = true

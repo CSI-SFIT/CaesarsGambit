@@ -10,7 +10,7 @@ var door_left_finalpos
 @onready var door_left = $"../doors/CSGBox3D2"
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	door_left_finalpos = door_left.global_position + Vector3(0,0,5)
+	door_left_finalpos = door_left.global_position + Vector3(0,25,0)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -36,9 +36,9 @@ func openDoors(delta):
 	
 	#var right_door_initial = door_right.global_position
 	
-	if(door_left.global_position.z <= door_left_finalpos.z):
-		door_left.global_position += Vector3(0,0,2*delta)
-		door_right.global_position -= Vector3(0,0,2*delta)
+	if(door_left.global_position.y <= door_left_finalpos.y):
+		door_left.global_position += Vector3(0,2*delta,0)
+		door_right.global_position += Vector3(0,2*delta,0)
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:

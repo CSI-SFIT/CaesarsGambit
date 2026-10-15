@@ -15,6 +15,9 @@ var players: Dictionary = {}        # pid (int) -> player node, filled on EVERY 
 var spawn_points: Dictionary = {}   # SpawnPointNames value -> Area3D (server only)
 var spawn_owners: Dictionary = {}   # SpawnPointNames value -> pid (server only)
 
+const FIANL_CUT_SCENE = preload("uid://cnqu0iukwskim")
+
+
 # ---------- Players (all peers) ----------
 func registerPlayer(pid: int, player: Node) -> void:
 	if players.has(pid):
@@ -79,3 +82,35 @@ func _teleport_all_rpc(target_pos: Vector3) -> void:
 		var p = players[pid]
 		if is_instance_valid(p) and p.has_method("teleport_to"):
 			p.teleport_to(target_pos)
+
+# ---------- Players (all peers) ----------
+
+## Call this to drop a player across all connected peers
+@rpc("any_peer", "call_local", "reliable")
+func dropPlayer(pid: int) -> void:
+	if players.erase(pid):
+		EventBus.player_count = players.size()
+		player_unregistered.emit(pid)
+		print("Peer %d successfully dropped from GameManager. Remaining: %d" % [pid, players.size()])
+		
+		# ONLY the server decides when all players have finished
+		if multiplayer.is_server() and players.is_empty():
+			print("All players cleared the level! Starting cutscene for everyone...")
+			playCutscene.rpc()
+	else:
+		push_warning("Attempted to drop non-existent peer ID: %d" % pid)
+
+## Broadcasts the cutscene trigger to every connected machine (host + clients)
+@rpc("call_local", "reliable")
+func playCutscene() -> void:
+	print("Playing cutscene on peer: ", multiplayer.get_unique_id())
+	# Ensure the filename matches your actual file name in the FileSystem dock
+	get_tree().change_scene_to_file("res://Scenes/fianl_cut_scene.tscn")
+	
+	# 1. Disable player inputs/HUD if needed
+	# UI.hide_game_hud()
+	
+	# 2. Trigger your AnimationPlayer, Camera switch, or cutscene scene
+	# $CutsceneAnimationPlayer.play("end_level_cutscene")
+	# Or load/change to a cutscene scene:
+	# get_tree().change_scene_to_file("res://Scenes/Cutsc
