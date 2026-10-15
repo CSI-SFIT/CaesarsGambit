@@ -47,10 +47,14 @@ transparency = 1
 albedo_color = Color(0.34901962, 1, 1, 0.23137255)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xwue4"]
-size = Vector3(3, 3, 3)
+size = Vector3(3.4346924, 3, 2.8660889)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdfb5"]
 albedo_texture = ExtResource("2_f8vpv")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_y8wm3"]
+height = 54.0
+radius = 45.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_suv43"]
 size = Vector3(100, 2, 100)
@@ -434,7 +438,7 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 1, 0, 2, -10)
 use_collision = true
 material = SubResource("StandardMaterial3D_fdfb5")
 script = ExtResource("1_0xm2m")
-secret_word = "CAESAR"
+secret_word = "SWORD"
 symbol_wall = NodePath("../SymbollWall")
 ui_layer = NodePath("../UI")
 
@@ -739,10 +743,10 @@ clue_ui = NodePath("PaperUI/ClueImage")
 interact_prompt = NodePath("PaperUI/InteractPrompt")
 
 [node name="PaperInteractZone" type="Area3D" parent="BottomFloor/Props/round_table" unique_id=1160608487]
-transform = Transform3D(33.333336, 0, 0, 0, 33.333336, 0, 0, 0, 33.333336, 33.575195, 5.1892395, 51.242554)
+transform = Transform3D(33.333336, 0, 0, 0, 33.333336, 0, 0, 0, 33.333336, -12.139282, 5.1892395, 28.408203)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BottomFloor/Props/round_table/PaperInteractZone" unique_id=1513703597]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8265858, 0.78335, -1.8006668)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3254814, 0.78335, -1.0284538)
 shape = SubResource("BoxShape3D_xwue4")
 
 [node name="PaperUI" type="CanvasLayer" parent="BottomFloor/Props/round_table" unique_id=1317942990]
@@ -778,6 +782,10 @@ theme_override_font_sizes/font_size = 36
 text = "Press 'E' to read."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="BottomFloor/Props/round_table" unique_id=357149957]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.472473, 48.268494, -3.1311035)
+shape = SubResource("CylinderShape3D_y8wm3")
 
 [node name="shield3" parent="BottomFloor/Props" unique_id=1271814311 instance=ExtResource("22_ulb5w")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -7.919998, 4.3766165, 8.852478)

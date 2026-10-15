@@ -1,6 +1,6 @@
 extends CSGBox3D
 
-@export var secret_word: String = "LEGION"
+@export var secret_word: String = "ARENA"
 @export var symbol_wall: Label3D
 @export var ui_layer: CanvasLayer
 
