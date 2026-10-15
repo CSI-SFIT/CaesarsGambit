@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://b01ngenuvs5xo" path="res://3D_MODELS/Maze/textures/stonepath/grey_stone_path_nor_gl_1k.jpg" id="2_nw8dj"]
 [ext_resource type="Texture2D" uid="uid://cyycmyqgydt27" path="res://3D_MODELS/Maze/textures/stonepath/grey_stone_path_rough_1k.jpg" id="3_xhimc"]
 [ext_resource type="PackedScene" uid="uid://tv3xaa0c1p4i" path="res://3D_MODELS/Maze/wall_3.glb" id="4_ugm30"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="7_mjrf4"]
 [ext_resource type="PackedScene" uid="uid://d0obbjwaufdcx" path="res://Scenes/Logic Game/barrel.tscn" id="8_glv4d"]
 [ext_resource type="PackedScene" uid="uid://qg2g5liw8yc5" path="res://Scenes/Decipher Game/old_chest.tscn" id="9_dnyu5"]
 [ext_resource type="PackedScene" uid="uid://b17ewwjhg0t10" path="res://Scenes/Logic Game/shield.tscn" id="10_ifb1s"]
@@ -511,9 +510,6 @@ transform = Transform3D(0.8660254, 0.3535534, -0.3535534, 0, 0.7071068, 0.707106
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1850075726]
 environment = SubResource("Environment_6jia0")
-
-[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("7_mjrf4")]
-transform = Transform3D(-1.09278474e-07, 0, -2.5, 0, 2.5, 0, 2.5, 0, -1.09278474e-07, -53.93774, 1.6550732, -19.222027)
 
 [node name="Props" type="Node3D" parent="." unique_id=449312305]
 
