@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cqwuyyrfbr35r" path="res://Scenes/moving_platform.tscn" id="1_0ohsc"]
 [ext_resource type="Texture2D" uid="uid://5rcyj4gsmghk" path="res://3D_MODELS/Lever/textures/stone path/stone_pathway_02_diff_1k.jpg" id="1_1kj1s"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="2_1btnt"]
+[ext_resource type="Script" uid="uid://djxxptdem7g5f" path="res://Scripts/leverDir.gd" id="1_raab4"]
 [ext_resource type="Texture2D" uid="uid://buuiui810yj5y" path="res://3D_MODELS/Lever/textures/stone path/stone_pathway_02_nor_gl_1k.jpg" id="2_gk4f0"]
 [ext_resource type="PackedScene" uid="uid://x126v41alklt" path="res://Scenes/interactive_lever.tscn" id="5_h01c4"]
 [ext_resource type="PackedScene" uid="uid://40jawpfdjme5" path="res://3D_MODELS/Lever/staircase/stairs.tscn" id="6_gk4f0"]
@@ -26,6 +26,7 @@ uv1_triplanar = true
 albedo_color = Color(0.23371682, 0.21331409, 0.19445145, 1)
 
 [node name="Lever" type="Node3D" unique_id=1357982526]
+script = ExtResource("1_raab4")
 
 [node name="arena" type="CSGBox3D" parent="." unique_id=1095855467]
 transform = Transform3D(1.7, 0, 0, 0, 1, 0, 0, 0, 1.5600001, -0.18702126, 4.092222, 1.4739637)
@@ -121,9 +122,6 @@ text = "Press [E] to pull lever"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("2_1btnt")]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 1.118772, 9.861749, 15.518753)
-
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1343552710]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 35.46227, 0)
 light_energy = 5.474
@@ -166,3 +164,9 @@ transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 8.016081, 12.262064, -1
 
 [node name="Torch4" parent="Props" unique_id=233721791 instance=ExtResource("13_gem5v")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -8.25071, 12.262064, -16.835135)
+
+[node name="pointA" type="CSGBox3D" parent="." unique_id=1195841997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.8, -6.1)
+
+[node name="pointB" type="CSGBox3D" parent="." unique_id=1375695839]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.8, 8.7)

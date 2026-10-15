@@ -5,32 +5,34 @@
 [ext_resource type="PackedScene" uid="uid://b0imsajbud2bb" path="res://Scenes/player_a_decipher.tscn" id="3_np2xp"]
 [ext_resource type="PackedScene" uid="uid://dgxwjfvameiu7" path="res://maze.tscn" id="4_w7jjh"]
 [ext_resource type="PackedScene" uid="uid://bh1qaunbo6076" path="res://lever.tscn" id="5_q0mm3"]
+[ext_resource type="PackedScene" uid="uid://dme05k5bn0uqi" path="res://Scenes/bridge.tscn" id="6_np2xp"]
 
 [node name="Map" type="Node3D" unique_id=1100865031]
 
 [node name="Logic Game" parent="." unique_id=448762608 instance=ExtResource("1_myvm1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -77.49495, 0, 0)
+transform = Transform3D(-0.99998975, 0, -0.004528054, 0, 1, 0, 0.004528054, 0, -0.99998975, 286.48218, 0, 476.383)
 
 [node name="Church" parent="." unique_id=1049898661 instance=ExtResource("2_q0mm3")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -161.98665, 67.899994, -51.465714)
+transform = Transform3D(-0.40845305, 0, -0.91277933, 0, 1, 0, 0.91277933, 0, -0.40845305, 83.81224, 69.52841, 546.77765)
 
 [node name="Decipher" parent="." unique_id=1190309061 instance=ExtResource("3_np2xp")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 126.59296, 11.421785, -24.668312)
 
 [node name="Maze" parent="." unique_id=44194881 instance=ExtResource("4_w7jjh")]
-transform = Transform3D(0.86602545, 0, 0.5, 0, 1, 0, -0.5, 0, 0.86602545, 333.36963, 1, 36.84539)
+transform = Transform3D(0.86602545, 0, 0.5, 0, 1, 0, -0.5, 0, 0.86602545, 310.27625, 1, 47.485794)
 
 [node name="Maze Path" type="CSGCombiner3D" parent="." unique_id=503329567]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 311.692, -0.64152145, -2.965004)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 311.692, -0.4509735, -2.965004)
 use_collision = true
 
 [node name="floor" type="CSGBox3D" parent="Maze Path" unique_id=1891846053]
 transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -99.36276, 2, 71.2323)
+visible = false
 size = Vector3(97, 1, 100)
 
 [node name="path wall" type="CSGBox3D" parent="Maze Path" unique_id=1315806515]
-transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -66.51523, 6, 68.61291)
-size = Vector3(1, 8, 40.16516)
+transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -65.615204, 6, 68.505356)
+size = Vector3(1.7137451, 8, 41.831604)
 
 [node name="path wall3" type="CSGBox3D" parent="Maze Path" unique_id=774394753]
 transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -79.49408, 6, 91.64816)
@@ -93,15 +95,16 @@ transform = Transform3D(-0.68377393, 0, -0.72969395, 0, 1, 0, 0.72969395, 0, -0.
 size = Vector3(1, 8, 47)
 
 [node name="path wall2" type="CSGBox3D" parent="Maze Path" unique_id=2061377106]
-transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -70.36862, 6, 62.103767)
-size = Vector3(1, 8, 40)
+transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -69.652145, 6, 61.246105)
+size = Vector3(1.769043, 8, 42.098633)
 
 [node name="Decipher Path" type="CSGCombiner3D" parent="." unique_id=1771829199]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.34793, -0.64152145, -23.202404)
 use_collision = true
 
 [node name="floor" type="CSGBox3D" parent="Decipher Path" unique_id=112642787]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93, 2, 115.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93, 2.2133694, 115.5)
+visible = false
 size = Vector3(97, 1, 100)
 
 [node name="path wall" type="CSGBox3D" parent="Decipher Path" unique_id=1705047541]
@@ -175,6 +178,39 @@ size = Vector3(1, 8, 40)
 [node name="Lever" parent="." unique_id=1357982526 instance=ExtResource("5_q0mm3")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 176.34631, -5.775942, 165.38815)
 
+[node name="Lever2" parent="." unique_id=946751643 instance=ExtResource("5_q0mm3")]
+transform = Transform3D(0.9999806, 0, 0.006227628, 0, 1, 0, -0.006227628, 0, 0.9999806, 176.34631, -5.775942, 320.94186)
+opp_dir = true
+
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1237623182]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 177.5, 1.4850588, 109.5)
-size = Vector3(42, 1, 68)
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 62.099182)
+use_collision = true
+size = Vector3(63.02881, 1, 8.237152)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=991273088]
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 41.69803)
+use_collision = true
+size = Vector3(63.02881, 1, 10.277267)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=336102902]
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 483.85223)
+use_collision = true
+size = Vector3(63.02881, 1, 14.402588)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="." unique_id=666232815]
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.44879, -7.8988056, 243.12408)
+use_collision = true
+size = Vector3(63.02881, 1, 5.8720703)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=155008767]
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.51556, -18.003405, 161.17584)
+use_collision = true
+size = Vector3(62.88321, 1, 2.5325928)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="." unique_id=483482605]
+transform = Transform3D(5.785574, 0, 0, 0, 20, 0, 0, 0, 20, 213.51556, -18.003405, 314.69492)
+use_collision = true
+size = Vector3(62.88321, 1, 2.5325928)
+
+[node name="Bridge" parent="." unique_id=1971865391 instance=ExtResource("6_np2xp")]
+transform = Transform3D(-4.2593854e-08, 0.2246748, 0.9744338, 9.820847e-09, 0.9744338, -0.2246748, -1, 0, -4.371139e-08, 4.9454536, 7.36217, 281.10913)

@@ -18,7 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://qg2g5liw8yc5" path="res://Scenes/Decipher Game/old_chest.tscn" id="13_2guir"]
 [ext_resource type="PackedScene" uid="uid://bqpxjgpguiyou" path="res://Scenes/Decipher Game/roman_stairs.tscn" id="13_epqfo"]
 [ext_resource type="Script" uid="uid://dw1cv0b10q8k8" path="res://Scripts/Player A/Killzone.gd" id="15_epqfo"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="20_b6gue"]
 [ext_resource type="PackedScene" uid="uid://d0obbjwaufdcx" path="res://Scenes/Logic Game/barrel.tscn" id="20_sue60"]
 [ext_resource type="PackedScene" uid="uid://ddrrxtpryrwqk" path="res://Scenes/Logic Game/water_barrel.tscn" id="21_sue60"]
 [ext_resource type="PackedScene" uid="uid://b17ewwjhg0t10" path="res://Scenes/Logic Game/shield.tscn" id="22_ulb5w"]
@@ -63,7 +62,7 @@ size = Vector3(100, 2, 100)
 font_size = 72
 font_color = Color(0.88601404, 0.15845767, 4.813075e-07, 1)
 
-[node name="Main" type="Node3D" unique_id=1190309061 groups=["player"]]
+[node name="Main" type="Node3D" unique_id=1190309061 groups=["PlayerGroup", "player"]]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=382672486]
 environment = SubResource("Environment_4p6xf")
@@ -811,6 +810,7 @@ script = ExtResource("2_1bvp3")
 
 [node name="MeetingPoint" type="CSGBox3D" parent="." unique_id=1125147446]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10, -85)
+visible = false
 use_collision = true
 size = Vector3(40, 0.1, 40)
 material = ExtResource("1_bcdqc")
@@ -864,9 +864,6 @@ transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.6
 
 [node name="straight_tile4" parent="Stairs" unique_id=234346993 instance=ExtResource("10_bcdqc")]
 transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -10.416549, -42.276936)
-
-[node name="Player" parent="." unique_id=2028054972 groups=["player"] instance=ExtResource("20_b6gue")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -1.6829727, 0.2026217, 3.7528417)
 
 [node name="BGM" type="AudioStreamPlayer" parent="." unique_id=1752280718]
 

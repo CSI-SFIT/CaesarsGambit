@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bons4mscsshi8"]
 
 [ext_resource type="Script" uid="uid://nqddb6awlb4w" path="res://Scripts/Logic Level/logic_game_manager.gd" id="1_3lx2b"]
-[ext_resource type="PackedScene" uid="uid://dy0i40wui8vg7" path="res://Scenes/player.tscn" id="1_igttw"]
 [ext_resource type="Texture2D" uid="uid://c4j65gnrehktj" path="res://3D_MODELS/Logic Game/1.png" id="2_2guj4"]
 [ext_resource type="PackedScene" uid="uid://4sypgx8thdnf" path="res://Scenes/Logic Game/boulder.tscn" id="2_3lx2b"]
 [ext_resource type="Material" uid="uid://ccqrgq3avsqt3" path="res://3D_MODELS/Arch Kit/materials/plain_tile.tres" id="2_uxn6t"]
@@ -56,9 +55,6 @@ environment = SubResource("Environment_g70r1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=549879758]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-
-[node name="Player" parent="." unique_id=2028054972 instance=ExtResource("1_igttw")]
-transform = Transform3D(-6.556708e-08, 0, -1.5, 0, 1.5, 0, 1.5, 0, -6.556708e-08, -21.977566, 1.0778174, -2.9108238)
 
 [node name="PuzzleUI" type="CanvasLayer" parent="." unique_id=1263386854]
 
