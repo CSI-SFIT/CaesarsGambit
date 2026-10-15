@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://bqy1qkph1ma26" path="res://addons/music/falling_rocks.mp3" id="3_oux33"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2ruxo"]
-radius = 3.0048409
+radius = 2.7578964
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_28flt"]
 albedo_texture = ExtResource("2_cyyhn")
@@ -29,7 +29,7 @@ shape = SubResource("SphereShape3D_2ruxo")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="CollisionShape3D" unique_id=1345973103]
 use_collision = true
-radius = 3.05
+radius = 2.8
 rings = 10
 material = SubResource("StandardMaterial3D_28flt")
 

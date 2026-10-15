@@ -19,15 +19,6 @@ normal_enabled = true
 normal_texture = ExtResource("2_nw8dj")
 uv1_triplanar = true
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7j0gi"]
-
-[sub_resource type="Sky" id="Sky_7as5j"]
-sky_material = SubResource("ProceduralSkyMaterial_7j0gi")
-
-[sub_resource type="Environment" id="Environment_6jia0"]
-background_mode = 2
-sky = SubResource("Sky_7as5j")
-
 [node name="Maze" type="Node3D" unique_id=44194881]
 
 [node name="Walls" type="CSGCombiner3D" parent="." unique_id=933175712]
@@ -569,9 +560,6 @@ transform = Transform3D(-6.834297e-07, 0, 4, 0, 4, 0, -4, 0, -6.834297e-07, -29.
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1312470643]
 transform = Transform3D(0.8660254, 0.3535534, -0.3535534, 0, 0.7071068, 0.7071068, 0.5, -0.61237246, 0.61237246, 0, 25.95208, 0)
 visible = false
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1850075726]
-environment = SubResource("Environment_6jia0")
 
 [node name="Props" type="Node3D" parent="." unique_id=449312305]
 

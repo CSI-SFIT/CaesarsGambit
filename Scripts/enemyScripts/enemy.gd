@@ -15,7 +15,7 @@ var current_state: State = State.PATROL
 @export var min_patrol_distance: float = 3.5
 
 @export_group("Chase & Teleport Timers")
-@export var maxChaseTime: float = 6.0
+@export var maxChaseTime: float = 2.5
 @export var maxWaitTime: float = 1.5
 @export var maxInvestigateWait: float = 2.0
 @export var investigate_timeout: float = 6.0
