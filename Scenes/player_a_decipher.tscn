@@ -47,10 +47,14 @@ transparency = 1
 albedo_color = Color(0.34901962, 1, 1, 0.23137255)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xwue4"]
-size = Vector3(3, 3, 3)
+size = Vector3(3.4346924, 3, 2.8660889)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdfb5"]
 albedo_texture = ExtResource("2_f8vpv")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_y8wm3"]
+height = 54.0
+radius = 45.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_suv43"]
 size = Vector3(100, 2, 100)
@@ -59,7 +63,7 @@ size = Vector3(100, 2, 100)
 font_size = 72
 font_color = Color(0.88601404, 0.15845767, 4.813075e-07, 1)
 
-[node name="Decipher" type="Node3D" unique_id=1190309061]
+[node name="Main" type="Node3D" unique_id=1190309061 groups=["player"]]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=382672486]
 environment = SubResource("Environment_4p6xf")
@@ -390,9 +394,6 @@ text = "Press 'E' to read."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Player" parent="TopFloor/props" unique_id=2028054972 instance=ExtResource("20_b6gue")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -1.6829727, 0.2026217, 3.7528417)
-
 [node name="barrel4" parent="TopFloor/props" unique_id=1940533345 instance=ExtResource("20_sue60")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -8.00032, 1.3166232, -4.562265)
 
@@ -437,7 +438,7 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 1, 0, 2, -10)
 use_collision = true
 material = SubResource("StandardMaterial3D_fdfb5")
 script = ExtResource("1_0xm2m")
-secret_word = "CAESAR"
+secret_word = "SWORD"
 symbol_wall = NodePath("../SymbollWall")
 ui_layer = NodePath("../UI")
 
@@ -742,10 +743,10 @@ clue_ui = NodePath("PaperUI/ClueImage")
 interact_prompt = NodePath("PaperUI/InteractPrompt")
 
 [node name="PaperInteractZone" type="Area3D" parent="BottomFloor/Props/round_table" unique_id=1160608487]
-transform = Transform3D(33.333336, 0, 0, 0, 33.333336, 0, 0, 0, 33.333336, 33.575195, 5.1892395, 51.242554)
+transform = Transform3D(33.333336, 0, 0, 0, 33.333336, 0, 0, 0, 33.333336, -12.139282, 5.1892395, 28.408203)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BottomFloor/Props/round_table/PaperInteractZone" unique_id=1513703597]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8265858, 0.78335, -1.8006668)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3254814, 0.78335, -1.0284538)
 shape = SubResource("BoxShape3D_xwue4")
 
 [node name="PaperUI" type="CanvasLayer" parent="BottomFloor/Props/round_table" unique_id=1317942990]
@@ -781,6 +782,10 @@ theme_override_font_sizes/font_size = 36
 text = "Press 'E' to read."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="BottomFloor/Props/round_table" unique_id=357149957]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.472473, 48.268494, -3.1311035)
+shape = SubResource("CylinderShape3D_y8wm3")
 
 [node name="shield3" parent="BottomFloor/Props" unique_id=1271814311 instance=ExtResource("22_ulb5w")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -7.919998, 4.3766165, 8.852478)
@@ -859,6 +864,11 @@ transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.6
 
 [node name="straight_tile4" parent="Stairs" unique_id=234346993 instance=ExtResource("10_bcdqc")]
 transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -10.416549, -42.276936)
+
+[node name="Player" parent="." unique_id=2028054972 groups=["player"] instance=ExtResource("20_b6gue")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -1.6829727, 0.2026217, 3.7528417)
+
+[node name="BGM" type="AudioStreamPlayer" parent="." unique_id=1752280718]
 
 [connection signal="body_entered" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_exited"]
