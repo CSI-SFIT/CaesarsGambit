@@ -1,13 +1,15 @@
 extends CanvasGroup
 @onready var line_edit: LineEdit = $Control/VBoxContainer_inputIP/LineEdit
-@onready var v_box_container: VBoxContainer = $Control/VBoxContainer
-@onready var v_box_container_input_ip: VBoxContainer = $Control/VBoxContainer_inputIP
+@onready var v_box_container = $Control/VBoxContainer
+@onready var v_box_container_input_ip = $Control/VBoxContainer_inputIP
+@onready var animation_player: AnimationPlayer = $"../AnimationPlayer"
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	v_box_container.show()
 	v_box_container_input_ip.hide()
+	animation_player.play("mainMenuCamMotion")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
