@@ -261,8 +261,13 @@ func check_input_mappings():
 		push_error("Freefly disabled. No InputAction found for input_freefly: " + input_freefly)
 		can_freefly = false
 
-func teleport_to(target_pos: Vector3) -> void:
-	global_position = target_pos
+func teleport_to(new_position: Vector3) -> void:
+	# 1. Zero out forces/velocities
 	velocity = Vector3.ZERO
-	if is_instance_valid(head):
-		head.global_transform.origin = global_position + head_local_offset
+	
+	# 2. Snap to coordinates
+	global_position = new_position
+	
+	# 3. If using a custom CharacterBody3D or NavigationAgent3D:
+	if has_node("NavigationAgent3D"):
+		$NavigationAgent3D.set_target_position(new_position)

@@ -1,25 +1,27 @@
 extends Node3D
-@onready var rock_scene: = preload("res://Scenes/falling_rock.tscn")
 
-var timer:=0.0
-var rockFallInterval = 1.0
-# Called when the node enters the scene tree for the first time.
+@onready var rock_scene: PackedScene = preload("res://Scenes/falling_rock.tscn")
+
+var timer: float = 0.0
+var rockFallInterval: float = 3.0
+
 func _ready() -> void:
-	pass # Replace with function body.
+	# Disable processing completely if this peer is not the server
+	if not multiplayer.is_server():
+		set_process(false)
+		set_physics_process(false)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	timer+=delta
-	if(timer >= rockFallInterval):
-		timer=0.0
-		spawnRock()
-		#print("Spawned")
-		
+	# Secondary safety check
+	if not multiplayer.is_server():
+		return
 
-func spawnRock():
+	timer += delta
+	if timer >= rockFallInterval:
+		timer = 0.0
+		spawnRock()
+
+func spawnRock() -> void:
 	var rock = rock_scene.instantiate()
-	add_child(rock)
-	#rock = transform.global_position
-	
-	
+	# Pass true to enforce matching node names across all peers
+	add_child(rock, true)

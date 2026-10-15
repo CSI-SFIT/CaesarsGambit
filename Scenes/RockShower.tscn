@@ -18,3 +18,7 @@ shape = SubResource("BoxShape3D_2ruxo")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Area3D" unique_id=72817236]
 material = SubResource("StandardMaterial3D_oux33")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=796997055]
+_spawnable_scenes = PackedStringArray("uid://cni08y7tqx06w")
+spawn_path = NodePath("..")

@@ -61,3 +61,21 @@ func getSpawnPointPosition(point: SpawnPointNames) -> Vector3:
 		return spawn_points[point].global_position
 	push_warning("Spawn point %s not found" % SpawnPointNames.keys()[point])
 	return Vector3.ZERO
+	
+func respawn_all_team(spawn_point_name: SpawnPointNames) -> void:
+	if not multiplayer.is_server():
+		return
+
+	# 1. Resolve the spawn coordinates once on the server
+	var target_pos: Vector3 = getSpawnPointPosition(spawn_point_name)
+	print("Server resolved spawn position to: ", target_pos)
+
+	# 2. Broadcast the exact Vector3 to all peers
+	_teleport_all_rpc.rpc(target_pos)
+
+@rpc("call_local", "reliable")
+func _teleport_all_rpc(target_pos: Vector3) -> void:
+	for pid in players:
+		var p = players[pid]
+		if is_instance_valid(p) and p.has_method("teleport_to"):
+			p.teleport_to(target_pos)
