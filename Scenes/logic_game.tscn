@@ -18,17 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://b17ewwjhg0t10" path="res://Scenes/Logic Game/shield.tscn" id="17_uft6j"]
 [ext_resource type="PackedScene" uid="uid://ddrrxtpryrwqk" path="res://Scenes/Logic Game/water_barrel.tscn" id="18_ydbge"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_igttw"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-
-[sub_resource type="Sky" id="Sky_3lx2b"]
-sky_material = SubResource("ProceduralSkyMaterial_igttw")
-
-[sub_resource type="Environment" id="Environment_g70r1"]
-background_mode = 2
-sky = SubResource("Sky_3lx2b")
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8wm3"]
 albedo_color = Color(1, 1, 0.015686275, 1)
 emission_enabled = true
@@ -49,9 +38,6 @@ script = ExtResource("1_3lx2b")
 gates = [NodePath("Puzzle elements/Boulder Walls/Gate1"), NodePath("Puzzle elements/Boulder Walls/Gate2"), NodePath("Puzzle elements/Boulder Walls/Gate3")]
 boulder = NodePath("Puzzle elements/Boulder")
 clue_images = Array[Texture2D]([ExtResource("2_2guj4"), ExtResource("3_aeagg"), ExtResource("4_3yrle")])
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1186514134]
-environment = SubResource("Environment_g70r1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=549879758]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
