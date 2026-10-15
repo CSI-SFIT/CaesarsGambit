@@ -59,7 +59,7 @@ size = Vector3(100, 2, 100)
 font_size = 72
 font_color = Color(0.88601404, 0.15845767, 4.813075e-07, 1)
 
-[node name="Main" type="Node3D" unique_id=1190309061]
+[node name="Main" type="Node3D" unique_id=1190309061 groups=["player"]]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=382672486]
 environment = SubResource("Environment_4p6xf")
@@ -389,9 +389,6 @@ theme_override_font_sizes/font_size = 36
 text = "Press 'E' to read."
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Player" parent="TopFloor/props" unique_id=2028054972 instance=ExtResource("20_b6gue")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -1.6829727, 0.2026217, 3.7528417)
 
 [node name="barrel4" parent="TopFloor/props" unique_id=1940533345 instance=ExtResource("20_sue60")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -8.00032, 1.3166232, -4.562265)
@@ -859,6 +856,11 @@ transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.6
 
 [node name="straight_tile4" parent="Stairs" unique_id=234346993 instance=ExtResource("10_bcdqc")]
 transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, -0.63632125, -10.416549, -42.276936)
+
+[node name="Player" parent="." unique_id=2028054972 groups=["player"] instance=ExtResource("20_b6gue")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -1.6829727, 0.2026217, 3.7528417)
+
+[node name="BGM" type="AudioStreamPlayer" parent="." unique_id=1752280718]
 
 [connection signal="body_entered" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_entered"]
 [connection signal="body_exited" from="TopFloor/Door/InteractZone" to="TopFloor/Door" method="_on_interact_zone_body_exited"]
