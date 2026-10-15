@@ -4,16 +4,177 @@
 [ext_resource type="PackedScene" uid="uid://xknwtbrpl1ef" path="res://Scenes/church.tscn" id="2_q0mm3"]
 [ext_resource type="PackedScene" uid="uid://b0imsajbud2bb" path="res://Scenes/player_a_decipher.tscn" id="3_np2xp"]
 [ext_resource type="PackedScene" uid="uid://dgxwjfvameiu7" path="res://maze.tscn" id="4_w7jjh"]
+[ext_resource type="PackedScene" uid="uid://bh1qaunbo6076" path="res://lever.tscn" id="5_q0mm3"]
 
 [node name="Map" type="Node3D" unique_id=1100865031]
 
 [node name="Logic Game" parent="." unique_id=448762608 instance=ExtResource("1_myvm1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -77.49495, 0, 0)
 
 [node name="Church" parent="." unique_id=1049898661 instance=ExtResource("2_q0mm3")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -84.4917, 67.899994, -51.465714)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -161.98665, 67.899994, -51.465714)
 
 [node name="Decipher" parent="." unique_id=1190309061 instance=ExtResource("3_np2xp")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 125, 30, -26)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 126.59296, 11.421785, -24.668312)
 
 [node name="Maze" parent="." unique_id=44194881 instance=ExtResource("4_w7jjh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 252, 29, -8)
+transform = Transform3D(0.86602545, 0, 0.5, 0, 1, 0, -0.5, 0, 0.86602545, 333.36963, 1, 36.84539)
+
+[node name="Maze Path" type="CSGCombiner3D" parent="." unique_id=503329567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 311.692, -0.64152145, -2.965004)
+use_collision = true
+
+[node name="floor" type="CSGBox3D" parent="Maze Path" unique_id=1891846053]
+transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -99.36276, 2, 71.2323)
+size = Vector3(97, 1, 100)
+
+[node name="path wall" type="CSGBox3D" parent="Maze Path" unique_id=1315806515]
+transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -66.51523, 6, 68.61291)
+size = Vector3(1, 8, 40.16516)
+
+[node name="path wall3" type="CSGBox3D" parent="Maze Path" unique_id=774394753]
+transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -79.49408, 6, 91.64816)
+size = Vector3(1, 8, 27.756836)
+
+[node name="path wall5" type="CSGBox3D" parent="Maze Path" unique_id=2139390898]
+transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -89.27927, 6, 92.93647)
+size = Vector3(1, 8, 20)
+
+[node name="path wall8" type="CSGBox3D" parent="Maze Path" unique_id=1149306807]
+transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -119.9644, 6, 105.06046)
+size = Vector3(1, 8, 8)
+
+[node name="path wall12" type="CSGBox3D" parent="Maze Path" unique_id=1212541587]
+transform = Transform3D(-0.032470495, 0, 0.99947274, 0, 1, 0, -0.99947274, 0, -0.032470495, -123.31781, 6, 108.27578)
+size = Vector3(1, 8, 9.661743)
+
+[node name="path wall17" type="CSGBox3D" parent="Maze Path" unique_id=1752185043]
+transform = Transform3D(-0.032470495, 0, 0.99947274, 0, 1, 0, -0.99947274, 0, -0.032470495, -130.64337, 6, 117.87084)
+size = Vector3(1, 8, 39.49414)
+
+[node name="path wall20" type="CSGBox3D" parent="Maze Path" unique_id=527682399]
+transform = Transform3D(0.6424401, 0, -0.766336, 0, 1, 0, 0.766336, 0, 0.6424401, -100.653076, 6, 125.804146)
+size = Vector3(1, 8, 65.94672)
+
+[node name="path wall18" type="CSGBox3D" parent="Maze Path" unique_id=1821678082]
+transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -98.747955, 6, 109.60587)
+size = Vector3(1, 8, 30)
+
+[node name="path wall10" type="CSGBox3D" parent="Maze Path" unique_id=437639478]
+transform = Transform3D(0.9570125, 0, 0.29004663, 0, 1, 0, -0.29004663, 0, 0.9570125, -129.36906, 6, 102.67936)
+size = Vector3(1, 8, 12)
+
+[node name="path wall6" type="CSGBox3D" parent="Maze Path" unique_id=1762409137]
+transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -106.651764, 6, 92.26795)
+size = Vector3(1, 8, 35)
+
+[node name="path wall7" type="CSGBox3D" parent="Maze Path" unique_id=1779890716]
+transform = Transform3D(0.5278566, 0, -0.8493335, 0, 1, 0, 0.8493335, 0, 0.5278566, -113.69977, 6, 86.0573)
+size = Vector3(1, 8, 41)
+
+[node name="path wall4" type="CSGBox3D" parent="Maze Path" unique_id=2123143680]
+transform = Transform3D(-0.68377393, 0, -0.72969395, 0, 1, 0, 0.72969395, 0, -0.68377393, -101.82733, 6, 57.786522)
+size = Vector3(1, 8, 40.16516)
+
+[node name="path wall14" type="CSGBox3D" parent="Maze Path" unique_id=1757559650]
+transform = Transform3D(-0.7296939, 0, 0.683774, 0, 1, 0, -0.683774, 0, -0.7296939, -114.407745, 6, 41.736076)
+size = Vector3(1, 8, 7)
+
+[node name="path wall15" type="CSGBox3D" parent="Maze Path" unique_id=1719668287]
+transform = Transform3D(-0.7296939, 0, 0.683774, 0, 1, 0, -0.683774, 0, -0.7296939, -125.22307, 6, 38.39028)
+size = Vector3(1, 8, 16)
+
+[node name="path wall16" type="CSGBox3D" parent="Maze Path" unique_id=1663166089]
+transform = Transform3D(0.683774, 0, 0.7296939, 0, 1, 0, -0.7296939, 0, 0.683774, -118.73236, 6, 38.168205)
+size = Vector3(1, 8, 13)
+
+[node name="path wall13" type="CSGBox3D" parent="Maze Path" unique_id=1275949332]
+transform = Transform3D(-0.68377393, 0, -0.72969395, 0, 1, 0, 0.72969395, 0, -0.68377393, -113.48126, 6, 59.583733)
+size = Vector3(1, 8, 47)
+
+[node name="path wall2" type="CSGBox3D" parent="Maze Path" unique_id=2061377106]
+transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, -70.36862, 6, 62.103767)
+size = Vector3(1, 8, 40)
+
+[node name="Decipher Path" type="CSGCombiner3D" parent="." unique_id=1771829199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 209.34793, -0.64152145, -23.202404)
+use_collision = true
+
+[node name="floor" type="CSGBox3D" parent="Decipher Path" unique_id=112642787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -93, 2, 115.5)
+size = Vector3(97, 1, 100)
+
+[node name="path wall" type="CSGBox3D" parent="Decipher Path" unique_id=1705047541]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -78.8447, 6, 85.7435)
+size = Vector3(1, 8, 40.16516)
+
+[node name="path wall3" type="CSGBox3D" parent="Decipher Path" unique_id=1097578294]
+transform = Transform3D(0.22731847, 0, 0.97382045, 0, 1, 0, -0.97382045, 0, 0.22731847, -62.832043, 6, 109.09711)
+size = Vector3(1, 8, 33)
+
+[node name="path wall5" type="CSGBox3D" parent="Decipher Path" unique_id=1667684277]
+transform = Transform3D(0.22731847, 0, 0.97382045, 0, 1, 0, -0.97382045, 0, 0.22731847, -69.16188, 6, 117.61954)
+size = Vector3(1, 8, 20)
+
+[node name="path wall8" type="CSGBox3D" parent="Decipher Path" unique_id=1608180231]
+transform = Transform3D(0.22731847, 0, 0.97382045, 0, 1, 0, -0.97382045, 0, 0.22731847, -74.0048, 6, 150.25563)
+size = Vector3(1, 8, 8)
+
+[node name="path wall12" type="CSGBox3D" parent="Decipher Path" unique_id=544195342]
+transform = Transform3D(-0.881804, 0, 0.47161603, 0, 1, 0, -0.47161603, 0, -0.881804, -73.012924, 6, 154.98428)
+size = Vector3(1, 8, 9.277832)
+
+[node name="path wall17" type="CSGBox3D" parent="Decipher Path" unique_id=607631267]
+transform = Transform3D(-0.7824937, 0, -0.6226585, 0, 1, 0, 0.6226585, 0, -0.7824937, -51.02928, 6, 156.38618)
+size = Vector3(1, 8, 26.378418)
+
+[node name="path wall20" type="CSGBox3D" parent="Decipher Path" unique_id=738550141]
+transform = Transform3D(0.9994727, 0, 0.032470465, 0, 1, 0, -0.032470465, 0, 0.9994727, -48.5242, 6, 125.24678)
+size = Vector3(1, 8, 27.922974)
+
+[node name="path wall18" type="CSGBox3D" parent="Decipher Path" unique_id=861273373]
+transform = Transform3D(0.9994727, 0, 0.032470465, 0, 1, 0, -0.032470465, 0, 0.9994727, -59.50531, 6, 132.76324)
+size = Vector3(1, 8, 27.216309)
+
+[node name="path wall10" type="CSGBox3D" parent="Decipher Path" unique_id=674017934]
+transform = Transform3D(0.22731847, 0, 0.97382045, 0, 1, 0, -0.97382045, 0, 0.22731847, -81.06018, 6, 157.14183)
+size = Vector3(1, 8, 12.597656)
+
+[node name="path wall6" type="CSGBox3D" parent="Decipher Path" unique_id=2141383630]
+transform = Transform3D(0.9994727, 0, 0.032470495, 0, 1, 0, -0.032470495, 0, 0.9994727, -78.42711, 6, 132.33029)
+size = Vector3(1, 8, 35)
+
+[node name="path wall7" type="CSGBox3D" parent="Decipher Path" unique_id=2141617328]
+transform = Transform3D(0.9994727, 0, 0.032470495, 0, 1, 0, -0.032470495, 0, 0.9994727, -87.3297, 6, 135.32872)
+size = Vector3(1, 8, 41)
+
+[node name="path wall4" type="CSGBox3D" parent="Decipher Path" unique_id=1544472547]
+transform = Transform3D(0.29004657, 0, -0.95701253, 0, 1, 0, 0.95701253, 0, 0.29004657, -105.87669, 6, 110.9115)
+size = Vector3(1, 8, 40.16516)
+
+[node name="path wall14" type="CSGBox3D" parent="Decipher Path" unique_id=941239590]
+transform = Transform3D(-0.95701253, 0, -0.29004654, 0, 1, 0, 0.29004654, 0, -0.95701253, -126.06697, 6, 113.781235)
+size = Vector3(1, 8, 7)
+
+[node name="path wall15" type="CSGBox3D" parent="Decipher Path" unique_id=2142754793]
+transform = Transform3D(-0.95701253, 0, -0.29004654, 0, 1, 0, 0.29004654, 0, -0.95701253, -134.37218, 6, 121.474686)
+size = Vector3(1, 8, 16)
+
+[node name="path wall16" type="CSGBox3D" parent="Decipher Path" unique_id=968072592]
+transform = Transform3D(-0.2900465, 0, 0.95701253, 0, 1, 0, -0.95701253, 0, -0.2900465, -131.31915, 6, 115.74252)
+size = Vector3(1, 8, 13)
+
+[node name="path wall13" type="CSGBox3D" parent="Decipher Path" unique_id=795648646]
+transform = Transform3D(0.29004657, 0, -0.95701253, 0, 1, 0, 0.95701253, 0, 0.29004657, -110.14721, 6, 121.90271)
+size = Vector3(1, 8, 47)
+
+[node name="path wall2" type="CSGBox3D" parent="Decipher Path" unique_id=705294877]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -86.408485, 6, 85.82608)
+size = Vector3(1, 8, 40)
+
+[node name="Lever" parent="." unique_id=1357982526 instance=ExtResource("5_q0mm3")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 176.34631, -5.775942, 165.38815)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1237623182]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 177.5, 1.4850588, 109.5)
+size = Vector3(42, 1, 68)

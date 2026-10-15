@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://nbjdr5dycy2g" path="res://Scripts/MultiplayerScript.gd" id="1_jjvhh"]
 [ext_resource type="Script" uid="uid://bfr2n5nmf8g2m" path="res://Scripts/managerScripts/input_manager.gd" id="3_21xkr"]
 [ext_resource type="PackedScene" uid="uid://xknwtbrpl1ef" path="res://Scenes/church.tscn" id="4_6bp64"]
-[ext_resource type="PackedScene" uid="uid://dgxwjfvameiu7" path="res://maze.tscn" id="5_kry3j"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2yge"]
 
@@ -58,6 +57,3 @@ shape = SubResource("BoxShape3D_h2yge")
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1745204795]
 _spawnable_scenes = PackedStringArray("uid://dy0i40wui8vg7")
 spawn_path = NodePath("..")
-
-[node name="Maze" parent="." unique_id=44194881 instance=ExtResource("5_kry3j")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 210.63011, 85.36721, -86.208954)

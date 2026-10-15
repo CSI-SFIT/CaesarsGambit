@@ -33,7 +33,6 @@ sky = SubResource("Sky_7as5j")
 
 [node name="Walls" type="CSGCombiner3D" parent="." unique_id=933175712]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
-visible = false
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Walls" unique_id=1924107080]
