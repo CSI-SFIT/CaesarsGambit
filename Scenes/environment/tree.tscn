@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b0bnsl255unwf"]
+
+[ext_resource type="PackedScene" uid="uid://dmkpqym3ii4fp" path="res://3D_MODELS/Environment/low_poly_tree.glb" id="1_jd4ur"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_y8wm3"]
+height = 20.0
+radius = 3.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y8wm3"]
+size = Vector3(15.921631, 10, 21.219604)
+
+[node name="tree" type="StaticBody3D" unique_id=723169408]
+
+[node name="Sketchfab_Scene" parent="." unique_id=2112405867 instance=ExtResource("1_jd4ur")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10155809, 0, 0.3031652)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=557521447]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.676912, 0)
+shape = SubResource("CylinderShape3D_y8wm3")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=2143586715]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.66833496, 18.369904, 1.2686157)
+shape = SubResource("BoxShape3D_y8wm3")
