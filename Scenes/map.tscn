@@ -16,6 +16,20 @@
 [ext_resource type="Script" uid="uid://d38n40um2al7l" path="res://Scripts/final_area.gd" id="14_ie368"]
 [ext_resource type="AudioStream" uid="uid://bqen4b4vg80wi" path="res://addons/music/game_bgm.ogg" id="15_x5dfk"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_x5dfk"]
+sky_top_color = Color(0.29702199, 0.54538774, 0.86814064, 1)
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_fls3e"]
+sky_material = SubResource("ProceduralSkyMaterial_x5dfk")
+
+[sub_resource type="Environment" id="Environment_k63oc"]
+background_mode = 2
+sky = SubResource("Sky_fls3e")
+fog_enabled = true
+fog_light_color = Color(0.32252508, 0.49946022, 0.5553016, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dlo4w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8wm3"]
@@ -35,6 +49,9 @@ albedo_texture = ExtResource("6_4c2oa")
 radius = 59.989258
 
 [node name="Map" type="Node3D" unique_id=1100865031]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=695143675]
+environment = SubResource("Environment_k63oc")
 
 [node name="Logic Game" parent="." unique_id=448762608 instance=ExtResource("1_myvm1")]
 transform = Transform3D(-0.99998975, 0, -0.004528054, 0, 1, 0, 0.004528054, 0, -0.99998975, 286.48218, 0, 476.383)

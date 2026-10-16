@@ -51,7 +51,7 @@ func _ready() -> void:
 		freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
 	else:
 		# Auto-despawn after 9 seconds on server (MultiplayerSpawner removes it from clients)
-		get_tree().create_timer(9.0).timeout.connect(queue_free)
+		get_tree().create_timer(10).timeout.connect(queue_free)
 
 func _on_body_entered(body: Node) -> void:
 	if not multiplayer.is_server():

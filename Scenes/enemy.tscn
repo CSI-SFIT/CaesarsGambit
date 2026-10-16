@@ -27,7 +27,7 @@ script = ExtResource("1_hghv2")
 moveSpeed = 5.5
 chaseSpeed = 6.8
 patrol_speed = 4.5
-maxChaseTime = 5.0
+maxChaseTime = 2.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1813387056]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0335023, 0.016710281)
